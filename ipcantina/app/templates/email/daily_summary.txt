@@ -1,0 +1,3 @@
+Pravidelné denné zrhnutia všetkých objednávok pre nasledujúci deň {{ date }} nájdete v prílohe.
+
+IP Cantina

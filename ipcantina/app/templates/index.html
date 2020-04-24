@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+    <p class="welcome">Vitajte v novom objednávacom systéme obedov pre IP Centrum. Pôvodný vzhľad obedového menu nájdete
+        <a href="http://www.ipdevelopment.sk/letak_cantina.pdf" target="_blank">tu</a>. </p>
+    <div class="panel panel-default">
+        <div class="panel-body menu-desc">
+              <p class="price-list">
+                Cena menu A, B, C: {{ "%.2f" % prices.AB_PRICE }} &euro;<br>
+                <!--Cena menu C: {{ "%.2f" % prices.C_PRICE }} &euro;<br>-->
+            </p>
+            <p>
+                <!--V cene je k hlavnému jedlu automaticky zahrnutá aj polievka.<br>-->
+                Objednávky môžete uskutočniť alebo zrušiť
+                do {{ config['ORDER_DEADLINE_HOUR'] }}-tej hodiny predošlého pracovného dňa.<br>Menu na ďaľší týždeň bude
+                uploadnuté vždy vo štvrtok aktuálneho týždňa po {{ config['ORDER_DEADLINE_HOUR'] }}-tej hodine.
+            </p>
+            <p>
+                <a class="" data-toggle="collapse" href="#allergens" role="button" aria-expanded="false" aria-controls="allergens">Zoznam alergénov</a>
+            </p>
+            <div class="collapse" id="allergens">
+                <div class="card card-body">
+                    <b>1.</b> Obilniny obsahujúce lepok ( t. j. pšenica, raž, jačmeň, ovos, špalda, kamut a výrobky z nich),
+                    <b>2.</b> Kôrovce a výrobky z nich, <b>3.</b> Vajcia a výrobky z nich, <b>4.</b> Ryby a výrobky z nich,
+                    <b>5.</b> Arašidy a výrobky z nich, <b>6.</b> Sójové zrná a výrobky z nich, <b>7.</b> Mlieko a výrobky z neho,
+                    <b>8.</b> Orechy, ktorými sú mandle, lieskové orechy, vlašské orechy, kešu, peknanové orechy, para orechy,
+                    pistácie, makadamové orechy a queenslandské orechy a výrobky z nich, <b>9.</b> Zeler a výrobky z neho,
+                    <b>10.</b> Horčica a výrobky z nej, <b>11.</b> Sezamové semená a výrobky z nich, <b>12.</b> Oxid siričitý
+                    a siričitany v koncentráciách vyšších ako 10 mg/kg alebo 10mg/l vyjadrené ako SO2, <b>13.</b> Vlčí bôb
+                    a výrobky z neho, <b>14.</b> Mäkkýše a výrobky z nich
+                </div>
+            </div>
+        </div>
+    </div>
+    <h1>Týždenné menu {{ utils.monday_to_friday_str() }}</h1>
+    {% if menu is not none %}
+    <div class="group">
+        <div class="col-desc">
+            <span>množstvo</span><span>so sebou</span>
+        </div>
+    </div>
+    <hr id="first-hr">
+    <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <p>
+            {% for day in range(menu|length) %}
+                <h3>{{ utils.svk_from_int(day) }}</h3>
+                {% if menu[day] is not none %}
+
+                    <em>{{ menu[day]['soup'].description }}</em><br>
+                    {% with field = form.fields[day] %}
+                        {{ field.hidden_tag() }}
+                        {% with meals = menu[day]['meals'] %}
+                            {% for i in range(meals|length) %}
+                                <div class="menu-line group">
+                                    <b>{{ meals[i].label }}:</b> {{ meals[i].description }}
+                                    <span class="nowrap"><em>{{ "%.2f" % (meals[i].price)}} &euro;</em></span>
+                                    {{ field.subfields[i].hidden_tag() }}
+                                    <!--<div class="meal-field-group{% if utils.deadline_passed(meals[i].date) %} inactive{% endif %}">-->
+                                    <div class="meal-field-group">
+                                        {{ field.subfields[i].amount(size=1) }}
+                                        {{ field.subfields[i].take_away(size=1, **{'disabled':'disabled'}) }}
+                                    </div>
+                                </div>
+                                {% for error in field.subfields[i].amount.errors %}
+                                    <span style="color: red;">{{ error }}</span>
+                                {% endfor %}
+                            {% endfor %}
+                        {% endwith %}
+                    {% endwith %}
+                {% else %}
+                    {{ form.fields[day].hidden_tag() }}
+                    {% for field in form.fields[day].subfields %}
+                        {{ field.hidden_tag() }}
+                    {% endfor %}
+                    <p><em>Zatvorené</em></p>
+                {% endif %}
+            <hr>
+            {% endfor %}
+        </p>
+
+        <p id="submit-order">{{ form.submit() }}</p>
+
+    </form>
+
+    {% else %}
+    <p>Menu na daný týždeň bude nahraté čoskoro. Ospravedlňujeme sa za čakanie.</p>
+    {% endif %}
+
+{% endblock %}

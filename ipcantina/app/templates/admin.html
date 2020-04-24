@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block app_content %}
+<h1>
+    Administrátorský panel
+</h1>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h2 class="panel-title">Nahrať nové menu</h2>
+    </div>
+    <div class="panel-body">
+        <form method=post enctype=multipart/form-data>
+            <input type=file name=file class="file-input">
+            <input type=submit value=Nahrať class="btn btn-primary">
+        </form>
+    </div>
+</div>
+
+{% endblock %}

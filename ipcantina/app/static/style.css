@@ -1,0 +1,261 @@
+html, body {
+    height: 100%;
+}
+
+.welcome {
+    font-size: 18px;
+    margin: 20px 0;
+}
+
+h1 {
+    font-size: 30px;
+    margin: 30px 0 30px;
+}
+.menu-desc p:last-child {
+   margin-bottom: 0;
+}
+
+.price-list {
+    line-height: 26px;
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+
+.menu-line {
+    line-height: 26px;
+    width: 100%;
+    margin: 8px 0;
+}
+
+.col-desc span:first-child {
+    margin-right: 16px;
+
+}
+.col-desc {
+    font-size: 13px;
+    color: lightgrey;
+    margin-right: 42%;
+    float: right;
+}
+#first-hr {
+    margin-top: 2px;
+}
+/* INCREMENTORS */
+.incrementor {
+    display: inline-block;
+    margin-right: 20px;
+}
+.meal-field-group {
+    float: right;
+    margin-right: 44%;
+}
+.meal-field-group input { /*also selects incremetor input*/
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0;
+}
+@media(max-width: 1200px){
+   .meal-field-group {
+        margin-right: 0;
+    }
+    .col-desc {
+        margin-right: 0;
+    }
+    .col-desc span:first-child {
+        margin-right: 10px;
+    }
+}
+
+input[disabled="disabled"] , .incrementor span {
+    /*background:#C0C0C0;*/
+    opacity: 70%    
+}
+
+
+.incrementor span {
+    cursor: pointer;
+    user-select: none !important; /* standard syntax */
+    -webkit-user-select: none; /* webkit (safari, chrome) browsers */
+    -moz-user-select: none; /* mozilla browsers */
+    -ms-user-select: none; /* IE10+ */
+}
+
+.minus, .plus {
+    width: 14px;
+    height: 14px;
+    background: #f2f2f2;
+    border-radius: 4px;
+    padding: 2px;
+    border: 1px solid #ddd;
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+    line-height: 8px;
+
+}
+.incrementor input {
+    height:26px;
+    width: 40px;
+    text-align: center;
+    font-size: 16px;
+    border:1px solid #ddd;
+    border-radius:4px;
+    display: inline-block;
+    vertical-align: middle;
+        margin: 0 2px;
+}
+
+#submit-order {
+    text-align: center;
+}
+
+#submit-order #submit {
+    margin: 20px 0 50px;
+}
+
+.list-group-item .group {
+    margin: 5px 0;
+} 
+.order-summary-right {
+    float: right;
+    vertical-align: middle;
+}
+.order-summary-right .item {
+    margin: 0 3px;
+}
+
+.cancel-form {
+    margin-left: 10px;
+    display: inline-block;
+}
+.cancel-form .btn {
+    border-radius: 8px;
+}
+.file-input {
+    margin: 6px 0 16px 0;
+}
+
+
+#price-summary {
+    text-align: right;
+    font-size: 20px;
+    margin-bottom: 50px;
+}
+
+.register-prompt {
+    margin: 20px 0;
+}
+.account-action .inline a {
+    margin: 50px 10px 0 0;
+}
+.account-action {
+    margin-bottom: 30px;
+}
+/*
+#admin a {
+    color: black;
+}*/
+
+.delete-account {
+    margin-top: 10px;
+}
+.delete-account a {
+    margin: 0 8px;
+}
+
+.content {
+  min-height: calc(100% - 72px);
+}
+.content .container { /* body content */
+  /*padding: 20px;*/
+  padding-bottom: 50px;
+}
+
+.footer {
+    /*background-color: #222;*/
+    background: rgb(34,34,34);
+    background: linear-gradient(0deg, rgba(34,34,34,1) 0%, rgba(24,24,24,1) 100%);
+    border-top: #101010;
+    line-height: 50px;
+    text-align: right;
+    height: 50px;
+    margin-top: -50px;
+        color: #9d9d9d;
+}
+
+.footer ul, .footer li {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+}
+.footer li, .footer span {
+    /*padding: 0 5px;*/
+}
+.footer li:after {
+    margin: 0 6px;
+    content: '/';
+}
+/*.footer li a {
+    color: #9d9d9d;
+}*/
+
+
+.group:before,
+.group:after {
+	content:" ";
+	display: table;
+}
+
+.group:after {
+	clear:both;
+}
+
+.group {
+	*zoom: 1;
+}
+
+@media(max-width: 800px){
+    h1 {
+        font-size: 26px;
+    }
+    h3 {
+        font-size: 20px;
+    }
+    body {
+        font-size: 13px;
+    }
+    #price-summary {
+        font-size: 16px;
+    }
+    span.nowrap {
+        white-space: nowrap;
+    }
+
+}
+@media(max-width: 600px){
+    body {
+        text-align: center;
+    }
+    .meal-field-group {
+        display: block;
+        float: none;
+        margin-bottom: 20px;
+        margin-right: -10%;
+    }
+    .order-summary-right {
+        float: none;
+        display: block;
+        margin: 10px 0;
+
+    }
+    span.nowrap {
+        display: block;
+    }
+    .footer {
+        text-align: center;
+    }
+    #registration-form {
+        margin-bottom: 
+    }
+}

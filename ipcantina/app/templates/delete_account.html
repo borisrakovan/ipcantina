@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+    <h1>Vymazanie účtu</h1>
+    <p>
+        Naozaj chcete vymazať svoj účet? Táto akcia je nevratná.
+    </p>
+    <p>
+        Ak sa rozhodnete pokračovať, prosím zadajte svoje heslo na overenie identity.
+    </p>
+    <div class="col-md-4" style="padding:0;">
+        <form action="" method="post" novalidate class="delete-account">
+            {{ form.hidden_tag() }}
+            <div class="form-group required">
+                {{ form.password.label() }}
+                {{ form.password(class_="form-control", size=32) }}
+            </div>
+
+            {{ form.submit(class_="btn btn-danger btn-m") }}
+            <a href="{{ url_for('account') }}" class="btn btn-primary" role="button">Späť</a>
+        </form>
+
+    </div>
+{% endblock %}

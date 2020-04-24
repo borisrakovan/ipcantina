@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+    <h1>Vaše objednávky na týždeň <span class="nowrap">{{ days.monday_to_friday_str() }}</span></h1>
+    {% if orders %}
+    <ul class="list-group">
+        {% for i in range(5) %}
+        <li class="list-group-item">
+            <b>{{ days.to_string(days.date_from_int(i)) }} {{ days.svk_from_int(i) }}</b>
+            {% for order in orders[i] %}
+                <div class="group">
+                    <b>{{ order.meal.label }}:</b>
+                    {{ order.meal.description }}
+                    <div class="order-summary-right">
+                        <span class="item"> {{ order.amount }}ks</span>
+                        <span class="item">{{ "%.2f" % (order.meal.price * order.amount) }} &euro;</span>
+                        <form action="" method="post" class="cancel-form">
+                            <input type="hidden" name="meal_id" value="{{ order.meal.id }}" >
+                            {% if order.cancellable %}
+                                <input type="submit" name="cancel_order" value="zrušiť" class="btn btn-danger btn-xs">
+                            {% else %}
+                                <input type="submit" name="cancel_order" value="zrušiť" class="btn btn-danger btn-xs" disabled="disabled">
+                            {% endif %}
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        </li>
+        {% endfor %}
+    </ul>
+
+    <div id="price-summary">
+      Spolu: {{ "%.2f" % price }} &euro;
+    </div>
+    {% else %}
+        <p>Momentálne nemáte žiadne objednávky.</p>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends 'bootstrap/base.html' %}
+
+{% block title %}
+    {% if title %}{{ title }} - IP Cantina{% else %}IP Cantina{% endif %}
+{% endblock %}
+{% block styles %}
+    {{super()}}
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='dark_style.css') }}">
+{% endblock %}
+{% block scripts %}
+    <script src="http://code.jquery.com/jquery.min.js"></script>
+    <script src="util.js"></script>
+    <script src="{{url_for('static', filename='script.js')}}"></script>
+    {{super()}}
+{% endblock %}
+{% block navbar %}
+    <nav class="navbar navbar-inverse">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{{ url_for('index') }}">IP Cantina</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a href="{{ url_for('index') }}">Domov</a></li>
+                    <li><a href="{{ url_for('orders') }}">Objednávky</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+
+                    {% if current_user.is_anonymous %}
+                        <li><a href="{{ url_for('login') }}">Prihlásiť sa</a></li>
+                    {% else %}
+                        {% if current_user.is_admin() %}
+                            <li id="admin"><a href="{{ url_for('admin') }}">Admin</a></li>
+                        {% endif %}
+                        <li><a href="{{ url_for('account') }}">Účet</a></li>
+                        <li><a href="{{ url_for('logout') }}">Odhlásiť sa</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+{% block content %}
+    <div class="content">
+
+        <div class="container">
+            {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                {% endfor %}
+            {% endif %}
+            {% endwith %}
+
+            {% block app_content %}{% endblock %}
+        </div>
+
+    </div>
+
+    {%- block footer %}
+    <div class="footer">
+        <div class="container">
+
+        <ul>
+            <li><a href="{{ url_for('contact') }}">Kontakt</a></li><li><a href="{{ url_for('gdpr') }}">GDPR</a></li>
+        </ul>
+        <span>&copy; 2020 IP development, s.r.o.</span>
+        </div>
+
+    </div>
+    {%- endblock footer %}
+{% endblock content %}
+
