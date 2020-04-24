@@ -1,0 +1,80 @@
+[
+    {
+        "open": true,
+        "soup": "Činska ostro-kyslá polievka s tofu syrom",
+        "meals": [
+            {
+                "label": "A",
+                "g": "120g",
+                "description": "Pečené kuracie stehno na kapuste s varenými zemiakmi",
+                "price": 4.95
+            },
+            {
+                "label": "B",
+                "g": "120g",
+                "description": "Bravčový perkelt s  domácimi haluškami",
+                "price": 4.95
+            },
+            {
+                "label": "C",
+                "g": "120g",
+                "description": "Penne s paradajková om. bazalkou a baby mozzarelou",
+                "price": 4.95
+            }
+        ]
+    },
+    {
+        "open": false
+    },
+    {
+        "open": true,
+        "soup": "Hrašková polievka s haluškami",
+        "meals": [
+            {
+                "label": "A",
+                "g": "120g",
+                "description": "Plnený kur.rezen so syrom a slaninkou s hranolkami",
+                "price": 4.95
+            },
+            {
+                "label": "B",
+                "g": "120g",
+                "description": "Hovädzie varené s chrenovou omačkou a knedlou",
+                "price": 4.95
+            },
+            {
+                "label": "C",
+                "g": "120g",
+                "description": "Mexické zeleninová ragu s batatovými hranolkami",
+                "price": 4.95
+            }
+        ]
+    },
+    {
+        "open": true,
+        "soup": "Hrašková polievka s haluškami",
+        "meals": [
+            {
+                "label": "A",
+                "g": "120g",
+                "description": "Bravčový rezen plnený bryndzov s americkými zemiakmi",
+                "price": 4.95
+            },
+            {
+                "label": "B",
+                "g": "120g",
+                "description": "Gyros s kuracieho mäsa s hranolkami a dressingom /2,4/",
+                "price": 4.95
+            },
+            {
+                "label": "C",
+                "g": "120g",
+                "description": "Bryndzové halušky s pažitkou alebo slaninkou",
+                "price": 5.0
+            }
+        ]
+    },
+    {
+        "open": false
+    }
+]
