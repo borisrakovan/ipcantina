@@ -1,7 +1,7 @@
 import xlrd
 from app import db
 import re
-from app.models import User, Company
+from app.models import User, Company, UserRole
 
 
 def clear_data(session):
@@ -30,6 +30,22 @@ def upload_companies():
         db.session.add(c)
     db.session.commit()
 
+
+def create_admin():
+    c = Company.query.filter(Company.title == 'Iná').first()
+    u = User(first_name="Boris", surname="Rakovan",
+             email="b.rakovan@gmail.com", phone="0911710322", company=c)
+    u.set_password("hesloheslo")
+    u.set_urole(UserRole.ADMIN)
+
+    db.session.add(u)
+    db.session.commit()
+
+
 if __name__ == '__main__':
-    # pass
-    clear_data(db.session)
+    # create_admin()
+    # clear_data(db.session)
+    pass
+    # c = Company(full_title='Iná', title='Iná', CRN=12345678, building='ABX', token='ABX1234')
+    # db.session.add(c)
+    # db.session.commit()

@@ -9,7 +9,7 @@ html, body {
 
 h1 {
     font-size: 30px;
-    margin: 30px 0 30px;
+    margin: 18px 0 18px;
 }
 .menu-desc p:last-child {
    margin-bottom: 0;
@@ -20,7 +20,25 @@ h1 {
     font-size: 18px;
     margin-bottom: 5px;
 }
+.menu-heading h1, #pdf{
+    display: inline-block;
+} 
+#pdf {
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    margin-left: 10px;
+    vertical-align: top;
+/*    position: relative;
+    top: 4px;
+*/    padding: 3px 7px;
+    color: #fff;
+    background-color: #007bff;
+    transition: all 0.5s ease; 
 
+} #pdf:hover {
+    background-color: #0063E1;
+}
 
 .menu-line {
     line-height: 26px;
@@ -28,15 +46,26 @@ h1 {
     margin: 8px 0;
 }
 
-.col-desc span:first-child {
-    margin-right: 16px;
 
-}
 .col-desc {
     font-size: 13px;
     color: lightgrey;
-    margin-right: 42%;
+    /*margin-right: 42%;*/
     float: right;
+}
+.col-desc li {
+    display: inline-block;
+} .col-desc li:nth-child(2) {
+    margin-right: 10px;
+}.col-desc li:first-child {
+    margin-right: 34px;
+}
+
+
+.col-desc ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
 }
 #first-hr {
     margin-top: 2px;
@@ -44,27 +73,16 @@ h1 {
 /* INCREMENTORS */
 .incrementor {
     display: inline-block;
-    margin-right: 20px;
+    margin: 0 20px;
 }
 .meal-field-group {
     float: right;
-    margin-right: 44%;
+    margin-right: 20px;
 }
 .meal-field-group input { /*also selects incremetor input*/
     display: inline-block;
     vertical-align: middle;
     margin: 0;
-}
-@media(max-width: 1200px){
-   .meal-field-group {
-        margin-right: 0;
-    }
-    .col-desc {
-        margin-right: 0;
-    }
-    .col-desc span:first-child {
-        margin-right: 10px;
-    }
 }
 
 input[disabled="disabled"] , .incrementor span {
@@ -105,13 +123,18 @@ input[disabled="disabled"] , .incrementor span {
     vertical-align: middle;
         margin: 0 2px;
 }
-
+.menu-day {
+    margin-left: 14px;
+}
 #submit-order {
-    text-align: center;
+    /*text-align: center;*/
 }
 
 #submit-order #submit {
-    margin: 20px 0 50px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin: 10px 44px 0 0;
+    float: right;
 }
 
 .list-group-item .group {
@@ -141,6 +164,8 @@ input[disabled="disabled"] , .incrementor span {
     text-align: right;
     font-size: 20px;
     margin-bottom: 50px;
+} #dph {
+    font-size: 12px;
 }
 
 .register-prompt {
@@ -149,13 +174,19 @@ input[disabled="disabled"] , .incrementor span {
 .account-action .inline a {
     margin: 50px 10px 0 0;
 }
-.account-action {
-    margin-bottom: 30px;
+#gdpr h2 {
+    font-size: 26px;
 }
 /*
 #admin a {
     color: black;
 }*/
+#admin-settings-form {
+    padding: 0 15px;
+}
+#admin-settings-form .form-group input {
+    color: #555;
+}
 
 .delete-account {
     margin-top: 10px;
@@ -163,14 +194,19 @@ input[disabled="disabled"] , .incrementor span {
 .delete-account a {
     margin: 0 8px;
 }
-
 .content {
   min-height: calc(100% - 72px);
 }
 .content .container { /* body content */
   /*padding: 20px;*/
-  padding-bottom: 50px;
+  padding-bottom: 100px;
 }
+
+#contact-info p {
+    line-height: 26px;
+}
+
+
 
 .footer {
     /*background-color: #222;*/
@@ -188,9 +224,6 @@ input[disabled="disabled"] , .incrementor span {
     display: inline-block;
     margin: 0;
     padding: 0;
-}
-.footer li, .footer span {
-    /*padding: 0 5px;*/
 }
 .footer li:after {
     margin: 0 6px;
@@ -215,6 +248,25 @@ input[disabled="disabled"] , .incrementor span {
 	*zoom: 1;
 }
 
+/*
+@media(max-width: 1200px){
+   .meal-field-group {
+        margin-right: 0;
+    }
+    .col-desc {
+        margin-right: 0;
+    }
+    .col-desc span:first-child {
+        margin-right: 10px;
+    }
+}
+*/
+@media(max-width: 992px){
+    .menu-day {
+        margin-left: 0;
+    }
+}
+
 @media(max-width: 800px){
     h1 {
         font-size: 26px;
@@ -231,31 +283,53 @@ input[disabled="disabled"] , .incrementor span {
     span.nowrap {
         white-space: nowrap;
     }
+    h1 {
+        line-height: 34px;
+    }
 
 }
 @media(max-width: 600px){
     body {
         text-align: center;
     }
+    #pdf {
+        margin: 0;
+        margin-top: 10px;
+    }
+    #submit-order #submit {
+        float: none;
+        margin: 0;
+    }
     .meal-field-group {
         display: block;
         float: none;
         margin-bottom: 20px;
-        margin-right: -10%;
+        /*margin-right: -10%;*/
+    }
+    .col-desc {
+        float: none;
+        /*margin-right: -15%;*/
+        /*display: none;*/   
     }
     .order-summary-right {
         float: none;
         display: block;
         margin: 10px 0;
-
     }
+    .col-desc span:first-child {
+        margin-right: 14px;
+    }
+
+
     span.nowrap {
         display: block;
     }
+
     .footer {
         text-align: center;
     }
+
     #registration-form {
-        margin-bottom: 
+        margin-bottom: 30px;
     }
 }

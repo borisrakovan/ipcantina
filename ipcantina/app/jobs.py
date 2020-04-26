@@ -27,7 +27,7 @@ def create_daily_order_sheet(dt):
     ws['B1'] = "Denné menu " + date_str; ws['B1'].font = bold
     ws['C1'] = "online"; ws['C1'].font = bold
     ws['D1'] = "voľný predaj"; ws['D1'].font = bold
-    ws['E1'] = "dokopy"; ws['E1'].font = bold
+    ws['E1'] = "spolu"; ws['E1'].font = bold
 
     for i, item in enumerate(summary):
         row = 3+i
@@ -37,14 +37,10 @@ def create_daily_order_sheet(dt):
         sum = "=SUM(C" + str(row) + ", D" + str(row) + ")"
         ws.cell(row=row, column=5, value=sum)
 
-    # dims = {} TODO BUG HERE
-    # for row in ws.rows:
-    #     for cell in row:
-    #         if cell.value:
-    #             dims[cell.column_letter] = max((dims.get(cell.column_letter, 0), len(str(cell.value))))
+    widths = {'A': 4, 'B': 50, 'C': 10, 'D': 10, 'E': 10}
 
-    # for col, value in dims.items():
-    #     ws.column_dimensions[col].width = value * 1.2
+    for k, v in widths.items():
+        ws.column_dimensions[k].width = v
 
     filename = os.path.join(app.config['ATTACHMENTS_DIR_PATH'], "IP_objednavka_" + date_str + ".xlsx")
     wb.save(filename)
@@ -55,24 +51,33 @@ def create_daily_order_sheet(dt):
 def create_order_list_file(dt):
     orders = Order.get_orders_for_day(dt).all()
     data = []
+    counts = {'A': 0, 'B': 0, 'C': 0}
     for order in orders:
         meal = Meal.query.get(order.meal_id)
         data.append([order.customer.surname, order.customer.phone, meal.label])
+        counts[meal.label] += 1
+
     table = tabulate(data, headers=headers)
     # print(table)
     date_str = DateUtils.to_string(dt)
     filename = os.path.join(app.config['ATTACHMENTS_DIR_PATH'], "IP_cantina_zoznam_" + date_str + ".txt")
 
-    with open(filename, "w", encoding='utf-8') as f:
-        f.write(DateUtils.to_string(dt) + "\n\n")
+    with open(filename, "w", encoding='utf-8') as f:  # todo TEST
+        f.write("%s %s - ONLINE OBJEDNÁVKY\n\n" % (DateUtils.to_string(dt), DateUtils.svk_from_int(dt.weekday())))
         f.write(table)
+        f.write('\n\n')
+        f.write("Spolu:\n")
+        for k, v in counts.items():
+            f.write("%s: %dx\n" % (k, v))
 
     return filename
 
 
 def send_daily_summary():
-    dt = DateUtils.next_working_day()
-
+    today = date.today()
+    dt = DateUtils.next_working_day(today)
+    if dt.weekday() == 5 or dt.weekday() == 6:
+        return
     order_list = create_order_list_file(dt)
     order_sheet = create_daily_order_sheet(dt)
 

@@ -94,7 +94,6 @@ class User(db.Model, UserMixin):
         return '<User {}>'.format(self.first_name + " " + self.surname)
 
     def set_urole(self, role):
-        # todo make secure
         self.urole = role
 
     def get_urole(self):

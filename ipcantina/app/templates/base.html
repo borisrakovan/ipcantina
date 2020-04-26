@@ -10,7 +10,6 @@
 {% endblock %}
 {% block scripts %}
     <script src="https://code.jquery.com/jquery.min.js"></script>
-    <script src="util.js"></script>
     <script src="{{url_for('static', filename='script.js')}}"></script>
     {{super()}}
 {% endblock %}
@@ -54,7 +53,9 @@
             {% with messages = get_flashed_messages(with_categories=True) %}
             {% if messages %}
                 {% for category, message in messages %}
-                <div class="alert alert-{{ category }} alert-dismissible" role="alert">
+
+                {% if category == "message" %}<div class="alert alert-info alert-dismissible" role="alert">
+                {% else %}<div class="alert alert-{{ category }} alert-dismissible" role="alert">{% endif %}
                     {{ message }}
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>

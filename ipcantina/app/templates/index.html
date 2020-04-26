@@ -1,19 +1,11 @@
 {% extends "base.html" %}
 
 {% block app_content %}
-    <p class="welcome">Vitajte v novom objednávacom systéme obedov pre IP Centrum. Pôvodný vzhľad obedového menu nájdete
-        <a href="http://www.ipdevelopment.sk/letak_cantina.pdf" target="_blank">tu</a>. </p>
+    <p class="welcome">Vitajte v novom objednávacom systéme obedov pre IP Centrum.
     <div class="panel panel-default">
         <div class="panel-body menu-desc">
-              <p class="price-list">
-                Cena menu A, B, C: {{ "%.2f" % prices.AB_PRICE }} &euro;<br>
-                <!--Cena menu C: {{ "%.2f" % prices.C_PRICE }} &euro;<br>-->
-            </p>
             <p>
-                <!--V cene je k hlavnému jedlu automaticky zahrnutá aj polievka.<br>-->
-                Objednávky môžete uskutočniť alebo zrušiť
-                do {{ config['ORDER_DEADLINE_HOUR'] }}-tej hodiny predošlého pracovného dňa.<br>Menu na ďaľší týždeň bude
-                uploadnuté vždy vo štvrtok aktuálneho týždňa po {{ config['ORDER_DEADLINE_HOUR'] }}-tej hodine.
+                {{ instructions|safe }}
             </p>
             <p>
                 <a class="" data-toggle="collapse" href="#allergens" role="button" aria-expanded="false" aria-controls="allergens">Zoznam alergénov</a>
@@ -32,11 +24,18 @@
             </div>
         </div>
     </div>
-    <h1>Týždenné menu {{ utils.monday_to_friday_str() }}</h1>
+    <div class="menu-heading">
+        <h1>Týždenné menu <span class="nowrap">{{ utils.monday_to_friday_str() }}</span><a href="http://www.ipdevelopment.sk/letak_cantina.pdf" target="_blank" class="badge" id="pdf">PDF</a></h1>
+    </div>
+
     {% if menu is not none %}
     <div class="group">
         <div class="col-desc">
-            <span>množstvo</span><span>so sebou</span>
+            <ul>
+                <li>cena</li>
+                <li>množstvo</li>
+                <li>so sebou</li>
+            </ul>
         </div>
     </div>
     <hr id="first-hr">
@@ -45,19 +44,21 @@
         <p>
             {% for day in range(menu|length) %}
                 <h3>{{ utils.svk_from_int(day) }}</h3>
+                <div class="menu-day">
                 {% if menu[day] is not none %}
-
-                    <em>{{ menu[day]['soup'].description }}</em><br>
+                    {% if menu[day]['soup'] is not none %}
+                        <em>{{ menu[day]['soup'].description }}</em><br>
+                    {% endif %}
                     {% with field = form.fields[day] %}
                         {{ field.hidden_tag() }}
                         {% with meals = menu[day]['meals'] %}
                             {% for i in range(meals|length) %}
                                 <div class="menu-line group">
                                     <b>{{ meals[i].label }}:</b> {{ meals[i].description }}
-                                    <span class="nowrap"><em>{{ "%.2f" % (meals[i].price)}} &euro;</em></span>
                                     {{ field.subfields[i].hidden_tag() }}
-                                    <!--<div class="meal-field-group{% if utils.deadline_passed(meals[i].date) %} inactive{% endif %}">-->
-                                    <div class="meal-field-group">
+                                    <div class="meal-field-group{% if utils.deadline_passed(meals[i].date) %} inactive{% endif %}">
+                                        <span><em>{{ "%.2f" % (meals[i].price)}} &euro;</em></span>
+                                    <!--<div class="meal-field-group">-->
                                         {{ field.subfields[i].amount(size=1) }}
                                         {{ field.subfields[i].take_away(size=1, **{'disabled':'disabled'}) }}
                                     </div>
@@ -75,11 +76,12 @@
                     {% endfor %}
                     <p><em>Zatvorené</em></p>
                 {% endif %}
+                </div>
             <hr>
             {% endfor %}
         </p>
 
-        <p id="submit-order">{{ form.submit() }}</p>
+        <p id="submit-order" class="group">{{ form.submit() }}</p>
 
     </form>
 

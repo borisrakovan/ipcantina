@@ -9,7 +9,8 @@ def allowed_file(filename):
 class DateUtils():
     @staticmethod
     def deadline_passed(dt):
-        deadline_date = dt - timedelta(days=1)
+        # deadline_date = dt - timedelta(days=1)
+        deadline_date = DateUtils.prev_working_day(dt)
         deadline_time = time(hour=app.config['ORDER_DEADLINE_HOUR'])
         deadline = datetime.combine(deadline_date, deadline_time)
         return datetime.now() > deadline
@@ -27,14 +28,21 @@ class DateUtils():
     #
     #     return passed % 7 if weekday != 5 else 0
 
+    @staticmethod
+    def prev_working_day(day):
+        if day.weekday() == 6:
+            return day - timedelta(days=2)
+        elif day.weekday() == 0:
+            return day - timedelta(days=3)
+
+        return day - timedelta(days=1)
 
     @staticmethod
-    def next_working_day():
-        today = date.today()
-        if today.weekday() >= 4:
-            return today + timedelta(days=7-today.weekday())
+    def next_working_day(day):
+        if day.weekday() >= 4:
+            return day + timedelta(days=7-day.weekday())
 
-        return today + timedelta(days=1)
+        return day + timedelta(days=1)
 
     @staticmethod
     def affected_week_monday():
@@ -56,7 +64,7 @@ class DateUtils():
         return ["Pondelok", "Utorok", "Streda", "Štvrtok", "Piatok"]
 
     @staticmethod
-    def monday_to_friday_str(): # todo test !!
+    def monday_to_friday_str():
         return "{} - {}".format(DateUtils.to_string(DateUtils.affected_week_monday()),
                                 DateUtils.to_string(DateUtils.affected_week_friday()))
 

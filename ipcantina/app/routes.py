@@ -7,31 +7,33 @@ from app.models import User, Order, UserRole, Meal, Company
 from app.forms import *
 from werkzeug.urls import url_parse
 from werkzeug.utils import secure_filename
-from app.menu import MenuUtils, PriceList
+from app.menu import MenuUtils
 from app.utils import DateUtils, allowed_file
 from functools import wraps
 from app.forms import ResetPasswordRequestForm
 from app.email import send_password_reset_email
 from datetime import timedelta
+import json
 
+# todo update v strede tyzdna: zatvorenie:ak maju ludia objednane na piatok a zatvori sa
+#  (napr), objednavka im ostane, treba napisat mail.
 
-# todo update v strede tyzdna: zatvorenie
-#   fixme ak maju ludia objednane na piatok a zatvori sa (napr), objednavka im ostane, treba napisat mail.
-# todo v piatok by malo byt este vidiet objednavky aj na dany tyzden
-#   pagination na objednavkove tyzdne if youre bored
-# todo GDPR, contact
-# alergeny do menu
-# dalsie instrukcie
-
-# todo remember form fields in session
+#   fixme  todo v piatok by malo byt este vidiet objednavky aj na dany tyzden
+#    pagination na objednavkove tyzdne if youre bored
 # todo: translate flash messages
-#  feedback kontaktny formular
-# ip email
 # upozornenia na mail
-# todo instrukcie pre paliho -> zatial podpora jedine pre 3 jedla denne vzdy; upload na new tyzden vzdy povoleny az od 15:00
 # /admin?
-# fixme GET /util.js HTTP/1.1" 404 -
-
+# alergeny do menu
+# todo cena do samostatneho stlpca?
+# generovanie farebneho pdf vid poznamky;
+# #  feedback kontaktny formular
+#
+# instr pre paliho: Inaa
+# kontrolny blok, pre paliho -> zatial podpora jedine pre 3 jedla denne vzdy; upload na new tyzden vzdy povoleny az od 15:00
+# todo aktualne menu a pripravit na beh
+# fixme!!!!!! databaza do .gitignore aj migrations!! + very careful about replacing files like instructions etc
+# HTTPS
+# todo dynamicke ceny cez js v indexe
 
 def login_required(role=UserRole.BASIC):
     def login_wrapper(fn):
@@ -47,13 +49,30 @@ def login_required(role=UserRole.BASIC):
     return login_wrapper
 
 
+def load_instructions():
+    path = app.config['INSTRUCTIONS_TEXT_PATH']
+    with open(path, 'r', encoding='utf-8') as f:
+        instructions = ' '.join(f.readlines())
+        return instructions.strip()
+
+def save_instructions(text):
+    path = app.config['INSTRUCTIONS_TEXT_PATH']
+    with open(path, 'w', encoding='utf-8') as f:
+        f.write(text)
+
+
+def update_prices(a, b, c):
+    path = app.config['DEFAULT_PRICES_PATH']
+    prices = {'A' : a, 'B': b, 'C': c}
+    with open(path, 'w', encoding='utf-8') as f:
+        json.dump(prices, f, indent=4)
+
+
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
 def index():
-    # todo shut down thursday 15:00
     # menu = from_json(app.config['MENU_JSON_PATH'])
     menu = MenuUtils.load_from_db()
-
     form = MenuForm()
     # passed_days = get_num_passed_days()
     if form.validate_on_submit():
@@ -66,10 +85,9 @@ def index():
                 if not amount:
                     continue
 
-                # meal = Meal.get_for_current_week(weekday=i, label=label_from_int(val=j))
                 meal = menu[i]['meals'][j]
-                # if DateUtils.deadline_passed(meal.date):
-                #     break
+                if DateUtils.deadline_passed(meal.date):
+                    break
                 for _ in range(amount):
                     order = Order(meal_id=meal.id, customer=current_user, take_away=dish.take_away.data)
                     num_orders += 1
@@ -83,7 +101,8 @@ def index():
         return redirect(url_for('index'))
     # else:
     #     print(form.fields.errors)
-    return render_template('index.html', title='Domov', menu=menu, form=form, utils=DateUtils(), prices=PriceList())
+    return render_template('index.html', title='Domov', instructions=load_instructions(),
+                           menu=menu, form=form, utils=DateUtils())
 
 
 @app.route('/orders', methods=['GET', 'POST'])
@@ -94,7 +113,7 @@ def orders():
         # unique id for each week's meals
         meal = Meal.query.get(meal_id)
         if DateUtils.deadline_passed(meal.date):
-            flash("Ospravedlňujeme sa, ale každá objednávka sa dá zrušiť iba do {}-tej hodiny predošlého dňa."
+            flash("Ospravedlňujeme sa, ale každá objednávka sa dá zrušiť iba do {}-tej hodiny predošlého pracovného dňa."
                   .format(app.config['ORDER_DEADLINE_HOUR']), category='danger')  # todo pracovneho?
             return redirect(url_for('orders'))
 
@@ -146,38 +165,63 @@ def edit_profile():
 @app.route('/admins', methods=['GET', 'POST'])
 @login_required(role=UserRole.ADMIN)
 def admin():
-    if request.method == 'POST':
-        # check if the post request has the file part
-        if 'file' not in request.files:
-            flash("HTTP request neobsahuje žiaden súbor.", category='danger')
+    form = AdminSettingsForm()
+
+    if request.method == 'GET':
+        form.instructions.data = load_instructions()
+        prices = MenuUtils.get_default_prices()
+        form.price_A.data = prices['A']
+        form.price_B.data = prices['B']
+        form.price_C.data = prices['C']
+        return render_template('admin.html', title='Admin', form=form)
+
+    else:
+        if 'upload' in request.form:
+            print(request.files)
+            print('upload' in request.form)
+
+            # check if the post request has the file part
+            if 'file' not in request.files:
+                flash("HTTP request neobsahuje žiaden súbor.", category='danger')
+                return redirect(url_for('admin'))
+            file = request.files['file']
+            # if user does not select file, browser also
+            # submit an empty part without filename
+            if not file or file.filename == '':
+                flash("Nebol vybraný žiaden súbor.", category='danger')
+                return redirect(url_for('admin'))
+            if not allowed_file(file.filename):
+                flash("Súbor má nesprávny formát. Uistite sa, že ste nahrali excelovskú tabuľku.", category='danger')
+                return redirect(url_for('admin'))
+
+            filename = secure_filename(file.filename)
+            path = os.path.join(app.config['MENU_UPLOAD_FOLDER'], filename)
+            file.save(path)
+            try:
+                MenuUtils.save_from_excel(path, app.config['MENU_JSON_PATH'])
+            except Exception as e:
+                flash("Nahraný súbor má nesprávnu formu: {}".format(e), category='danger')
+                return redirect(url_for('admin'))
+
+            update_meal_db()
+
+            flash("Súbor {} bol úspešne spracovaný. Prosím skontrolujte zmeny v menu na stránke.".format(file.filename), category='success')
+            # TODO: fire week changes and everythang
+
             return redirect(url_for('admin'))
-        file = request.files['file']
-        # if user does not select file, browser also
-        # submit an empty part without filename
-        if not file or file.filename == '':
-            flash("Nebol vybraný žiaden súbor.", category='danger')
+
+        else:
+            print("not upload")
+            if form.validate_on_submit():
+                text = form.instructions.data
+                save_instructions(text)
+                price_A = round(form.price_A.data, 2)
+                price_B = round(form.price_B.data, 2)
+                price_C = round(form.price_C.data, 2)
+                update_prices(price_A, price_B, price_C)
+
+                flash("Zmeny boli úspešne uložené.", category='success')
             return redirect(url_for('admin'))
-        if not allowed_file(file.filename):
-            flash("Súbor má nesprávny formát. Uistite sa, že ste nahrali excelovskú tabuľku.", category='danger')
-            return redirect(url_for('admin'))
-
-        filename = secure_filename(file.filename)
-        path = os.path.join(app.config['MENU_UPLOAD_FOLDER'], filename)
-        file.save(path)
-        try:
-            MenuUtils.save_from_excel(path, app.config['MENU_JSON_PATH'])
-        except Exception as e:
-            flash("Nahraný súbor má nesprávnu formu: {}".format(e), category='danger')
-            return redirect(url_for('admin'))
-
-        update_meal_db()
-
-        flash("Súbor {} bol úspešne spracovaný. Prosím skontrolujte zmeny v menu na stránke.".format(file.filename), category='success')
-        # TODO: fire week changes and everythang
-
-        return redirect(url_for('admin'))
-
-    return render_template('admin.html', title='Admin')
 
 
 def update_meal_db():
@@ -190,14 +234,15 @@ def update_meal_db():
         date = monday + timedelta(days=i)
 
         # upload in the middle of a week
-        old_soup = Meal.query.filter(Meal.date == date, Meal.label == 'S').first()
-        if old_soup is not None:
-            updating = True
-            old_soup.description = daily_menu['soup']
-        else:
-            soup = Meal(date=date, weekday=date.weekday(), label='S', description=daily_menu['soup'], price=0.)
-            # soup = Meal(week=week, day=i, label='S', description=daily_menu['soup'])
-            db.session.add(soup)
+        if 'soup' in daily_menu:
+            old_soup = Meal.query.filter(Meal.date == date, Meal.label == 'S').first()
+            if old_soup is not None:
+                updating = True
+                old_soup.description = daily_menu['soup']
+            else:
+                soup = Meal(date=date, weekday=date.weekday(), label='S', description=daily_menu['soup'], price=0.)
+                # soup = Meal(week=week, day=i, label='S', description=daily_menu['soup'])
+                db.session.add(soup)
 
         for meal in daily_menu['meals']:
             old = Meal.query.filter(Meal.date == date, Meal.label == meal['label']).first()

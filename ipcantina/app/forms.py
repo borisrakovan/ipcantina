@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import Field
-from wtforms import SelectField,StringField, PasswordField, BooleanField, SubmitField, IntegerField, FieldList, FormField
+from wtforms import SelectField,StringField, PasswordField, BooleanField, SubmitField,\
+    IntegerField, FieldList, FormField, TextAreaField, FloatField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, Optional, Length
 from app.models import User, Company
 from wtforms.widgets.core import HTMLString, TextInput, SubmitInput
@@ -17,6 +18,15 @@ class LoginForm(FlaskForm):
     remember_me = BooleanField('Zapamätať si ma')
     submit = SubmitField('Prihlásiť sa')
 
+class FieldWithDescriptionWidget(TextInput):
+    def __init__(self):
+        super(FieldWithDescriptionWidget, self).__init__()
+
+    def __call__(self, field, **kwargs):
+        markup = Markup("<div id='token-help' style='margin-top:5px;'><em>Ak ste od svojej firmy neobdržali registračný kód alebo nie ste"
+                                    " zamestnancom firmy IP Centra, pre pridelenie kódu nás prosím <a href='contact'>kontaktujte</a>.</em></div>")
+        return super(FieldWithDescriptionWidget, self).__call__(field, **kwargs) + markup
+
 
 class RegistrationForm(FlaskForm):
     first_name = StringField('Meno *', validators=[DataRequired()])
@@ -24,14 +34,16 @@ class RegistrationForm(FlaskForm):
     email = StringField('Email *', validators=[DataRequired(), Email()])
     phone = StringField('Telefónne číslo *', validators=[DataRequired()])
     company = SelectField('Firma *', validators=[DataRequired()], coerce=int) # todo SELECTION FIELD?
-    token = StringField('Registračný kód *', validators=[DataRequired()])
+    token = StringField('Registračný kód *', validators=[DataRequired()], widget=FieldWithDescriptionWidget())
     password = PasswordField('Heslo *', validators=[DataRequired(), Length(8)])
     password2 = PasswordField('Heslo znova *', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Zaregistrovať sa')
 
     def __init__(self, *args, **kwargs):
         super(RegistrationForm, self).__init__(*args, **kwargs)
-        self.company.choices = [(c.id, c.title) for c in Company.query.order_by(Company.title).all()]
+        other = Company.query.filter(Company.title == 'Iná').first()
+        self.company.choices = [(c.id, c.title) for c in Company.query.filter(Company.title != 'Iná').order_by(
+            Company.title).all()] + [(other.id, other.title)]
 
     def validate_email(self, email): # automatically evaluated by wtforms
         email = User.query.filter_by(email=email.data).first()
@@ -141,4 +153,13 @@ class NotificationForm(FlaskForm):
     confirm_order = BooleanField('Prajem si dostávať emailové notifikácie pri úspešnej objednávke')
     cancel_order = BooleanField('Prajem si dostávať emailové notifikácie pri zrušení objednávky')
 
+    submit = SubmitField('Uložiť zmeny')
+
+
+class AdminSettingsForm(FlaskForm):
+    instructions = TextAreaField('Inštrukcie na úvodnej stránke', validators=[Length(min=0, max=1000)], description="Zadávanie textu podporuje HTML formát")
+    price_A = FloatField('Cena A', validators=[DataRequired()])
+    price_B = FloatField('Cena B', validators=[DataRequired()])
+    price_C = FloatField('Cena C', validators=[DataRequired()],
+                         description="Upozornenie: zmeny v cenách naberú účinnosť až v nasledujúcom týždni.")
     submit = SubmitField('Uložiť zmeny')

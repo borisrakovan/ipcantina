@@ -29,8 +29,11 @@ a, a:visited {
 a:hover, a:focus {
 	color: #5295C5;
 }
-.account-action .inline a {
+.account-action .inline a, .delete-account a {
 	color: #F0F0F0;
+}
+.yellow {
+	color: #DBC51A;
 }
 
 h1 {
@@ -43,6 +46,9 @@ h3 {
 
 hr {
 	border-color: #222;
+}
+#gdpr h2 {
+	color: #DBC51A;
 }
 
 
@@ -63,9 +69,13 @@ hr {
     border-color: #d43f3a;
 }
 #submit-order input {
-	background-color: #F0F0F0;
-}
-#submit-order input:hover {
 	background-color: #DBC51A;
 	border-color: #DBC51A;
+	transition: all 0.5s ease; 
+	/*background-color: #F0F0F0;*/
+}
+#submit-order input:hover {
+		color: black;
+	background-color: #B79E15;
+	border-color: #B79E15;
 }

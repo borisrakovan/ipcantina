@@ -6,7 +6,7 @@
     <ul class="list-group">
         {% for i in range(5) %}
         <li class="list-group-item">
-            <b>{{ days.to_string(days.date_from_int(i)) }} {{ days.svk_from_int(i) }}</b>
+            <span class="yellow"><b>{{ days.to_string(days.date_from_int(i)) }} {{ days.svk_from_int(i) }}</b></span>
             {% for order in orders[i] %}
                 <div class="group">
                     <b>{{ order.meal.label }}:</b>
@@ -30,7 +30,8 @@
     </ul>
 
     <div id="price-summary">
-      Spolu: {{ "%.2f" % price }} &euro;
+        <span>Spolu: {{ "%.2f" % price }} &euro;</span><br>
+        <span id="dph">všetky ceny sú uvedené s DPH</span>
     </div>
     {% else %}
         <p>Momentálne nemáte žiadne objednávky.</p>

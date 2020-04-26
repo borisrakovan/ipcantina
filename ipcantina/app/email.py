@@ -22,7 +22,7 @@ def send_email(subject, sender, recipients, text_body, html_body):
 def send_password_reset_email(user):
     token = user.get_reset_password_token()
     send_email('[IP Cantina] Obnovenie hesla',
-               sender=app.config['EMAIL_BOT'],
+               sender=app.config['MAIL_USERNAME'],
                recipients=[user.email],
                text_body=render_template('email/reset_password.txt',
                                          user=user, token=token),
@@ -33,7 +33,7 @@ def send_password_reset_email(user):
 def send_daily_summary_email(date, orderlist_fname, ordersheet_fname):
     date_str = DateUtils.to_string(date)
     subj = "[IP Cantina] Denný sumár objednávok " + date_str
-    sender = app.config['EMAIL_BOT']
+    sender = app.config['MAIL_USERNAME']
 
     msg = Message(subj, sender=sender, recipients=app.config['ADMINS'], charset='utf-8')
     with app.app_context():
