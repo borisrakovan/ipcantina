@@ -70,8 +70,11 @@ class MenuUtils:
                 #     raise RuntimeError("Chýbajúca polievka.")
 
                 if soup: #  might be missing
-                    portion = sheet.cell_value(row - 1, 1).strip()
-                    allergens = sheet.cell_value(row - 1, 3).strip()
+                    portion = str(sheet.cell_value(row - 1, 1)).strip()
+                    cell = sheet.cell_value(row - 1, 3)
+                    if isinstance(cell, float):
+                        cell = int(cell)
+                    allergens = str(cell).strip()
                     menu[day]['soup'] = {'portion': portion, 'description': soup, 'allergens': allergens}
                 menu[day]['meals'] = []
 
@@ -79,9 +82,12 @@ class MenuUtils:
                     label = sheet.cell_value(i, 0).strip()
                     if label not in ['A', 'B', 'C']:
                         raise RuntimeError("Chýbajúce hlavné jedlo.")
-                    portion = sheet.cell_value(i, 1).strip()
+                    portion = str(sheet.cell_value(i, 1)).strip()
                     desc = sheet.cell_value(i, 2).strip()
-                    allergens = sheet.cell_value(i, 3).strip()
+                    cell = sheet.cell_value(i, 3)
+                    if isinstance(cell, float):
+                        cell = int(cell)
+                    allergens = str(cell).strip()
                     if not desc:
                         raise RuntimeError("Chýbajúce hlavné jedlo.")
                     try:

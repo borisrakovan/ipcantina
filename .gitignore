@@ -1,0 +1,12 @@
+files/
+__pycache__/
+ipcantina/__pycache__/
+ipcantina/logs/
+ipcantina/migrations/
+ipcantina/venv/
+ipcantina/.env
+ipcantina/.flaskenv
+ipcantina/app.db
+ipcantina/index_instructions.txt
+ipcantina/menu.json
+ipcantina/prices.json

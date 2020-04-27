@@ -12,8 +12,10 @@ class Config:
 
     INSTRUCTIONS_TEXT_PATH = os.environ.get('INSTRUCTIONS_TEXT_PATH') or "index_instructions.txt"
     DEFAULT_PRICES_PATH = os.environ.get('DEFAULT_PRICES_PATH') or "prices.json"
-    ATTACHMENTS_DIR_PATH = os.environ.get('ATTACHMENTS_DIR_PATH') or "attachments"
-    MENU_UPLOAD_FOLDER = os.environ.get('MENU_UPLOAD_FOLDER') or "uploads"
+    ATTACHMENTS_DIR_PATH = os.environ.get('ATTACHMENTS_DIR_PATH') \
+                           or "C:\\Users\\brako\\Desktop\\Work\\pergamon\\ip\\ipcantina\\files\\attachments"
+    MENU_UPLOAD_FOLDER = os.environ.get('MENU_UPLOAD_FOLDER') \
+                         or "C:\\Users\\brako\\Desktop\\Work\\pergamon\\ip\\ipcantina\\files\\uploads"
     MENU_JSON_PATH = os.environ.get('MENU_JSON_PATH') or "menu.json"
 
     ORDER_DEADLINE_HOUR = os.environ.get('ORDER_DEADLINE_HOUR') or 15

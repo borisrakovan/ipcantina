@@ -23,26 +23,16 @@ import json
 # todo: translate flash messages
 # upozornenia na mail
 # /admin?
-# alergeny do menu
-# todo cena do samostatneho stlpca?
-# generovanie farebneho pdf vid poznamky;
 # #  feedback kontaktny formular
 #
-# instr pre paliho: Inaa
-# kontrolny blok, pre paliho -> zatial podpora jedine pre 3 jedla denne vzdy; upload na new tyzden vzdy povoleny az od 15:00
-# todo aktualne menu a pripravit na beh
+# todo kontrolny blok
 # fixme!!!!!! databaza do .gitignore aj migrations!! + very careful about replacing files like instructions etc
 # todo dynamicke ceny cez js v indexe
 # nefunguju maily pri errore
 # precistit .gitignore
-# pristup cez holu ip?
 # pdf generovanie
-# vyraznejsie menu + gramaze
-# alerg do samost stlpca
-# polievka margin left
-# maybe reset kvoli tz?
-
-# DEBUG OFF
+# vyraznejsie menu
+# todo some logs
 
 def login_required(role=UserRole.BASIC):
     def login_wrapper(fn):
@@ -186,9 +176,6 @@ def admin():
 
     else:
         if 'upload' in request.form:
-            print(request.files)
-            print('upload' in request.form)
-
             # check if the post request has the file part
             if 'file' not in request.files:
                 flash("HTTP request neobsahuje žiaden súbor.", category='danger')

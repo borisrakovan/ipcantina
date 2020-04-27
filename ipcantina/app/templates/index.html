@@ -47,15 +47,21 @@
                 <div class="menu-day">
                 {% if menu[day] is not none %}
                     {% if menu[day]['soup'] is not none %}
-
-                        <em>{{ menu[day]['soup'].description }}</em><br>
+                        <b style="visibility: hidden;">P:</b>
+                         <span class="portion-size"> &nbsp;{{ menu[day]['soup'].portion }}&nbsp;</span>
+                       {{ menu[day]['soup'].description }}
+                        {% if menu[day]['soup'].allergens %}
+                        <span class="allergens">/{{ menu[day]['soup'].allergens }}/</span><br>
+                        {% endif %}
                     {% endif %}
                     {% with field = form.fields[day] %}
                         {{ field.hidden_tag() }}
                         {% with meals = menu[day]['meals'] %}
                             {% for i in range(meals|length) %}
                                 <div class="menu-line group">
-                                    <b>{{ meals[i].label }}:</b> {{ meals[i].description }}
+                                    <b>{{ meals[i].label }}:</b> &nbsp;<span class="portion-size">{{ meals[i].portion }}&nbsp;</span>
+                                    {{ meals[i].description }}
+                                    {% if meals[i].allergens %}<span class="allergens">/{{ meals[i].allergens }}/</span>{% endif %}
                                     {{ field.subfields[i].hidden_tag() }}
                                     <div class="meal-field-group{% if utils.deadline_passed(meals[i].date) %} inactive{% endif %}">
                                         <span><em>{{ "%.2f" % (meals[i].price)}} &euro;</em></span>

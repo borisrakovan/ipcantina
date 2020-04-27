@@ -45,8 +45,10 @@ h1 {
     width: 100%;
     margin: 8px 0;
 }
-
-
+ span.portion-size, span.allergens {
+        font-size: 11px;
+        vertical-align: center;
+}
 .col-desc {
     font-size: 13px;
     color: lightgrey;
