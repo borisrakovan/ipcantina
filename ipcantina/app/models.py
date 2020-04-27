@@ -20,6 +20,8 @@ class Meal(db.Model):
     date = db.Column(db.Date, index=True)
     weekday = db.Column(db.Integer)
     label = db.Column(db.String(1))
+    portion = db.Column(db.String(8))
+    allergens = db.Column(db.String(32))
     description = db.Column(db.String(128))
     price = db.Column(db.Float(precision=2))
 

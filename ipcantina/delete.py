@@ -33,8 +33,8 @@ def upload_companies():
 
 def create_admin():
     c = Company.query.filter(Company.title == 'Iná').first()
-    u = User(first_name="Boris", surname="Rakovan",
-             email="b.rakovan@gmail.com", phone="0911710322", company=c)
+    # u = User(first_name="Boris", surname="Rakovan", email="b.rakovan@gmail.com", phone="0911710322", company=c)
+    u = User(first_name="Pavol", surname="Skoda", email="p.skoda@ipdevelopment.sk", phone="0905610021", company=c)
     u.set_password("hesloheslo")
     u.set_urole(UserRole.ADMIN)
 

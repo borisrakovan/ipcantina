@@ -47,6 +47,7 @@
                 <div class="menu-day">
                 {% if menu[day] is not none %}
                     {% if menu[day]['soup'] is not none %}
+
                         <em>{{ menu[day]['soup'].description }}</em><br>
                     {% endif %}
                     {% with field = form.fields[day] %}

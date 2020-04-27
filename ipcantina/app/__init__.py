@@ -68,10 +68,11 @@ def run_periodic_jobs():
     scheduler = BackgroundScheduler()
     scheduler.add_job(func=send_daily_summary, trigger="interval", days=1, start_date=start)
     scheduler.start()
-    print("started scheduler")
+    app.logger.info("Started scheduler")
 
 
-run_periodic_jobs()
+if not app.debug:
+    run_periodic_jobs()
 
 
 # # # MIGRATION # # #

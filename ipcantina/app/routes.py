@@ -32,8 +32,17 @@ import json
 # kontrolny blok, pre paliho -> zatial podpora jedine pre 3 jedla denne vzdy; upload na new tyzden vzdy povoleny az od 15:00
 # todo aktualne menu a pripravit na beh
 # fixme!!!!!! databaza do .gitignore aj migrations!! + very careful about replacing files like instructions etc
-# HTTPS
 # todo dynamicke ceny cez js v indexe
+# nefunguju maily pri errore
+# precistit .gitignore
+# pristup cez holu ip?
+# pdf generovanie
+# vyraznejsie menu + gramaze
+# alerg do samost stlpca
+# polievka margin left
+# maybe reset kvoli tz?
+
+# DEBUG OFF
 
 def login_required(role=UserRole.BASIC):
     def login_wrapper(fn):
@@ -238,9 +247,12 @@ def update_meal_db():
             old_soup = Meal.query.filter(Meal.date == date, Meal.label == 'S').first()
             if old_soup is not None:
                 updating = True
-                old_soup.description = daily_menu['soup']
+                old_soup.portion = daily_menu['soup']['portion']
+                old_soup.description = daily_menu['soup']['description']
+                old_soup.allergens = daily_menu['soup']['allergens']
             else:
-                soup = Meal(date=date, weekday=date.weekday(), label='S', description=daily_menu['soup'], price=0.)
+                soup = Meal(date=date, weekday=date.weekday(), label='S',portion=daily_menu['soup']['portion'],
+                            description=daily_menu['soup']['description'], allergens=daily_menu['soup']['allergens'], price=0.)
                 # soup = Meal(week=week, day=i, label='S', description=daily_menu['soup'])
                 db.session.add(soup)
 
@@ -248,15 +260,18 @@ def update_meal_db():
             old = Meal.query.filter(Meal.date == date, Meal.label == meal['label']).first()
             if old is not None:
                 updating = True
+                old.portion = meal['portion']
                 old.description = meal['description']
+                old.allergens = meal['allergens']
                 # todo possibility to update price too? NO
             else:
-                m = Meal(date=date, weekday=date.weekday(), label=meal['label'], description=meal['description'], price=meal['price'])
+                m = Meal(date=date, weekday=date.weekday(), label=meal['label'], portion=meal['portion'],
+                         description=meal['description'], allergens=meal['allergens'], price=meal['price'])
                 db.session.add(m)
     db.session.commit()
 
     if updating:
-        flash("Menu pre daný týždeň už bolo v minulosti nahrané, berú sa do úvahy iba zmeny v názve jedál.",
+        flash("Menu pre daný týždeň už bolo v minulosti nahrané, neberú sa do úvahy zmeny v cenách jedál.",
               category='info')
 
 

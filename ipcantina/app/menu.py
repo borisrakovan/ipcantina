@@ -64,30 +64,35 @@ class MenuUtils:
                     continue
 
             if sheet.cell_value(row, 0).strip() == 'A':
+                menu[day]['open'] = True
                 soup = sheet.cell_value(row-1, 2).strip()
                 # if not soup:
                 #     raise RuntimeError("Chýbajúca polievka.")
-                menu[day]['open'] = True
+
                 if soup: #  might be missing
-                    menu[day]['soup'] = soup
+                    portion = sheet.cell_value(row - 1, 1).strip()
+                    allergens = sheet.cell_value(row - 1, 3).strip()
+                    menu[day]['soup'] = {'portion': portion, 'description': soup, 'allergens': allergens}
                 menu[day]['meals'] = []
 
                 for i in range(row, row+3):
                     label = sheet.cell_value(i, 0).strip()
                     if label not in ['A', 'B', 'C']:
                         raise RuntimeError("Chýbajúce hlavné jedlo.")
-                    g = sheet.cell_value(i, 1).strip()
+                    portion = sheet.cell_value(i, 1).strip()
                     desc = sheet.cell_value(i, 2).strip()
+                    allergens = sheet.cell_value(i, 3).strip()
                     if not desc:
                         raise RuntimeError("Chýbajúce hlavné jedlo.")
                     try:
-                        price = str(sheet.cell_value(i, 3)).replace('€','').replace(',', '.').strip()
+                        price = str(sheet.cell_value(i, 4)).replace('€','').replace(',', '.').strip()
                         price = float(price)
                         # price = float()
                     except Exception:
                         price = default_prices[label]
 
-                    menu[day]['meals'].append({"label": label, "g": g, "description": desc, "price": price})
+                    menu[day]['meals'].append({"label": label, "portion": portion,
+                                               "description": desc, "allergens": allergens, "price": price})
                 row += 3
                 day += 1
 
