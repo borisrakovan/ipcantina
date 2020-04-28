@@ -1,96 +1,124 @@
 [
     {
         "open": true,
-        "soup": "Zemiakový krém so slaninkou /A:7,12,",
+        "soup": {
+            "portion": "0.25l",
+            "description": "Zemiakový krém so slaninkou",
+            "allergens": "7,12"
+        },
         "meals": [
             {
                 "label": "A",
-                "g": "120g",
-                "description": "Vyprážaný kurací rezeň v syrovom cestíčku, zemiaková kaša /A:7",
+                "portion": "120g",
+                "description": "Vyprážaný kurací rezeň v syrovom cestíčku, zemiaková kaša",
+                "allergens": "7",
                 "price": 4.95
             },
             {
                 "label": "B",
-                "g": "120g",
-                "description": "Bravčové pliecko na poľovnícký spôsob, zeleninová ryža /A:-",
+                "portion": "120g",
+                "description": "Bravčové pliecko na poľovnícký spôsob, zeleninová ryža",
+                "allergens": "",
                 "price": 4.95
             },
             {
                 "label": "C",
-                "g": "350g",
-                "description": "Teplý pohánkový šalát s bryndzou a špenátom, opečená cibuľka /A:7",
+                "portion": "350g",
+                "description": "Teplý pohánkový šalát s bryndzou a špenátom, opečená cibuľka",
+                "allergens": "7",
                 "price": 4.95
             }
         ]
     },
     {
         "open": true,
-        "soup": "Polievka so zeleninou a celestínskymi rezancami /A:1,3,7,9,",
+        "soup": {
+            "portion": "0.25l",
+            "description": "Polievka so zeleninou a celestínskymi rezancami",
+            "allergens": "1,3,7,9"
+        },
         "meals": [
             {
                 "label": "A",
-                "g": "120g",
-                "description": "Vyprážaný bravčový rezeň pl. syrom a medvedím cesnakom, americké zemiaky /A:-",
+                "portion": "120g",
+                "description": "Vyprážaný bravčový rezeň pl. syrom a medvedím cesnakom, americké zemiaky",
+                "allergens": "",
                 "price": 4.95
             },
             {
                 "label": "B",
-                "g": "120g",
-                "description": "Hovädzie na divoko, kysnutá knedľa /A:1,3,7",
+                "portion": "120g",
+                "description": "Hovädzie na divoko, kysnutá knedľa",
+                "allergens": "1,3,7",
                 "price": 4.95
             },
             {
                 "label": "C",
-                "g": "350g",
-                "description": "Granatiersky pochod, kyslá uhorka /A:1,3,7",
+                "portion": "350g",
+                "description": "Granatiersky pochod, kyslá uhorka",
+                "allergens": "1,3,7",
                 "price": 4.95
             }
         ]
     },
     {
         "open": true,
-        "soup": "Cuketová polievka na kyslo /A:1,7,",
+        "soup": {
+            "portion": "0.25l",
+            "description": "Cuketová polievka na kyslo",
+            "allergens": "1,7"
+        },
         "meals": [
             {
                 "label": "A",
-                "g": "120g",
-                "description": "Vyprážaný bravčový rezeň v slaninkovom cestíčku, šťuchané zemiaky /A:7",
+                "portion": "120g",
+                "description": "Vyprážaný bravčový rezeň v slaninkovom cestíčku, šťuchané zemiaky",
+                "allergens": "7",
                 "price": 4.95
             },
             {
                 "label": "B",
-                "g": "350g",
-                "description": "Lassagne BOLOGNESE s paradajkovou omáčkou a syrom /A:1,3,7,9",
+                "portion": "350g",
+                "description": "Lasagne BOLOGNESE s paradajkovou omáčkou a syrom",
+                "allergens": "1,3,7,9",
                 "price": 4.95
             },
             {
                 "label": "C",
-                "g": "150g",
-                "description": "Hrachový dhál, basmati ryža /A:-",
+                "portion": "150g",
+                "description": "Hrachový dhál, basmati ryža",
+                "allergens": "",
                 "price": 4.95
             }
         ]
     },
     {
         "open": true,
-        "soup": "Hrášková s baby karotkou a zemiakmi /A:-",
+        "soup": {
+            "portion": "0.25l",
+            "description": "Hrášková s baby karotkou a zemiakmi",
+            "allergens": ""
+        },
         "meals": [
             {
                 "label": "A",
-                "g": "120g",
-                "description": "Grilovaný encián s brusnicami, varené zemiaky /A:-",
+                "portion": "120g",
+                "description": "Grilovaný encián s brusnicami, varené zemiaky",
+                "allergens": "",
                 "price": 4.95
             },
             {
                 "label": "B",
-                "g": "350g",
-                "description": "Penne s omáčkou z údeného lososa s brokolicou /A:1,3,4,7,12",
+                "portion": "350g",
+                "description": "Penne s omáčkou z údeného lososa s brokolicou",
+                "allergens": "1,3,4,7,12",
                 "price": 4.95
             },
             {
                 "label": "C",
-                "g": "350g",
-                "description": "Šalát s avokádovým dressingom a vyp. mozzarellou /A:1,3,7",
+                "portion": "350g",
+                "description": "Šalát s avokádovým dressingom a vyp. mozzarellou",
+                "allergens": "1,3,7",
                 "price": 4.95
             }
         ]
