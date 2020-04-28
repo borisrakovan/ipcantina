@@ -328,7 +328,9 @@ def reset_password_request():
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user:
+            app.logger.info("User {} has requested a password request.".format(user))
             send_password_reset_email(user)
+            app.logger.info("Email was sent successfully.".format(user))
         flash("Ďalšie inštrukcie vám boli zaslané na mailovú adresu.", category='info')
         return redirect(url_for('login'))
     return render_template('reset_password_request.html',

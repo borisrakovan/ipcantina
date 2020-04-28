@@ -16,11 +16,13 @@ def send_email(subject, sender, recipients, text_body, html_body):
     msg = Message(subject, sender=sender, recipients=recipients)
     msg.body = text_body
     msg.html = html_body
+    app.logger.info("About to send pswrd request mail.")
     Thread(target=send_async_email, args=(app, msg)).start()
 
 
 def send_password_reset_email(user):
     token = user.get_reset_password_token()
+    app.logger.info("Pswrd request mail requested.")
     send_email('[IP Cantina] Obnovenie hesla',
                sender=app.config['MAIL_USERNAME'],
                recipients=[user.email],

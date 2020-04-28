@@ -14,7 +14,7 @@ def clear_data(session):
 
 
 def upload_companies():
-    wb = xlrd.open_workbook("C:\\Users\\brako\\Desktop\\Work\\PERGAMON\\cantina_registracia_kod.xlsx")
+    wb = xlrd.open_workbook("C:\\Users\\brako\\Desktop\\Work\\pergamon\\ip\\ipcantina\\files\\cantina_registracia_kod.xlsx")
     sheet = wb.sheet_by_index(0) # must be 0
 
     for i in range(1, sheet.nrows):
@@ -33,8 +33,8 @@ def upload_companies():
 
 def create_admin():
     c = Company.query.filter(Company.title == 'Iná').first()
-    # u = User(first_name="Boris", surname="Rakovan", email="b.rakovan@gmail.com", phone="0911710322", company=c)
-    u = User(first_name="Pavol", surname="Skoda", email="p.skoda@ipdevelopment.sk", phone="0905610021", company=c)
+    u = User(first_name="Boris", surname="Rakovan", email="b.rakovan@gmail.com", phone="0911710322", company=c)
+    # u = User(first_name="Pavol", surname="Skoda", email="p.skoda@ipdevelopment.sk", phone="0905610021", company=c)
     u.set_password("hesloheslo")
     u.set_urole(UserRole.ADMIN)
 
@@ -43,9 +43,10 @@ def create_admin():
 
 
 if __name__ == '__main__':
-    # create_admin()
     # clear_data(db.session)
-    pass
     # c = Company(full_title='Iná', title='Iná', CRN=12345678, building='ABX', token='ABX1234')
     # db.session.add(c)
     # db.session.commit()
+    # create_admin()
+    # upload_companies()
+    pass
