@@ -7,7 +7,7 @@ class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or '43e654d66f4e46b1b4de27e2416e8c30'
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
                                 'sqlite:///' + os.path.join(basedir, 'app.db')
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_TRACK_MODIFICATIONS = False; SERVER_NAME="cantina.ipcentrum.sk"
     ALLOWED_EXTENSIONS = ['xls', 'xlsx']
 
     INSTRUCTIONS_TEXT_PATH = os.environ.get('INSTRUCTIONS_TEXT_PATH') or "index_instructions.txt"
@@ -23,7 +23,7 @@ class Config:
     MAIL_SERVER = os.environ.get('MAIL_SERVER') or "mail.ipdevelopment.sk"
     MAIL_PORT = int(os.environ.get('MAIL_PORT') or 25)
     # MAIL_USE_TLS = os.environ.get('MAIL_USE_TLS') is not None # todo sure?
-    MAIL_USE_TLS = True
+    MAIL_USE_TLS = False
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME') or "info@ipdevelopment.sk"
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD') or "abcdIP!"
     # MAIL_USERNAME = os.environ.get('MAIL_USERNAME') or "ipadmin@centrum.sk"
