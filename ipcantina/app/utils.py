@@ -9,9 +9,9 @@ def allowed_file(filename):
 class DateUtils():
     @staticmethod
     def deadline_passed(dt):
-        if dt.weekday == 0:
+        if dt.weekday() == 0:
             deadline_date = dt
-            deadline_time = 9
+            deadline_time = time(hour=9)
             deadline = datetime.combine(deadline_date, deadline_time)
             return datetime.now() > deadline
 
