@@ -30,4 +30,6 @@ class Config:
     # MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD') or "ipdevelopment"
     MAIL_ASCII_ATTACHMENTS = True
     # ADMINS = ['b.rakovan@gmail.com']
-    ADMINS = ['b.rakovan@gmail.com', 'p.skoda@ipdevelopment.sk']
+    # ADMINS = ['b.rakovan@gmail.com', 'p.skoda@ipdevelopment.sk']
+    # ADMINS = ['b.rakovan@gmail.com', 'p.skoda@ipdevelopment.sk', 'rakovan@pergamon.sk']
+    ADMINS = ['b.rakovan@gmail.com']

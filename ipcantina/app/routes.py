@@ -21,18 +21,18 @@ import json
 #   fixme  todo v piatok by malo byt este vidiet objednavky aj na dany tyzden
 #    pagination na objednavkove tyzdne if youre bored
 # todo: translate flash messages
-# upozornenia na mail
-# /admin?
 # #  feedback kontaktny formular
-#
 # todo kontrolny blok
-# fixme!!!!!! databaza do .gitignore aj migrations!! + very careful about replacing files like instructions etc
 # todo dynamicke ceny cez js v indexe
-# nefunguju maily pri errore
-# precistit .gitignore
 # pdf generovanie
 # vyraznejsie menu
 # todo some logs
+# todo admin rozhranie registr a objednavky
+
+# na pondelok do 9 rana, pdf,
+# todo switch back mails
+# emaily zas nefunguju kua
+# pondelok do rana este
 
 def login_required(role=UserRole.BASIC):
     def login_wrapper(fn):
