@@ -1,4 +1,5 @@
 files/
+other/
 ipcantina/app/__pycache__/
 ipcantina/__pycache__/
 ipcantina/logs/
