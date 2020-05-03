@@ -60,10 +60,23 @@
     </form>
 </div>
 <h3>Zoznam užívateľov</h3>
-<ol class="user-list">
+<table style="min-width: 50%;">
+    <tr>
+        <th>Meno</th>
+        <th>Email</th>
+        <th>Tel. číslo</th>
+    </tr>
     {% for user in users %}
-    <li><b>{{ user.first_name }} {{ user.surname }}</b> {{ user.email }} {{ user.phone }}</li>
+    <tr>
+        <td><b>{{ user.first_name }} {{ user.surname }}</b></td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.phone }}</td>
+    </tr>
+
     {% endfor %}
+
+</table>
+<ol class="user-list">
 </ol>
 <div class="order-list">
     <h3>Všetky objednávky na týždeň <span class="nowrap">{{ days.monday_to_friday_str() }}</span></h3>
