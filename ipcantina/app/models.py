@@ -51,6 +51,19 @@ class Order(db.Model):
         ids = [x[0] for x in meal_ids]
         return cls.query.filter(Order.meal_id.in_(ids))
 
+    @classmethod
+    def get_all_for_current_week(cls):
+        orders = [list() for _ in range(5)]
+        for user_id, meal_id, amount in Order.query.with_entities(
+                Order.user_id, Order.meal_id, func.count()).group_by(Order.meal_id, Order.user_id).all():
+            meal = Meal.query.get(meal_id)
+            user = User.query.get(user_id)
+            if meal.date >= DateUtils.affected_week_monday():
+                orders[meal.weekday].append({'user': user, 'meal': meal, 'amount': amount})
+
+        return orders
+
+
 
 class Company(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -111,15 +124,19 @@ class User(db.Model, UserMixin):
         return check_password_hash(self.password_hash, password)
 
     def get_orders_summary(self):
+        empty = True
         orders = [list() for _ in range(5)]
         total_price = 0
         for meal_id, amount in Order.query.filter_by(user_id = self.id).with_entities(
                 Order.meal_id, func.count()).group_by(Order.meal_id).all():
             meal = Meal.query.get(meal_id)
             if meal.date >= DateUtils.affected_week_monday():
+                empty = False
                 orders[meal.weekday].append({'meal': meal, 'amount': amount, 'cancellable': (not DateUtils.deadline_passed(meal.date)) })
                 total_price += meal.price * amount
 
+        if empty:
+            return None, 0
         return orders, total_price
 
     def get_reset_password_token(self, expires_in=600): # mins
@@ -135,6 +152,5 @@ class User(db.Model, UserMixin):
         except:
             return
         return User.query.get(id)
-
 
 

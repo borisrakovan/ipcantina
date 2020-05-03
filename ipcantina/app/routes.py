@@ -29,10 +29,9 @@ import json
 # todo some logs
 # todo admin rozhranie registr a objednavky
 
-# na pondelok do 9 rana, pdf,
 # todo switch back mails
 # emaily zas nefunguju kua
-# pondelok do rana este
+
 
 def login_required(role=UserRole.BASIC):
     def login_wrapper(fn):
@@ -172,7 +171,8 @@ def admin():
         form.price_A.data = prices['A']
         form.price_B.data = prices['B']
         form.price_C.data = prices['C']
-        return render_template('admin.html', title='Admin', form=form)
+        orders = Order.get_all_for_current_week()
+        return render_template('admin.html', title='Admin', form=form, users=User.query.all(), orders=orders, days=DateUtils)
 
     else:
         if 'upload' in request.form:

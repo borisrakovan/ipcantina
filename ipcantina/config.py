@@ -11,7 +11,8 @@ class Config:
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
                                 'sqlite:///' + os.path.join(basedir, 'app.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SERVER_NAME = "cantina.ipcentrum.sk"
+    SERVER_NAME = os.environ.get('SERVER_NAME')
+    # SERVER_NAME = "cantina.ipcentrum.sk"
     ALLOWED_EXTENSIONS = ['xls', 'xlsx']
 
     INSTRUCTIONS_TEXT_PATH = os.environ.get('INSTRUCTIONS_TEXT_PATH')

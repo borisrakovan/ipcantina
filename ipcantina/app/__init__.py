@@ -74,7 +74,6 @@ def run_periodic_jobs():
 if not app.debug:
     run_periodic_jobs()
 
-print(app.config['ADMINS'])
 # # # MIGRATION # # #
 # flask db stamp head
 #  db migrate -m "hm";  flask db upgrade

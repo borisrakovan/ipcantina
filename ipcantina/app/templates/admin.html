@@ -58,14 +58,31 @@
         </p>
         <p>{{ form.submit(**{'class': "btn btn-default"}) }}</p>
     </form>
-
-
-
-
-    <!--<div class="col-md-5">-->
-        <!--{{ wtf.quick_form(form) }}-->
-    <!--</div>-->
 </div>
-
-
+<h3>Zoznam užívateľov</h3>
+<ol class="user-list">
+    {% for user in users %}
+    <li><b>{{ user.first_name }} {{ user.surname }}</b> {{ user.email }} {{ user.phone }}</li>
+    {% endfor %}
+</ol>
+<div class="order-list">
+    <h3>Všetky objednávky na týždeň <span class="nowrap">{{ days.monday_to_friday_str() }}</span></h3>
+    <ul class="list-group">
+        {% for i in range(5) %}
+        <li class="list-group-item">
+            <span class="yellow"><b>{{ days.to_string(days.date_from_int(i)) }} {{ days.svk_from_int(i) }}</b></span>
+            {% for order in orders[i] %}
+                <div class="group">
+                    <b>{{ order.user.first_name }} {{ order.user.surname }}</b> -
+                    {{ order.meal.label }}
+                    <div class="order-summary-right">
+                        <span class="item"> {{ order.amount }}ks</span>
+                        <span class="item">{{ "%.2f" % (order.meal.price * order.amount) }} &euro;</span>
+                    </div>
+                </div>
+            {% endfor %}
+        </li>
+        {% endfor %}
+    </ul>
+</div>
 {% endblock %}
