@@ -189,6 +189,9 @@ input[disabled="disabled"] , .incrementor span {
 #admin-settings-form .form-group input {
     color: #555;
 }
+#user-table {
+    min-width: 50%;
+}
 
 .delete-account {
     margin-top: 10px;
@@ -293,6 +296,10 @@ input[disabled="disabled"] , .incrementor span {
 @media(max-width: 600px){
     body {
         text-align: center;
+    }
+    #user-table {
+        width: 100%;
+        text-align: left;
     }
     #pdf {
         margin: 0;
