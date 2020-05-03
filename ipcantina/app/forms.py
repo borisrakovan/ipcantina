@@ -37,6 +37,8 @@ class RegistrationForm(FlaskForm):
     token = StringField('Registračný kód *', validators=[DataRequired()], widget=FieldWithDescriptionWidget())
     password = PasswordField('Heslo *', validators=[DataRequired(), Length(8)])
     password2 = PasswordField('Heslo znova *', validators=[DataRequired(), EqualTo('password')])
+    email_subscription = BooleanField('Prajem si dostávať emailové upozornenia pri zverejnení menu na nasledujúci týždeň',
+                                      default="checked")
     submit = SubmitField('Zaregistrovať sa')
 
     def __init__(self, *args, **kwargs):

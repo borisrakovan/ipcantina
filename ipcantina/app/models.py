@@ -64,7 +64,6 @@ class Order(db.Model):
         return orders
 
 
-
 class Company(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     full_title = db.Column(db.String(128), unique=True)
@@ -102,8 +101,10 @@ class User(db.Model, UserMixin):
     company_id = db.Column(db.Integer, db.ForeignKey('company.id'))
     password_hash = db.Column(db.String(128))
     phone = db.Column(db.String(16))
+    email_subscription = db.Column(db.Boolean)
     orders = db.relationship('Order', backref='customer', lazy='dynamic', cascade="all,delete")
     urole = db.Column(db.String(32))
+
 
     def __repr__(self):
         return '<User {}>'.format(self.first_name + " " + self.surname)

@@ -308,7 +308,7 @@ def register():
             return redirect(url_for('register'))
         # noinspection PyArgumentList
         u = User(first_name=form.first_name.data, surname=form.surname.data,
-                 email=form.email.data, phone=phone, company=c)
+                 email=form.email.data, phone=phone, company=c, email_subscription=form.email_subscription.data)
         u.set_password(form.password.data)
         u.set_urole(UserRole.BASIC)
 
