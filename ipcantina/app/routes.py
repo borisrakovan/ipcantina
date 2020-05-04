@@ -1,5 +1,5 @@
 import os
-from flask import render_template, flash, redirect, url_for, request
+from flask import render_template, flash, redirect, url_for, request, abort
 from app import app, db
 from app import login_manager
 from flask_login import current_user, login_user, logout_user
@@ -11,7 +11,7 @@ from app.menu import MenuUtils
 from app.utils import DateUtils, allowed_file
 from functools import wraps
 from app.forms import ResetPasswordRequestForm
-from app.email import send_password_reset_email
+from app.email import *
 from datetime import timedelta
 import json
 
@@ -27,10 +27,8 @@ import json
 # pdf generovanie
 # vyraznejsie menu
 # todo some logs
-# todo admin rozhranie registr a objednavky
 
-# todo switch back mails
-# emaily zas nefunguju kua
+# todo notifikacie TEST + update old users
 
 
 def login_required(role=UserRole.BASIC):
@@ -126,14 +124,21 @@ def orders():
 @login_required()
 def account():
     form = AccountForm()
+    email_form = EmailSubscriptionForm()
     if request.method == 'GET':
         form.first_name.data = current_user.first_name
         form.surname.data = current_user.surname
         form.email.data = current_user.email
         form.phone.data = current_user.phone
         form.company.data = current_user.company.title
+        email_form.email_subscription.data = current_user.email_subscription or False
 
-    return render_template('account.html', title='Účet', form=form)
+    elif email_form.validate_on_submit():
+        current_user.email_subscription = email_form.email_subscription.data
+        db.session.commit()
+        flash('Vaše zmeny boli úspešne uložené.', category='info')
+        return redirect(url_for('account'))
+    return render_template('account.html', title='Účet', form=form, email_form=email_form)
 
 
 @app.route("/edit_profile", methods=['GET', 'POST'])
@@ -199,15 +204,18 @@ def admin():
                 flash("Nahraný súbor má nesprávnu formu: {}".format(e), category='danger')
                 return redirect(url_for('admin'))
 
-            update_meal_db()
+            if update_meal_db():
+                flash("Menu pre daný týždeň už bolo v minulosti nahrané, neberú sa do úvahy zmeny v cenách jedál.",
+                      category='info')
+            else:
+                app.logger.info("Going go send menu update email.")
+                send_menu_notification_email()
 
             flash("Súbor {} bol úspešne spracovaný. Prosím skontrolujte zmeny v menu na stránke.".format(file.filename), category='success')
-            # TODO: fire week changes and everythang
 
             return redirect(url_for('admin'))
 
         else:
-            print("not upload")
             if form.validate_on_submit():
                 text = form.instructions.data
                 save_instructions(text)
@@ -257,9 +265,7 @@ def update_meal_db():
                 db.session.add(m)
     db.session.commit()
 
-    if updating:
-        flash("Menu pre daný týždeň už bolo v minulosti nahrané, neberú sa do úvahy zmeny v cenách jedál.",
-              category='info')
+    return updating
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -351,6 +357,17 @@ def reset_password(token):
         flash('Vaše heslo bolo úspešne zmenené.', category='info')
         return redirect(url_for('login'))
     return render_template('reset_password.html', form=form)
+
+
+@app.route('/unsubscribe/<token>')
+def unsubscribe(token):
+    user = User.verify_unsubscribe_token(token)
+    if not user:
+        return abort(404)
+
+    user.email_subscription = False
+    db.session.commit()
+    return render_template('unsubscribe.html')
 
 
 @app.route('/change_password', methods=['GET', 'POST'])

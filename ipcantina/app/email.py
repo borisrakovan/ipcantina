@@ -4,8 +4,10 @@ from app import mail, app
 from threading import Thread
 from app.utils import DateUtils
 from datetime import date, timedelta
+from app import db
+from app.models import User
 import os
-# TODO test!
+
 
 def send_async_email(app, msg):
     with app.app_context():
@@ -16,7 +18,6 @@ def send_email(subject, sender, recipients, text_body, html_body):
     msg = Message(subject, sender=sender, recipients=recipients)
     msg.body = text_body
     msg.html = html_body
-    app.logger.info("About to send pswrd request mail.")
     Thread(target=send_async_email, args=(app, msg)).start()
 
 
@@ -52,3 +53,23 @@ def send_daily_summary_email(date, orderlist_fname, ordersheet_fname):
 
         mail.send(msg)
 
+
+def send_menu_notification_email():
+    date_str = DateUtils.monday_to_friday_str()
+
+    # recipients = User.query.filter(User.email_subscription is True).with_entities(User.email).all()
+    recipients = User.query.filter(User.email_subscription == True).all()
+
+    app.logger.info("About to send out new menu email notifications to:")
+    app.logger.info(str(recipients))
+
+    for rec in recipients:
+        token = rec.get_unsubscribe_token()
+
+        send_email('[IP Cantina] Nové menu',
+                   sender=app.config['MAIL_USERNAME'],
+                   recipients=[rec.email],
+                   text_body=render_template('email/menu_notification.txt',
+                                             date=date_str, token=token),
+                   html_body=render_template('email/menu_notification.html',
+                                             date=date_str, token=token))

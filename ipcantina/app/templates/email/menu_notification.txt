@@ -1,0 +1,15 @@
+Dobrý deň,
+
+Radi by sme Vás upozornili, že bol zverejnený jedálny lístok na nasledujúci týždeň {{ date }}
+
+Nájdete ho na tomto odkaze:
+{{ url_for('reset_password', token=token, _external=True) }}
+Pre uskutočnenie objednávok sa, prosím, prihláste.
+
+Ak si už neprajete dostávať tieto upozornenia, svoj odber možete zrušiť kliknutím na nasledujúci odkaz:
+{{ url_for('unsubscribe', token=token, _external=True) }}
+
+
+S úctou,
+
+Ip Centrum

@@ -145,6 +145,11 @@ class User(db.Model, UserMixin):
             {'reset_password': self.id, 'exp': time() + expires_in},
             app.config['SECRET_KEY'], algorithm='HS256').decode('utf-8')  # decode cause else bytes
 
+    def get_unsubscribe_token(self): # mins
+        return jwt.encode(
+            {'unsubscribe': self.id},
+            app.config['SECRET_KEY'], algorithm='HS256').decode('utf-8')  # decode cause else bytes
+
     @staticmethod
     def verify_reset_password_token(token):
         try:
@@ -154,4 +159,12 @@ class User(db.Model, UserMixin):
             return
         return User.query.get(id)
 
+    @staticmethod
+    def verify_unsubscribe_token(token):
+        try:
+            id = jwt.decode(token, app.config['SECRET_KEY'],
+                            algorithms=['HS256'])['unsubscribe']
+        except:
+            return
+        return User.query.get(id)
 

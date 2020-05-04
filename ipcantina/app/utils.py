@@ -9,11 +9,11 @@ def allowed_file(filename):
 class DateUtils():
     @staticmethod
     def deadline_passed(dt):
-        if dt.weekday() == 0:
-            deadline_date = dt
-            deadline_time = time(hour=9)
-            deadline = datetime.combine(deadline_date, deadline_time)
-            return datetime.now() > deadline
+        # if dt.weekday() == 0:
+        #     deadline_date = dt
+        #     deadline_time = time(hour=9)
+        #     deadline = datetime.combine(deadline_date, deadline_time)
+        #     return datetime.now() > deadline
 
         # deadline_date = dt - timedelta(days=1)
         deadline_date = DateUtils.prev_working_day(dt)

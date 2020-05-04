@@ -8,13 +8,28 @@
             {{ wtf.quick_form(form, extra_classes="readonly") }}
         </div>
     </div>
+     <a href="{{ url_for('edit_profile') }}" class="">Upraviť údaje</a><br>
+
+    <!--<h1>Notifikácie</h1>-->
+    <hr>
+    <h1>Emailové upozornenia</h1>
+    <form action="" method="post" class="form" role="form">
+        {{ email_form.hidden_tag() }}
+        <div class="checkbox">
+            <label>
+                {{ email_form.email_subscription() }}
+                {{ email_form.email_subscription.label }}
+            </label>
+        </div>
+        {{ email_form.submit(**{"class_":"btn btn-primary"} ) }}
+    </form>
+    <hr>
     <div class="account-action">
-        <a href="{{ url_for('edit_profile') }}" class="">Upraviť údaje</a><br>
         <div class="inline">
             <a href="{{ url_for('change_password') }}" class="btn btn-primary">Zmeniť heslo</a>
             <a href="{{ url_for('delete_account') }}" class="btn btn-danger">Zrušiť konto</a>
         </div>
     </div>
-    <!--<h1>Notifikácie</h1>-->
+
 
 {% endblock %}

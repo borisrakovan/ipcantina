@@ -2,6 +2,11 @@ html, body {
     height: 100%;
 }
 
+.navbar-header #logo {
+    margin: 0 10px 0 0;
+    padding: 5px;
+}
+
 .welcome {
     font-size: 18px;
     margin: 20px 0;
@@ -293,14 +298,23 @@ input[disabled="disabled"] , .incrementor span {
     }
 
 }
+@media(max-width: 768px) {
+    .navbar-header #logo {
+        margin-left: 15px;
+    }
+}
 @media(max-width: 600px){
     body {
         text-align: center;
+    }
+    .navbar-header {
+        text-align: left;
     }
     #user-table {
         width: 100%;
         text-align: left;
     }
+
     #pdf {
         margin: 0;
         margin-top: 10px;

@@ -44,8 +44,8 @@ class RegistrationForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         super(RegistrationForm, self).__init__(*args, **kwargs)
         other = Company.query.filter(Company.title == 'Iná').first()
-        self.company.choices = [(c.id, c.title) for c in Company.query.filter(Company.title != 'Iná').order_by(
-            Company.title).all()] + [(other.id, other.title)]
+        self.company.choices = [(other.id, other.title)] + [(c.id, c.title) for c in Company.query.filter(Company.title != 'Iná').order_by(
+            Company.title).all()]
 
     def validate_email(self, email): # automatically evaluated by wtforms
         email = User.query.filter_by(email=email.data).first()
@@ -103,7 +103,6 @@ class AccountForm(FlaskForm):
     phone = StringField('Telefónne číslo', validators=[DataRequired()])
     company = StringField('Firma', validators=[DataRequired()])
 
-
 class EditProfileForm(AccountForm):
     company = None
     submit = SubmitField('Uložiť')
@@ -125,6 +124,11 @@ class EditProfileForm(AccountForm):
         phone_num = field.data.replace(' ', '').replace('+', '')
         if not phone_num.isnumeric():
             raise ValidationError('Neplatné telefónne číslo.')
+
+
+class EmailSubscriptionForm(FlaskForm):
+    email_subscription = BooleanField('Prajem si dostávať emailové upozornenia pri zverejnení menu na nasledujúci týždeň')
+    submit = SubmitField('Uložiť')
 
 
 class ResetPasswordRequestForm(FlaskForm):

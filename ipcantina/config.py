@@ -35,3 +35,4 @@ class Config:
     # ADMINS = ['b.rakovan@gmail.com', 'p.skoda@ipdevelopment.sk']
     # ADMINS = ['b.rakovan@gmail.com', 'p.skoda@ipdevelopment.sk', 'rakovan@pergamon.sk']
     ADMINS = os.environ.get('ADMINS').split('~')
+    GOAT = "b.rakovan@gmail.com"
