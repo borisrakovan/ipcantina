@@ -7,12 +7,9 @@ from app.models import User, Company
 from wtforms.widgets.core import HTMLString, TextInput, SubmitInput
 from markupsafe import Markup
 
-# fixme errors gonna be in English
 
 
-# todo check and notify if already order for that day, disable buttons for previous days
 class LoginForm(FlaskForm):
-    # todo do we really need username?
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Heslo', validators=[DataRequired()])
     remember_me = BooleanField('Zapamätať si ma')
@@ -33,7 +30,7 @@ class RegistrationForm(FlaskForm):
     surname = StringField('Priezvisko *', validators=[DataRequired()])
     email = StringField('Email *', validators=[DataRequired(), Email()])
     phone = StringField('Telefónne číslo *', validators=[DataRequired()])
-    company = SelectField('Firma *', validators=[DataRequired()], coerce=int) # todo SELECTION FIELD?
+    company = SelectField('Firma *', validators=[DataRequired()], coerce=int)
     token = StringField('Registračný kód *', validators=[DataRequired()], widget=FieldWithDescriptionWidget())
     password = PasswordField('Heslo *', validators=[DataRequired(), Length(8)])
     password2 = PasswordField('Heslo znova *', validators=[DataRequired(), EqualTo('password')])

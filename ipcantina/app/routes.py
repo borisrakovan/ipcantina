@@ -1,6 +1,6 @@
 import os
 from flask import render_template, flash, redirect, url_for, request, abort
-from app import app, db
+from app import app
 from app import login_manager
 from flask_login import current_user, login_user, logout_user
 from app.models import User, Order, UserRole, Meal, Company
@@ -27,8 +27,9 @@ import json
 # pdf generovanie
 # vyraznejsie menu
 # todo some logs
-
+# todo jobs run twice
 # todo notifikacie TEST + update old users
+# todo accoun subs toggle not showing flash msg
 
 
 def login_required(role=UserRole.BASIC):
