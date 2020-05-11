@@ -13,7 +13,7 @@ def clear_data(session):
     session.commit()
 
 
-def upload_companies():
+def populate_companies():
     wb = xlrd.open_workbook("C:\\Users\\brako\\Desktop\\Work\\pergamon\\ip\\ipcantina\\files\\cantina_registracia_kod.xlsx")
     sheet = wb.sheet_by_index(0) # must be 0
 

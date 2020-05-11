@@ -1,9 +1,10 @@
 from datetime import date, timedelta, datetime, time
-from app import app
+from flask import current_app
+
 
 def allowed_file(filename):
     return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
+           filename.rsplit('.', 1)[1].lower() in current_app.config['ALLOWED_EXTENSIONS']
 
 
 class DateUtils():
@@ -17,7 +18,7 @@ class DateUtils():
 
         # deadline_date = dt - timedelta(days=1)
         deadline_date = DateUtils.prev_working_day(dt)
-        deadline_time = time(hour=app.config['ORDER_DEADLINE_HOUR'])
+        deadline_time = time(hour=current_app.config['ORDER_DEADLINE_HOUR'])
         deadline = datetime.combine(deadline_date, deadline_time)
         return datetime.now() > deadline
 

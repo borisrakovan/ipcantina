@@ -1,13 +1,13 @@
-from app.email import send_daily_summary_email
-from datetime import date, timedelta
+from app.main.email import send_daily_summary_email
+from datetime import date
 from tabulate import tabulate
 from app.models import Meal, Order
-from app.utils import DateUtils
+from app.main.utils import DateUtils
 from sqlalchemy import func
 from openpyxl import Workbook
 from openpyxl.styles import Font
 import os
-from app import app
+from flask import current_app
 
 headers = ['Priezvisko', 'Tel. číslo', 'Objednávka']
 
@@ -42,7 +42,7 @@ def create_daily_order_sheet(dt):
     for k, v in widths.items():
         ws.column_dimensions[k].width = v
 
-    filename = os.path.join(app.config['ATTACHMENTS_DIR_PATH'], "IP_objednavka_" + date_str + ".xlsx")
+    filename = os.path.join(current_app.config['ATTACHMENTS_DIR_PATH'], "IP_objednavka_" + date_str + ".xlsx")
     wb.save(filename)
 
     return filename
@@ -74,14 +74,14 @@ def create_order_list_file(dt):
 
 
 def send_daily_summary():
-    app.logger.info("Daily emailing job has started")
+    current_app.logger.info("Daily emailing job has started")
     today = date.today()
     if today.weekday() == 5 or today.weekday() == 6:
         return
     dt = DateUtils.next_working_day(today)
     order_list = create_order_list_file(dt)
     order_sheet = create_daily_order_sheet(dt)
-    app.logger.info("Attachments created")
+    current_app.logger.info("Attachments created")
     send_daily_summary_email(dt, order_list, order_sheet)
-    app.logger.info("Email was successfully sent")
+    current_app.logger.info("Email was successfully sent")
 

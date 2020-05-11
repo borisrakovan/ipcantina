@@ -8,7 +8,7 @@
             {{ wtf.quick_form(form, extra_classes="readonly") }}
         </div>
     </div>
-     <a href="{{ url_for('edit_profile') }}" class="">Upraviť údaje</a><br>
+     <a href="{{ url_for('auth.edit_profile') }}" class="">Upraviť údaje</a><br>
 
     <!--<h1>Notifikácie</h1>-->
     <hr>
@@ -26,8 +26,8 @@
     <hr>
     <div class="account-action">
         <div class="inline">
-            <a href="{{ url_for('change_password') }}" class="btn btn-primary">Zmeniť heslo</a>
-            <a href="{{ url_for('delete_account') }}" class="btn btn-danger">Zrušiť konto</a>
+            <a href="{{ url_for('auth.change_password') }}" class="btn btn-primary">Zmeniť heslo</a>
+            <a href="{{ url_for('auth.delete_account') }}" class="btn btn-danger">Zrušiť konto</a>
         </div>
     </div>
 

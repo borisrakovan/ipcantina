@@ -16,164 +16,6 @@ h1 {
     font-size: 30px;
     margin: 18px 0 18px;
 }
-.menu-desc p:last-child {
-   margin-bottom: 0;
-}
-
-.price-list {
-    line-height: 26px;
-    font-size: 18px;
-    margin-bottom: 5px;
-}
-.menu-heading h1, #pdf{
-    display: inline-block;
-} 
-#pdf {
-    font-size: 10px;
-    font-weight: 400;
-    letter-spacing: 1px;
-    margin-left: 10px;
-    vertical-align: top;
-/*    position: relative;
-    top: 4px;
-*/    padding: 3px 7px;
-    color: #fff;
-    background-color: #007bff;
-    transition: all 0.5s ease; 
-
-} #pdf:hover {
-    background-color: #0063E1;
-}
-
-.menu-line {
-    line-height: 26px;
-    width: 100%;
-    margin: 8px 0;
-}
- span.portion-size, span.allergens {
-        font-size: 11px;
-        vertical-align: center;
-}
-.col-desc {
-    font-size: 13px;
-    color: lightgrey;
-    /*margin-right: 42%;*/
-    float: right;
-}
-.col-desc li {
-    display: inline-block;
-} .col-desc li:nth-child(2) {
-    margin-right: 10px;
-}.col-desc li:first-child {
-    margin-right: 34px;
-}
-
-
-.col-desc ul {
-    padding: 0;
-    margin: 0;
-    list-style: none;
-}
-#first-hr {
-    margin-top: 2px;
-}
-/* INCREMENTORS */
-.incrementor {
-    display: inline-block;
-    margin: 0 20px;
-}
-.meal-field-group {
-    float: right;
-    margin-right: 20px;
-}
-.meal-field-group input { /*also selects incremetor input*/
-    display: inline-block;
-    vertical-align: middle;
-    margin: 0;
-}
-
-input[disabled="disabled"] , .incrementor span {
-    /*background:#C0C0C0;*/
-    opacity: 70%    
-}
-
-
-.incrementor span {
-    cursor: pointer;
-    user-select: none !important; /* standard syntax */
-    -webkit-user-select: none; /* webkit (safari, chrome) browsers */
-    -moz-user-select: none; /* mozilla browsers */
-    -ms-user-select: none; /* IE10+ */
-}
-
-.minus, .plus {
-    width: 14px;
-    height: 14px;
-    background: #f2f2f2;
-    border-radius: 4px;
-    padding: 2px;
-    border: 1px solid #ddd;
-    display: inline-block;
-    vertical-align: middle;
-    text-align: center;
-    line-height: 8px;
-
-}
-.incrementor input {
-    height:26px;
-    width: 40px;
-    text-align: center;
-    font-size: 16px;
-    border:1px solid #ddd;
-    border-radius:4px;
-    display: inline-block;
-    vertical-align: middle;
-        margin: 0 2px;
-}
-.menu-day {
-    margin-left: 14px;
-}
-#submit-order {
-    /*text-align: center;*/
-}
-
-#submit-order #submit {
-    text-transform: uppercase;
-    letter-spacing: 0.6px;
-    margin: 10px 44px 0 0;
-    float: right;
-}
-
-.list-group-item .group {
-    margin: 5px 0;
-} 
-.order-summary-right {
-    float: right;
-    vertical-align: middle;
-}
-.order-summary-right .item {
-    margin: 0 3px;
-}
-
-.cancel-form {
-    margin-left: 10px;
-    display: inline-block;
-}
-.cancel-form .btn {
-    border-radius: 8px;
-}
-.file-input {
-    margin: 6px 0 16px 0;
-}
-
-
-#price-summary {
-    text-align: right;
-    font-size: 20px;
-    margin-bottom: 50px;
-} #dph {
-    font-size: 12px;
-}
 
 .register-prompt {
     margin: 20px 0;
@@ -183,19 +25,6 @@ input[disabled="disabled"] , .incrementor span {
 }
 #gdpr h2 {
     font-size: 26px;
-}
-/*
-#admin a {
-    color: black;
-}*/
-#admin-settings-form {
-    padding: 0 15px;
-}
-#admin-settings-form .form-group input {
-    color: #555;
-}
-#user-table {
-    min-width: 50%;
 }
 
 .delete-account {
@@ -215,8 +44,6 @@ input[disabled="disabled"] , .incrementor span {
 #contact-info p {
     line-height: 26px;
 }
-
-
 
 .footer {
     /*background-color: #222;*/
@@ -258,6 +85,72 @@ input[disabled="disabled"] , .incrementor span {
 	*zoom: 1;
 }
 
+/* darkstyle */
+body {
+    background-color: #333333;
+    color: #F0F0F0;
+}
+
+.panel {
+    background-color: #222;
+    border-color: #DBC51A; 
+}
+.panel-heading {
+    background-color: #F0F0F0 !important;
+}
+
+.list-group-item {
+    background-color: #222 !important;
+    border-color:  #DBC51A; 
+}
+
+a, a:visited {
+    color: #4287BE;
+}
+a:hover, a:focus {
+    color: #5295C5;
+}
+.account-action .inline a, .delete-account a {
+    color: #F0F0F0;
+}
+.yellow {
+    color: #DBC51A;
+}
+
+h1 {
+
+    color: #DBC51A;
+}
+h3 {
+    color: #DBC51A;
+}
+
+hr {
+    border-color: #222;
+}
+#gdpr h2 {
+    color: #DBC51A;
+}
+
+
+.alert-info {
+    color: #F0F0F0;
+    background-color: #124E78;
+    border-color: #104771;
+}
+
+.alert-success {
+    color: #F0F0F0;
+    background-color: #5cb85c;
+    border-color: #4cae4c;
+}
+.alert-danger {
+    color: #F0F0F0;
+    background-color: #d9534f;
+    border-color: #d43f3a;
+}
+
+
 /*
 @media(max-width: 1200px){
    .meal-field-group {
@@ -271,11 +164,7 @@ input[disabled="disabled"] , .incrementor span {
     }
 }
 */
-@media(max-width: 992px){
-    .menu-day {
-        margin-left: 0;
-    }
-}
+
 
 @media(max-width: 800px){
     h1 {
@@ -287,9 +176,7 @@ input[disabled="disabled"] , .incrementor span {
     body {
         font-size: 13px;
     }
-    #price-summary {
-        font-size: 16px;
-    }
+   
     span.nowrap {
         white-space: nowrap;
     }
@@ -298,11 +185,7 @@ input[disabled="disabled"] , .incrementor span {
     }
 
 }
-@media(max-width: 768px) {
-    .navbar-header #logo {
-        margin-left: 15px;
-    }
-}
+
 @media(max-width: 600px){
     body {
         text-align: center;
@@ -310,40 +193,6 @@ input[disabled="disabled"] , .incrementor span {
     .navbar-header {
         text-align: left;
     }
-    #user-table {
-        width: 100%;
-        text-align: left;
-    }
-
-    #pdf {
-        margin: 0;
-        margin-top: 10px;
-    }
-    #submit-order #submit {
-        float: none;
-        margin: 0;
-    }
-    .meal-field-group {
-        display: block;
-        float: none;
-        margin-bottom: 20px;
-        /*margin-right: -10%;*/
-    }
-    .col-desc {
-        float: none;
-        /*margin-right: -15%;*/
-        /*display: none;*/   
-    }
-    .order-summary-right {
-        float: none;
-        display: block;
-        margin: 10px 0;
-    }
-    .col-desc span:first-child {
-        margin-right: 14px;
-    }
-
-
     span.nowrap {
         display: block;
     }

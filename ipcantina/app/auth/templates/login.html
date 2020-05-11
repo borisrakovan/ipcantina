@@ -10,8 +10,8 @@
     </div>
     <p class="register-prompt">
         Zabudli ste heslo?
-        <a href="{{ url_for('reset_password_request') }}">Kliknite sem</a>.
+        <a href="{{ url_for('auth.reset_password_request') }}">Kliknite sem</a>.
     </p>
 
-    <p class="register-prompt">Ak ešte nemáte konto, prosím <a href="{{ url_for('register') }}">zaregistrujte sa</a>.</p>
+    <p class="register-prompt">Ak ešte nemáte konto, prosím <a href="{{ url_for('auth.register') }}">zaregistrujte sa</a>.</p>
 {% endblock %}

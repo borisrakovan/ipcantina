@@ -1,18 +1,18 @@
-import re
 import xlrd
 import json
-from app import app
-from datetime import timedelta, datetime, time
-from app.utils import DateUtils
+from datetime import timedelta
+from flask import current_app
+from app.main.utils import DateUtils
 from app.models import Meal
-closed_tags = ['sviatok', 'zatvorené', 'zatvorene', 'prázdniny', 'prazdniny', 'closed', 'dovolenka']
 
+
+closed_tags = ['sviatok', 'zatvorené', 'zatvorene', 'prázdniny', 'prazdniny', 'closed', 'dovolenka']
 
 class MenuUtils:
 
     @staticmethod
     def get_default_prices():
-        with open(app.config['DEFAULT_PRICES_PATH'], 'r', encoding='utf-8') as f:
+        with open(current_app.config['DEFAULT_PRICES_PATH'], 'r', encoding='utf-8') as f:
             return json.load(f)
 
     @staticmethod

@@ -8,8 +8,4 @@ ipcantina/venv/
 ipcantina/.env
 ipcantina/.flaskenv
 ipcantina/app.db
-ipcantina/index_instructions.txt
-ipcantina/menu.json
-ipcantina/prices.json
-ipcantina/attachments/
-ipcantina/uploads/
+ipcantina/app/__pycache__/

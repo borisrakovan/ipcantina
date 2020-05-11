@@ -23,6 +23,7 @@ Mako==1.1.2
 MarkupSafe==1.1.1
 openpyxl==3.0.3
 PyJWT==1.7.1
+PySocks==1.7.1
 python-dateutil==2.8.1
 python-dotenv==0.13.0
 python-editor==1.0.4
