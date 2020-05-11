@@ -293,9 +293,11 @@ def login():
 
 @app.route('/logout')
 def logout():
+    if not current_user.is_authenticated: # user is logged in yet accesses the /login
+        return redirect(url_for('index'))
     logout_user()
     flash("Boli ste úspešne odhlásený.", category='info')
-    return redirect(url_for('login'))
+    return redirect(url_for('index'))
 
 
 @app.route('/register', methods=['GET', 'POST'])
