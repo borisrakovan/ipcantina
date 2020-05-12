@@ -11,6 +11,7 @@ $(document).ready(function() {
         return false;
     });
     $('.plus').click(function () {
+        console.log('click');
         var $input = $(this).parent().find('input');
         if ($input.attr('disabled') == 'disabled') {
             return;
