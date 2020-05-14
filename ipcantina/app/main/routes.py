@@ -29,10 +29,7 @@ from app.main.email import send_menu_notification_email
 # vyraznejsie menu
 # todo some logs
 # todo jobs run twice: still??
-# todo accoun subs toggle not showing flash msg
-# logout pull and test
-# fucking flashedmsgs don't work
-
+# todo odstranit reg. kod?
 
 def login_required(role=UserRole.BASIC):
     def login_wrapper(fn):
