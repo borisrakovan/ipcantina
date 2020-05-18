@@ -8,4 +8,7 @@ ipcantina/venv/
 ipcantina/.env
 ipcantina/.flaskenv
 ipcantina/app.db
-ipcantina/app/__pycache__/
+ipcantina/app/auth/__pycache__/
+ipcantina/app/main/__pycache__/
+ipcantina/app/errors/__pycache__/
+ipcantina/app/general/__pycache__/
