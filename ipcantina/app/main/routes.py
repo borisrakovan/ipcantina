@@ -41,10 +41,9 @@ def activate_job():
         at = time(hour=current_app.config['ORDER_DEADLINE_HOUR'])
         # at = time(hour=18, minute=41)
         start = datetime.combine(today, at)
-        start = datetime.combine(today, time(hour=23, minute=27))
+        # start = datetime.combine(today, time(hour=23, minute=27))
         scheduler = BackgroundScheduler()
-        scheduler.add_job(func=lambda: send_daily_summary(application), trigger="interval", days=1,
-                          start_date=start)
+        scheduler.add_job(func=lambda: send_daily_summary(application), trigger="interval", days=1, start_date=start)
         scheduler.start()
         current_app.logger.info("Started scheduler")
 
