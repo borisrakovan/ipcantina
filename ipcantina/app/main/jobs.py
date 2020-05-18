@@ -73,15 +73,16 @@ def create_order_list_file(dt):
     return filename
 
 
-def send_daily_summary():
-    current_app.logger.info("Daily emailing job has started")
-    today = date.today()
-    if today.weekday() == 5 or today.weekday() == 6:
-        return
-    dt = DateUtils.next_working_day(today)
-    order_list = create_order_list_file(dt)
-    order_sheet = create_daily_order_sheet(dt)
-    current_app.logger.info("Attachments created")
-    send_daily_summary_email(dt, order_list, order_sheet)
-    current_app.logger.info("Email was successfully sent")
+def send_daily_summary(app):
+    with app.app_context():
+        app.logger.info("Daily emailing job has started")
+        today = date.today()
+        if today.weekday() == 5 or today.weekday() == 6:
+            return
+        dt = DateUtils.next_working_day(today)
+        order_list = create_order_list_file(dt)
+        order_sheet = create_daily_order_sheet(dt)
+        app.logger.info("Attachments created")
+        send_daily_summary_email(dt, order_list, order_sheet)
+        app.logger.info("Email was successfully sent")
 

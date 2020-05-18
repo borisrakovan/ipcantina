@@ -31,6 +31,8 @@ import json
 # todo notifikacie TEST + update old users
 # todo accoun subs toggle not showing flash msg
 
+# todo zrusit reg code
+
 
 def login_required(role=UserRole.BASIC):
     def login_wrapper(fn):

@@ -33,7 +33,7 @@ def login():
 @bp.route('/logout')
 def logout():
     logout_user()
-    flash("Boli ste úspešne odhlásený.", category='info')
+    flash("Boli ste úspešne odhlásení.", category='info')
     return redirect(url_for('main.index'))
 
 
@@ -46,10 +46,11 @@ def register():
         phone = form.phone.data.replace(' ', '')
         c = Company.query.get(form.company.data)
 
-        if not c.check_token(form.token.data.strip()):
-            flash("Neplatný registračný kód. Prosím kontaktujte vedenie Vašej firmy ohľadom poskytnutia platného kódu.",
-                  category='danger')
-            return redirect(url_for('auth.register'))
+        #  TODO TEMPORARILY DISABLED
+        # if not c.check_token(form.token.data.strip()):
+        #     flash("Neplatný registračný kód. Prosím kontaktujte vedenie Vašej firmy ohľadom poskytnutia platného kódu.",
+        #           category='danger')
+        #     return redirect(url_for('auth.register'))
         # noinspection PyArgumentList
         u = User(first_name=form.first_name.data, surname=form.surname.data,
                  email=form.email.data, phone=phone, company=c, email_subscription=form.email_subscription.data)

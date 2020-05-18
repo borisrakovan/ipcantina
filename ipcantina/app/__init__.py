@@ -10,7 +10,6 @@ import logging
 from logging.handlers import SMTPHandler,RotatingFileHandler
 
 
-
 db = SQLAlchemy()
 migrate = Migrate()
 login_manager = LoginManager()
@@ -19,21 +18,6 @@ login_manager.login_message = ('Pre vstup na túto stránku sa prosím prihlást
 
 bootstrap = Bootstrap()
 mail = Mail()
-
-from apscheduler.schedulers.background import BackgroundScheduler
-from app.main.jobs import send_daily_summary
-from datetime import datetime, date, time
-
-
-def run_periodic_jobs(app):
-    today = date.today()
-    at = time(hour=app.config['ORDER_DEADLINE_HOUR'])
-    # at = time(hour=18, minute=41)
-    start = datetime.combine(today, at)
-    scheduler = BackgroundScheduler()
-    scheduler.add_job(func=send_daily_summary, trigger="interval", days=1, start_date=start)
-    scheduler.start()
-    app.logger.info("Started scheduler")
 
 
 def create_app(config_class=Config):
@@ -86,16 +70,16 @@ def create_app(config_class=Config):
             app.logger.setLevel(logging.INFO)
             app.logger.info('IP Cantina startup')
 
-    if not app.debug: # todo TEST
-        run_periodic_jobs(app)
+    # if not app.debug: # todo TEST
+    #     run_periodic_jobs(app)
 
     return app
 
 
 # here so we don't have circular imports
 # everything I code has to be imported here!
+from app.main import forms, routes
 from app import models
-# from app.main import forms, routes FIXME
 # from app.models import User, Meal, Order, Company
 
 
