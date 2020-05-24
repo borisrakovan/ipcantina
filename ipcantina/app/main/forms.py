@@ -31,7 +31,7 @@ class SubmitBtnWidget(SubmitInput):
 
 class MealForm(FlaskForm):
     amount = IntegerField(default=0, validators=[Optional()], widget=IncrementorWidget())
-    take_away = BooleanField('so sebou', default=True)
+    take_away = BooleanField('so sebou', default=False)
 
 
 class DayMenuForm(FlaskForm):

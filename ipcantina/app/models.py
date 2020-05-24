@@ -55,11 +55,12 @@ class Order(db.Model):
     @classmethod
     def get_all_for_current_week(cls):
         orders = [list() for _ in range(5)]
+        monday = DateUtils.affected_week_monday()
         for user_id, meal_id, amount in Order.query.with_entities(
                 Order.user_id, Order.meal_id, func.count()).group_by(Order.meal_id, Order.user_id).all():
             meal = Meal.query.get(meal_id)
             user = User.query.get(user_id)
-            if meal.date >= DateUtils.affected_week_monday():
+            if meal.date >= monday:
                 orders[meal.weekday].append({'user': user, 'meal': meal, 'amount': amount})
 
         return orders

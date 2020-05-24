@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block app_content %}
-    <p class="welcome">Vitajte v novom objednávacom systéme obedov pre IP Centrum.
+    <p class="welcome">Vitajte v novom objednávacom systéme obedov pre IP Centrum.</p>
     <div class="panel panel-default">
         <div class="panel-body menu-desc">
             <p>
@@ -64,10 +64,12 @@
                                     {% if meals[i].allergens %}<span class="allergens">/{{ meals[i].allergens }}/</span>{% endif %}
                                     {{ field.subfields[i].hidden_tag() }}
                                     <div class="meal-field-group{% if utils.deadline_passed(meals[i].date) %} inactive{% endif %}">
-                                        <span><em>{{ "%.2f" % (meals[i].price)}} &euro;</em></span>
+                                        <span class="price-tag"><em><span>{{ "%.2f" % (meals[i].price)}}</span> &euro;</em></span>
                                     <!--<div class="meal-field-group">-->
                                         {{ field.subfields[i].amount(size=1) }}
-                                        {{ field.subfields[i].take_away(size=1, **{'disabled':'disabled'}) }}
+                                        <!--{{ field.subfields[i].take_away(size=1, **{'disabled':'disabled'}) }}-->
+                                        {{ field.subfields[i].take_away(size=1, class_='take-away') }}
+                                        <span class="unit-price" style="display: none;">{{ "%.2f" % (meals[i].price)}}</span>
                                     </div>
                                 </div>
                                 {% for error in field.subfields[i].amount.errors %}

@@ -21,15 +21,19 @@ from app.main.email import send_menu_notification_email
 
 #   fixme  todo v piatok by malo byt este vidiet objednavky aj na dany tyzden
 #    pagination na objednavkove tyzdne if youre bored
-# todo: translate flash messages
 # #  feedback kontaktny formular
 # todo kontrolny blok
-# todo dynamicke ceny cez js v indexe
+
 # pdf generovanie
 # vyraznejsie menu
 # todo some logs
 # todo jobs run twice: still??
-# todo odstranit reg. kod?
+#  cena -> online cena
+# todo dokoncit javascript
+#  order by mala mat svoju price aj s obalom
+#  generovanie attachmentu aj s full cenou
+#  full cena aj do objednavok
+
 
 @bp.before_app_first_request
 def activate_job():

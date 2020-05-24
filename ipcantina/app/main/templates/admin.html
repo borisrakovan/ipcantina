@@ -55,7 +55,8 @@
         </div>
 
         <p class="help-block">
-            Upozornenie: zmeny v cenách naberú účinnosť až v nasledujúcom týždni.
+            Upozornenie: zmeny v cenách naberú účinnosť až v nasledujúcom týždni.<br>
+            Zadané ceny sú ceny ešte pred online zľavou. Táto zľava bude automaticky odpočítaná pri online objednávkach.
         </p>
         <p>{{ form.submit(**{'class': "btn btn-default"}) }}</p>
     </form>
@@ -65,12 +66,14 @@
 <table id="user-table">
     <tr>
         <th>Meno</th>
+        <th>Spoločnosť</th>
         <th>Email</th>
         <th>Tel. číslo</th>
     </tr>
     {% for user in users %}
     <tr>
         <td><b>{{ user.first_name }} {{ user.surname }}</b></td>
+        <td>{{ user.company.title }}</td>
         <td>{{ user.email }}</td>
         <td>{{ user.phone }}</td>
     </tr>

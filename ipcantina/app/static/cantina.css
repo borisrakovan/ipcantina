@@ -1,7 +1,12 @@
 .menu-desc p:last-child {
    margin-bottom: 0;
 }
-
+.menu-desc hr {
+    border-color: #DBC51A;
+}
+.danger-color {
+    color: #d9534f;
+}
 .price-list {
     line-height: 26px;
     font-size: 18px;

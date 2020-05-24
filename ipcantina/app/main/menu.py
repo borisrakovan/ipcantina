@@ -92,10 +92,10 @@ class MenuUtils:
                         raise RuntimeError("Chýbajúce hlavné jedlo.")
                     try:
                         price = str(sheet.cell_value(i, 4)).replace('€','').replace(',', '.').strip()
-                        price = float(price)
+                        price = float(price) - 0.3 # ONLINE DISCOUNT
                         # price = float()
                     except Exception:
-                        price = default_prices[label]
+                        price = default_prices[label] - 0.3
 
                     menu[day]['meals'].append({"label": label, "portion": portion,
                                                "description": desc, "allergens": allergens, "price": price})
