@@ -13,9 +13,10 @@
                     {{ order.meal.description }}
                     <div class="order-summary-right">
                         <span class="item"> {{ order.amount }}ks</span>
-                        <span class="item">{{ "%.2f" % (order.meal.price * order.amount) }} &euro;</span>
+                        <span class="item">{{ "%.2f" % (order.price) }} &euro;</span>
                         <form action="" method="post" class="cancel-form">
                             <input type="hidden" name="meal_id" value="{{ order.meal.id }}" >
+                            <input type="hidden" name="take_away" value="{{ order.take_away }}" >
                             {% if order.cancellable %}
                                 <input type="submit" name="cancel_order" value="zrušiť" class="btn btn-danger btn-xs">
                             {% else %}

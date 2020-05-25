@@ -28,12 +28,9 @@ from app.main.email import send_menu_notification_email
 # vyraznejsie menu
 # todo some logs
 # todo jobs run twice: still??
-#  cena -> online cena
-# todo dokoncit javascript
-#  order by mala mat svoju price aj s obalom
 #  generovanie attachmentu aj s full cenou
-#  full cena aj do objednavok
-
+#  hidden field w/ price can be manipulated?
+#  price for box set in stone in js?
 
 @bp.before_app_first_request
 def activate_job():
@@ -129,6 +126,8 @@ def index():
 def orders():
     if request.method == 'POST':
         meal_id = request.form['meal_id']
+        take_away = request.form['take_away'] == 'True'
+
         # unique id for each week's meals
         meal = Meal.query.get(meal_id)
         if DateUtils.deadline_passed(meal.date):
@@ -136,9 +135,10 @@ def orders():
                   .format(current_app.config['ORDER_DEADLINE_HOUR']), category='danger')
             return redirect(url_for('main.orders'))
 
-        Order.query.filter(Order.user_id == current_user.id, Order.meal_id == meal_id).delete()
+        Order.query.filter(Order.user_id == current_user.id, Order.meal_id == meal_id, Order.take_away == take_away).delete()
         db.session.commit()
         return redirect(url_for('main.orders'))
+
     orders, price = current_user.get_orders_summary()
     return render_template('orders.html', title='Objednávky', orders=orders, price=price, days=DateUtils())
 

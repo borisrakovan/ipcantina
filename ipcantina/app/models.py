@@ -56,12 +56,14 @@ class Order(db.Model):
     def get_all_for_current_week(cls):
         orders = [list() for _ in range(5)]
         monday = DateUtils.affected_week_monday()
-        for user_id, meal_id, amount in Order.query.with_entities(
-                Order.user_id, Order.meal_id, func.count()).group_by(Order.meal_id, Order.user_id).all():
+        for user_id, meal_id, take_away, amount in Order.query.with_entities(
+                Order.user_id, Order.meal_id, Order.take_away, func.count()).group_by(
+                Order.user_id, Order.meal_id, Order.take_away).all():
             meal = Meal.query.get(meal_id)
-            user = User.query.get(user_id)
             if meal.date >= monday:
-                orders[meal.weekday].append({'user': user, 'meal': meal, 'amount': amount})
+                user = User.query.get(user_id)
+                price = amount * (meal.price + current_app.config['MEAL_BOX_PRICE'] if take_away else meal.price)
+                orders[meal.weekday].append({'user': user, 'meal': meal, 'price': price, 'amount': amount})
 
         return orders
 
@@ -130,13 +132,16 @@ class User(db.Model, UserMixin):
         empty = True
         orders = [list() for _ in range(5)]
         total_price = 0
-        for meal_id, amount in Order.query.filter_by(user_id = self.id).with_entities(
-                Order.meal_id, func.count()).group_by(Order.meal_id).all():
+        monday = DateUtils.affected_week_monday()
+        for meal_id, take_away, amount in Order.query.filter_by(user_id = self.id).with_entities(
+                Order.meal_id, Order.take_away, func.count()).group_by(Order.meal_id, Order.take_away).all():
             meal = Meal.query.get(meal_id)
-            if meal.date >= DateUtils.affected_week_monday():
+            if meal.date >= monday:
                 empty = False
-                orders[meal.weekday].append({'meal': meal, 'amount': amount, 'cancellable': (not DateUtils.deadline_passed(meal.date)) })
-                total_price += meal.price * amount
+                price = amount * (meal.price + current_app.config['MEAL_BOX_PRICE'] if take_away else meal.price)
+                orders[meal.weekday].append({'meal': meal, 'amount': amount, 'price': price, 'take_away': take_away,
+                                             'cancellable': (not DateUtils.deadline_passed(meal.date)) })
+                total_price += price
 
         if empty:
             return None, 0

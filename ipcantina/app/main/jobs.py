@@ -9,7 +9,6 @@ from openpyxl.styles import Font
 import os
 from flask import current_app
 
-headers = ['Meno', 'Tel. číslo', 'Objednávka', 'So sebou']
 
 
 def create_daily_order_sheet(dt):
@@ -48,15 +47,19 @@ def create_daily_order_sheet(dt):
     return filename
 
 
+headers = ['Meno', 'Tel. číslo', 'Objednávka', 'So sebou', 'Cena']
+
+
 def create_order_list_file(dt):
     orders = Order.get_orders_for_day(dt).all()
     data = []
     counts = {'A': 0, 'B': 0, 'C': 0}
     for order in orders:
         meal = Meal.query.get(order.meal_id)
+        price = meal.price + current_app.config['MEAL_BOX_PRICE'] if order.take_away else meal.price
         take_away = 'áno' if order.take_away else ''
         data.append([' '.join([order.customer.first_name, order.customer.surname]), order.customer.phone,
-                     meal.label, take_away])
+                     meal.label, take_away, price])
         counts[meal.label] += 1
 
     table = tabulate(data, headers=headers)

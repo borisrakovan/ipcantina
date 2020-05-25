@@ -94,7 +94,7 @@
                     {{ order.meal.label }}
                     <div class="order-summary-right">
                         <span class="item"> {{ order.amount }}ks</span>
-                        <span class="item">{{ "%.2f" % (order.meal.price * order.amount) }} &euro;</span>
+                        <span class="item">{{ "%.2f" % (order.price) }} &euro;</span>
                     </div>
                 </div>
             {% endfor %}

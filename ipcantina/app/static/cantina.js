@@ -27,25 +27,27 @@ $(document).ready(function() {
 
         return false;
     });
-//    $('.incrementor input').change(function () {
-//        var $price = $(this).parent().siblings('.price-tag').first().find('span');
-//
-//        var unit = parseFloat($(this).parent().siblings('.unit-price').first().text());
-//        var newPrice = unit * ($(this).val() <= 0 ? 1 : $(this).val())
-//        $price.text(newPrice.toFixed(2));
-//    });
-//
-//    $('.take-away').change(function() {
-//        if ($(this).is(':checked')) {
-//            var $price = $(this).siblings('.price-tag').first().find('span');
-//            console.log($price);
-//            var amount = parseInt($(this).siblings('.incrementor').first().children('input').first().val());
-//            console.log(amount);
-//            var newPrice = parseFloat($price.text()) + amount * 0.3;
-//            $price.text(newPrice.toFixed(2));
-//        }
-//
-//    });
 
+    $('.incrementor input').change(function () {
+        var $price = $(this).parent().siblings('.price-tag').first().find('span');
+
+        var unit = parseFloat($(this).parent().siblings('.unit-price').first().text());
+        var takeAway = $(this).parent().siblings('.take-away').first();
+
+        var surcharge = 0.0;
+        if (takeAway.is(':checked')) {
+            surcharge = 0.3;
+        }
+
+        var newPrice = (unit + surcharge) * ($(this).val() <= 0 ? 1 : $(this).val());
+        $price.text(newPrice.toFixed(2));
+    });
+
+    $('.take-away').change(function() {
+        $input = $(this).siblings('.incrementor').first().children('input').first();
+
+        $input.change();
+
+    });
 
 });

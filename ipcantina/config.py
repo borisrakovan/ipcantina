@@ -24,6 +24,8 @@ class Config:
 
     ORDER_DEADLINE_HOUR = os.environ.get('ORDER_DEADLINE_HOUR') or 15
 
+    MEAL_BOX_PRICE = 0.3
+
     MAIL_SERVER = os.environ.get('MAIL_SERVER')
     MAIL_PORT = int(os.environ.get('MAIL_PORT'))
 
