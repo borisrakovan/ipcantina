@@ -47,33 +47,35 @@ def create_daily_order_sheet(dt):
     return filename
 
 
-headers = ['Meno', 'Tel. číslo', 'Objednávka', 'So sebou', 'Cena']
+headers = ['Objednávka', 'Meno', 'Tel. číslo', 'So sebou', 'Cena']
 
 
 def create_order_list_file(dt):
-    orders = Order.get_orders_for_day(dt).all()
+    orders, descriptions = Order.get_orders_for_day(dt)
+    orders = orders.order_by(Order.user_id).all()
     data = []
     counts = {'A': 0, 'B': 0, 'C': 0}
     for order in orders:
         meal = Meal.query.get(order.meal_id)
-        price = meal.price + current_app.config['MEAL_BOX_PRICE'] if order.take_away else meal.price
+        price = '%.2f €' % (meal.price + current_app.config['MEAL_BOX_PRICE'] if order.take_away else meal.price)
         take_away = 'áno' if order.take_away else ''
-        data.append([' '.join([order.customer.first_name, order.customer.surname]), order.customer.phone,
-                     meal.label, take_away, price])
+        name = ' '.join([order.customer.surname, order.customer.first_name])
+        data.append([meal.label, name, order.customer.phone, take_away, price])
         counts[meal.label] += 1
 
     table = tabulate(data, headers=headers)
     # print(table)
     date_str = DateUtils.to_string(dt)
-    filename = os.path.join(current_app.config['ATTACHMENTS_DIR_PATH'], "IP_cantina_zoznam_" + date_str + ".txt")
+    # filename = os.path.join(current_app.config['ATTACHMENTS_DIR_PATH'], "IP_cantina_zoznam_" + date_str + ".txt")
+    filename = '\\'.join([current_app.config['ATTACHMENTS_DIR_PATH'], "IP_cantina_zoznam_" + date_str + ".txt"])
 
-    with open(filename, "w", encoding='utf-8') as f:  # todo TEST
+    with open(filename, "w", encoding='utf-8') as f:
         f.write("%s %s - ONLINE OBJEDNÁVKY\n\n" % (DateUtils.to_string(dt), DateUtils.svk_from_int(dt.weekday())))
         f.write(table)
         f.write('\n\n')
         f.write("Spolu:\n")
-        for k, v in counts.items():
-            f.write("%s: %dx\n" % (k, v))
+        for i, k in enumerate(counts.keys()):
+            f.write("%dx %s: %s\n" % (counts[k], k, descriptions[i]))
 
     return filename
 

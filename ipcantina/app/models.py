@@ -48,9 +48,10 @@ class Order(db.Model):
 
     @classmethod
     def get_orders_for_day(cls, date):
-        meal_ids = Meal.query.with_entities(Meal.id).filter(Meal.date == date).all()
-        ids = [x[0] for x in meal_ids]
-        return cls.query.filter(Order.meal_id.in_(ids))
+        meals = Meal.query.filter(Meal.date == date).all()
+        ids = [x.id for x in meals]
+        descriptions = [x.description for x in meals if x.label != 'S']
+        return cls.query.filter(Order.meal_id.in_(ids)), descriptions
 
     @classmethod
     def get_all_for_current_week(cls):
