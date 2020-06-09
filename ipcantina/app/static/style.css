@@ -141,7 +141,7 @@ hr {
 
 .alert-success {
     color: #F0F0F0;
-    background-color: #5cb85c;
+    background-color: #243E36;
     border-color: #4cae4c;
 }
 .alert-danger {
@@ -185,7 +185,11 @@ hr {
     }
 
 }
-
+@media(max-width: 768px) {
+    .navbar-header #logo {
+        margin-left: 15px;
+    }
+}
 @media(max-width: 600px){
     body {
         text-align: center;

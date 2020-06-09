@@ -32,6 +32,8 @@ from app.main.email import send_menu_notification_email
 #  hidden field w/ price can be manipulated?
 #  price for box set in stone in js?
 
+# HROZNE VELKE NA MALYCH DISPLEJOCH
+
 @bp.before_app_first_request
 def activate_job():
     def run_periodic_jobs(application):

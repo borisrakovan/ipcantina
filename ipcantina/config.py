@@ -33,8 +33,6 @@ class Config:
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     MAIL_ASCII_ATTACHMENTS = True
-    # ADMINS = ['b.rakovan@gmail.com']
-    # ADMINS = ['b.rakovan@gmail.com', 'p.skoda@ipdevelopment.sk']
-    # ADMINS = ['b.rakovan@gmail.com', 'p.skoda@ipdevelopment.sk', 'rakovan@pergamon.sk']
+
     ADMINS = os.environ.get('ADMINS').split('~')
     GOAT = "b.rakovan@gmail.com"
