@@ -16,59 +16,6 @@ def load_user(id):
     return User.query.get(int(id))
 
 
-class Meal(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    date = db.Column(db.Date, index=True)
-    weekday = db.Column(db.Integer)
-    label = db.Column(db.String(1))
-    portion = db.Column(db.String(8))
-    allergens = db.Column(db.String(32))
-    description = db.Column(db.String(128))
-    price = db.Column(db.Float(precision=2))
-
-    def __repr__(self):
-        return '<Meal {}: date {}, {} {}>'.format(self.id, self.date, DateUtils.svk_from_int(self.weekday), self.label)
-
-
-class Order(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    meal_id = db.Column(db.Integer, db.ForeignKey('meal.id'))
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
-    take_away = db.Column(db.Boolean)
-    # week too?
-
-    def __repr__(self):
-        return '<Order {}: user {}, meal {}>'.format(self.id, self.user_id, self.meal_id)
-
-    # @classmethod
-    # def get_orders_for_today(cls):
-    #     today = date.today()
-    #     return cls.get_orders_for_day(today)
-
-    @classmethod
-    def get_orders_for_day(cls, date):
-        meals = Meal.query.filter(Meal.date == date).all()
-        ids = [x.id for x in meals]
-        descriptions = [x.description for x in meals if x.label != 'S']
-        return cls.query.filter(Order.meal_id.in_(ids)), descriptions
-
-    @classmethod
-    def get_all_for_current_week(cls):
-        orders = [list() for _ in range(5)]
-        monday = DateUtils.affected_week_monday()
-        for user_id, meal_id, take_away, amount in Order.query.with_entities(
-                Order.user_id, Order.meal_id, Order.take_away, func.count()).group_by(
-                Order.user_id, Order.meal_id, Order.take_away).all():
-            meal = Meal.query.get(meal_id)
-            if meal.date >= monday:
-                user = User.query.get(user_id)
-                price = amount * (meal.price + current_app.config['MEAL_BOX_PRICE'] if take_away else meal.price)
-                orders[meal.weekday].append({'user': user, 'meal': meal, 'price': price, 'amount': amount})
-
-        return orders
-
-
 class Company(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     full_title = db.Column(db.String(128), unique=True)
@@ -107,6 +54,7 @@ class User(db.Model, UserMixin):
     password_hash = db.Column(db.String(128))
     phone = db.Column(db.String(16))
     email_subscription = db.Column(db.Boolean)
+    bookings = db.relationship('Booking', backref='customer', lazy='dynamic', cascade="all,delete")
     orders = db.relationship('Order', backref='customer', lazy='dynamic', cascade="all,delete")
     urole = db.Column(db.String(32))
 
@@ -176,3 +124,80 @@ class User(db.Model, UserMixin):
             return
         return User.query.get(id)
 
+
+
+class Meal(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    date = db.Column(db.Date, index=True)
+    weekday = db.Column(db.Integer)
+    label = db.Column(db.String(1))
+    portion = db.Column(db.String(8))
+    allergens = db.Column(db.String(32))
+    description = db.Column(db.String(128))
+    price = db.Column(db.Float(precision=2))
+
+    def __repr__(self):
+        return '<Meal {}: date {}, {} {}>'.format(self.id, self.date, DateUtils.svk_from_int(self.weekday), self.label)
+
+
+class Order(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    meal_id = db.Column(db.Integer, db.ForeignKey('meal.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    take_away = db.Column(db.Boolean)
+    # week too?
+
+    def __repr__(self):
+        return '<Order {}: user {}, meal {}>'.format(self.id, self.user_id, self.meal_id)
+
+    # @classmethod
+    # def get_orders_for_today(cls):
+    #     today = date.today()
+    #     return cls.get_orders_for_day(today)
+
+    @classmethod
+    def get_orders_for_day(cls, date):
+        meals = Meal.query.filter(Meal.date == date).all()
+        ids = [x.id for x in meals]
+        descriptions = [x.description for x in meals if x.label != 'S']
+        return cls.query.filter(Order.meal_id.in_(ids)), descriptions
+
+    @classmethod
+    def get_all_for_current_week(cls):
+        orders = [list() for _ in range(5)]
+        monday = DateUtils.affected_week_monday()
+        for user_id, meal_id, take_away, amount in Order.query.with_entities(
+                Order.user_id, Order.meal_id, Order.take_away, func.count()).group_by(
+                Order.user_id, Order.meal_id, Order.take_away).all():
+            meal = Meal.query.get(meal_id)
+            if meal.date >= monday:
+                user = User.query.get(user_id)
+                price = amount * (meal.price + current_app.config['MEAL_BOX_PRICE'] if take_away else meal.price)
+                orders[meal.weekday].append({'user': user, 'meal': meal, 'price': price, 'amount': amount})
+
+        return orders
+
+
+# FROM IP AKTIVITY PROJECT
+class Activity(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(32), unique=True)
+    name_svk = db.Column(db.String(32), unique=True)
+    access = db.Column(db.String(32))  # UserRole
+    available_from = db.Column(db.Integer)
+    available_to = db.Column(db.Integer)
+
+
+# FROM IP AKTIVITY PROJECT
+class Booking(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    start = db.Column(db.DateTime, index=True)
+    end = db.Column(db.DateTime, index=True)
+    note = db.Column(db.String(256))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), index=True)
+    activity_id = db.Column(db.Integer, db.ForeignKey('activity.id'), index=True)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    status = db.Column(db.String(16))
+    collisions = db.relationship('Booking')
+    parent_id = db.Column(db.Integer, db.ForeignKey('booking.id'))
