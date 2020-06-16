@@ -33,6 +33,9 @@ from app.main.email import send_menu_notification_email
 #  price for box set in stone in js?
 
 # HROZNE VELKE NA MALYCH DISPLEJOCH
+# excel nahradit obycajnym textakom alebo opravit
+# mozno premenit emailing na cronjob, teraz ked vieme akonato
+#  fixme You're possibly having multiple requests writing to the same filepath...
 
 @bp.before_app_first_request
 def activate_job():

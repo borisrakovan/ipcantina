@@ -54,7 +54,7 @@ class User(db.Model, UserMixin):
     password_hash = db.Column(db.String(128))
     phone = db.Column(db.String(16))
     email_subscription = db.Column(db.Boolean)
-    bookings = db.relationship('Booking', backref='customer', lazy='dynamic', cascade="all,delete")
+    # bookings = db.relationship('Booking', backref='customer', lazy='dynamic', cascade="all,delete")
     orders = db.relationship('Order', backref='customer', lazy='dynamic', cascade="all,delete")
     urole = db.Column(db.String(32))
 
@@ -178,26 +178,26 @@ class Order(db.Model):
 
         return orders
 
-
-# FROM IP AKTIVITY PROJECT
-class Activity(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(32), unique=True)
-    name_svk = db.Column(db.String(32), unique=True)
-    access = db.Column(db.String(32))  # UserRole
-    available_from = db.Column(db.Integer)
-    available_to = db.Column(db.Integer)
-
-
-# FROM IP AKTIVITY PROJECT
-class Booking(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    start = db.Column(db.DateTime, index=True)
-    end = db.Column(db.DateTime, index=True)
-    note = db.Column(db.String(256))
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), index=True)
-    activity_id = db.Column(db.Integer, db.ForeignKey('activity.id'), index=True)
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
-    status = db.Column(db.String(16))
-    collisions = db.relationship('Booking')
-    parent_id = db.Column(db.Integer, db.ForeignKey('booking.id'))
+#
+# # FROM IP AKTIVITY PROJECT
+# class Activity(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     name = db.Column(db.String(32), unique=True)
+#     name_svk = db.Column(db.String(32), unique=True)
+#     access = db.Column(db.String(32))  # UserRole
+#     available_from = db.Column(db.Integer)
+#     available_to = db.Column(db.Integer)
+#
+#
+# # FROM IP AKTIVITY PROJECT
+# class Booking(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     start = db.Column(db.DateTime, index=True)
+#     end = db.Column(db.DateTime, index=True)
+#     note = db.Column(db.String(256))
+#     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), index=True)
+#     activity_id = db.Column(db.Integer, db.ForeignKey('activity.id'), index=True)
+#     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+#     status = db.Column(db.String(16))
+#     collisions = db.relationship('Booking')
+#     parent_id = db.Column(db.Integer, db.ForeignKey('booking.id'))
