@@ -10,7 +10,6 @@ import os
 from flask import current_app
 
 
-
 def create_daily_order_sheet(dt):
     meals = Meal.query.filter(Meal.date == dt, Meal.label != 'S').order_by(Meal.label).all()
     summary = []
@@ -68,9 +67,9 @@ def create_order_list_file(dt):
     date_str = DateUtils.to_string(dt)
     filename = os.path.join(current_app.config['ATTACHMENTS_DIR_PATH'], "IP_cantina_zoznam_" + date_str + ".txt")
     # filename = '\\'.join([current_app.config['ATTACHMENTS_DIR_PATH'], "IP_cantina_zoznam_" + date_str + ".txt"])
-    from random import randint
+    from random import uniform
     from time import sleep
-    sleep(randint(0, 5))
+    sleep(uniform(0., 5.))
     with open(filename, "w", encoding='utf-8') as f:
         f.write("%s %s - ONLINE OBJEDNÁVKY\n\n" % (DateUtils.to_string(dt), DateUtils.svk_from_int(dt.weekday())))
         f.write(table)
