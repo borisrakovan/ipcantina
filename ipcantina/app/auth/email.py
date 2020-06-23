@@ -4,7 +4,7 @@ from flask import render_template, current_app
 
 def send_password_reset_email(user):
     token = user.get_reset_password_token()
-    current_app.logger.info("Pswrd request mail requested.")
+    current_app.logger.info("Passsword reset mail requested.")
     send_email('[IP Cantina] Obnovenie hesla',
                sender=current_app.config['MAIL_USERNAME'],
                recipients=[user.email],

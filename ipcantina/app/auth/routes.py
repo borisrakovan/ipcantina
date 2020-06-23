@@ -1,11 +1,13 @@
-from app import db
 from app.auth import bp
 from flask import render_template, flash, redirect, url_for, request, abort
 from flask_login import current_user, login_user, logout_user, login_required
-from app.models import User, UserRole, Company
 from app.auth.forms import *
 from app.auth.email import *
 from werkzeug.urls import url_parse
+
+# from app.models import User, UserRole, Company
+from db.models import User, UserRole, Company
+from db.database import session
 
 
 @bp.route('/login', methods=['GET', 'POST'])
@@ -51,14 +53,15 @@ def register():
         #     flash("Neplatný registračný kód. Prosím kontaktujte vedenie Vašej firmy ohľadom poskytnutia platného kódu.",
         #           category='danger')
         #     return redirect(url_for('auth.register'))
+
         # noinspection PyArgumentList
         u = User(first_name=form.first_name.data, surname=form.surname.data,
                  email=form.email.data, phone=phone, company=c, email_subscription=form.email_subscription.data)
         u.set_password(form.password.data)
         u.set_urole(UserRole.BASIC)
 
-        db.session.add(u)
-        db.session.commit()
+        session.add(u)
+        session.commit()
         flash("Registrácia prebehla úspešne!", category='info')
         return redirect(url_for('auth.login'))
 
@@ -92,7 +95,7 @@ def reset_password(token):
     form = ResetPasswordForm()
     if form.validate_on_submit():
         user.set_password(form.password.data)
-        db.session.commit()
+        session.commit()
         flash('Vaše heslo bolo úspešne zmenené.', category='info')
         return redirect(url_for('auth.login'))
     return render_template('reset_password.html', form=form)
@@ -107,7 +110,7 @@ def change_password():
             flash("Zadali ste nesprávne heslo.", category='danger')
             return redirect(url_for('auth.change_password'))
         current_user.set_password(form.new_password.data)
-        db.session.commit()
+        session.commit()
         flash('Vaše heslo bolo úspešne zmenené.', category='info')
         return redirect(url_for('auth.account'))
     return render_template('change_password.html', title='Zmena hesla', form=form)
@@ -122,8 +125,8 @@ def delete_account():
             flash("Zadali ste nesprávne heslo.", category='danger')
             return redirect(url_for('auth.delete_account'))
 
-        db.session.delete(current_user)
-        db.session.commit()
+        session.delete(current_user)
+        session.commit()
         flash("Váš účet bol úspešne vymazaný. Ďakujeme Vám za využívanie našej aplikácie a budeme radi,"
               " ak sa čoskoro vrátite.", category='info')
         return redirect(url_for('auth.login'))
@@ -145,7 +148,7 @@ def account():
 
     elif email_form.validate_on_submit():
         current_user.email_subscription = email_form.email_subscription.data
-        db.session.commit()
+        session.commit()
         flash('Vaše zmeny boli úspešne uložené.', category='info')
         return redirect(url_for('auth.account'))
     return render_template('account.html', title='Účet', form=form, email_form=email_form)
@@ -162,7 +165,7 @@ def edit_profile():
 
         current_user.phone = form.phone.data.replace(' ', '')
         # current_user.company = form.company.data
-        db.session.commit()
+        session.commit()
         flash('Vaše zmeny boli úspešne uložené.', category='info')
         return redirect(url_for('auth.account'))
 

@@ -1,19 +1,22 @@
 from flask import flash, redirect, url_for, request, abort, render_template
 from app import login_manager
 from flask_login import current_user
-from app.models import Order, UserRole, Meal
 from app.main.forms import *
 import json
 import os
-from app import db
 from app.main import bp
 from flask import current_app
 from app.main.menu import MenuUtils
-from app.main.utils import DateUtils, allowed_file
+from app.main.utils import allowed_file
 from werkzeug.utils import secure_filename
 from functools import wraps
 from datetime import timedelta
 from app.main.email import send_menu_notification_email
+
+# from app.models import Order, UserRole, Meal
+from db.models import Order, UserRole, Meal, User
+from db.database import session
+from db.utils import DateUtils
 
 
 # todo update v strede tyzdna: zatvorenie:ak maju ludia objednane na piatok a zatvori sa
@@ -36,6 +39,11 @@ from app.main.email import send_menu_notification_email
 # excel nahradit obycajnym textakom alebo opravit
 # mozno premenit emailing na cronjob, teraz ked vieme akonato
 #  fixme You're possibly having multiple requests writing to the same filepath...
+# brat config settings z hlavnych settings pri databaze?
+# todo s now:
+#  order_deadline_hour vymazat
+#  mealbox price?
+#  vymazat migrations/ aj app.db
 
 @bp.before_app_first_request
 def activate_job():
@@ -76,6 +84,7 @@ def load_instructions():
         instructions = ' '.join(f.readlines())
         return instructions.strip()
 
+
 def save_instructions(text):
     path = current_app.config['INSTRUCTIONS_TEXT_PATH']
     with open(path, 'w', encoding='utf-8') as f:
@@ -112,16 +121,15 @@ def index():
                 for _ in range(amount):
                     order = Order(meal_id=meal.id, customer=current_user, take_away=dish.take_away.data)
                     num_orders += 1
-                    db.session.add(order)
+                    session.add(order)
         if num_orders == 0:
             flash("Nebolo vybrané žiadne jedlo.", category='info')
             return redirect(url_for('main.index'))
 
-        db.session.commit()
+        session.commit()
         flash("Vaša objednávka bola úspešne vykonaná.", category='success')
         return redirect(url_for('main.index'))
-    # else:
-    #     print(form.fields.errors)
+
     return render_template('index.html', title='Domov', instructions=load_instructions(),
                            menu=menu, form=form, utils=DateUtils())
 
@@ -140,12 +148,13 @@ def orders():
                   .format(current_app.config['ORDER_DEADLINE_HOUR']), category='danger')
             return redirect(url_for('main.orders'))
 
-        Order.query.filter(Order.user_id == current_user.id, Order.meal_id == meal_id, Order.take_away == take_away).delete()
-        db.session.commit()
+        Order.query.filter(
+            Order.user_id == current_user.id, Order.meal_id == meal_id, Order.take_away == take_away).delete()
+        session.commit()
         return redirect(url_for('main.orders'))
 
     orders, price = current_user.get_orders_summary()
-    return render_template('orders.html', title='Objednávky', orders=orders, price=price, days=DateUtils())
+    return render_template('orders.html', title='Objednávky', orders=orders, price=price, utils=DateUtils())
 
 
 @bp.route('/admins', methods=['GET', 'POST'])
@@ -160,7 +169,7 @@ def admin():
         form.price_B.data = prices['B']
         form.price_C.data = prices['C']
         orders = Order.get_all_for_current_week()
-        return render_template('admin.html', title='Admin', form=form, users=User.query.all(), orders=orders, days=DateUtils)
+        return render_template('admin.html', title='Admin', form=form, users=User.query.all(), orders=orders, utils=DateUtils())
 
     else:
         if 'upload' in request.form:
@@ -211,7 +220,6 @@ def admin():
             return redirect(url_for('main.admin'))
 
 
-
 def update_meal_db():
     menu = MenuUtils.from_json(current_app.config['MENU_JSON_PATH'])
     monday = DateUtils.affected_week_monday()
@@ -233,7 +241,7 @@ def update_meal_db():
                 soup = Meal(date=date, weekday=date.weekday(), label='S',portion=daily_menu['soup']['portion'],
                             description=daily_menu['soup']['description'], allergens=daily_menu['soup']['allergens'], price=0.)
                 # soup = Meal(week=week, day=i, label='S', description=daily_menu['soup'])
-                db.session.add(soup)
+                session.add(soup)
 
         for meal in daily_menu['meals']:
             old = Meal.query.filter(Meal.date == date, Meal.label == meal['label']).first()
@@ -245,8 +253,8 @@ def update_meal_db():
             else:
                 m = Meal(date=date, weekday=date.weekday(), label=meal['label'], portion=meal['portion'],
                          description=meal['description'], allergens=meal['allergens'], price=meal['price'])
-                db.session.add(m)
-    db.session.commit()
+                session.add(m)
+    session.commit()
 
     return updating
 
@@ -258,6 +266,6 @@ def unsubscribe(token):
         return abort(404)
 
     user.email_subscription = False
-    db.session.commit()
+    session.commit()
     return render_template('unsubscribe.html', title='Odber')
 

@@ -43,7 +43,7 @@
         {{ form.hidden_tag() }}
         <p>
             {% for day in range(menu|length) %}
-                <h3>{{ utils.svk_from_int(day) }}</h3>
+                <h3>{{ utils.svk_weekday_from_int(day) }}</h3>
                 <div class="menu-day">
                 {% if menu[day] is not none %}
                     {% if menu[day]['soup'] is not none %}

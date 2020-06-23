@@ -1,10 +1,11 @@
 from flask_wtf import FlaskForm
 from wtforms import SelectField,StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, Length
-from app.models import User, Company
 from wtforms.widgets.core import HTMLString, TextInput, SubmitInput
 from markupsafe import Markup
 
+# from app.models import User, Company
+from db.models import User, Company
 
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
@@ -40,8 +41,9 @@ class RegistrationForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         super(RegistrationForm, self).__init__(*args, **kwargs)
         other = Company.query.filter(Company.title == 'Iná').first()
-        self.company.choices = [(other.id, other.title)] + [(c.id, c.title) for c in Company.query.filter(Company.title != 'Iná').order_by(
-            Company.title).all()]
+        self.company.choices = [(other.id, other.title)] + \
+                               [(c.id, c.title) for c in Company.query.filter(Company.title != 'Iná').order_by(
+                                   Company.title).all()]
 
     def validate_email(self, email): # automatically evaluated by wtforms
         email = User.query.filter_by(email=email.data).first()
@@ -96,7 +98,6 @@ class EditProfileForm(AccountForm):
             email = User.query.filter_by(email=email.data).first()
             if email is not None:
                 raise ValidationError("Email {} už je obsadený. Prosím použite iný.".format(self.email.data))
-
 
     def validate_phone(self, field):
         if len(field.data) > 16:

@@ -83,11 +83,11 @@
 </table>
 <hr>
 <div class="order-list">
-    <h3>Všetky objednávky na týždeň <span class="nowrap">{{ days.monday_to_friday_str() }}</span></h3>
+    <h3>Všetky objednávky na týždeň <span class="nowrap">{{ utils.monday_to_friday_str() }}</span></h3>
     <ul class="list-group">
         {% for i in range(5) %}
         <li class="list-group-item">
-            <span class="yellow"><b>{{ days.to_string(days.date_from_int(i)) }} {{ days.svk_from_int(i) }}</b></span>
+            <span class="yellow"><b>{{ utils.to_string(utils.date_from_int(i)) }} {{ utils.svk_weekday_from_int(i) }}</b></span>
             {% for order in orders[i] %}
                 <div class="group">
                     <b>{{ order.user.first_name }} {{ order.user.surname }}</b> -

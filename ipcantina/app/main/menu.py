@@ -2,11 +2,13 @@ import xlrd
 import json
 from datetime import timedelta
 from flask import current_app
-from app.main.utils import DateUtils
-from app.models import Meal
+
+from db.models import Meal
+from db.utils import DateUtils
 
 
 closed_tags = ['sviatok', 'zatvorené', 'zatvorene', 'prázdniny', 'prazdniny', 'closed', 'dovolenka']
+
 
 class MenuUtils:
 

@@ -1,10 +1,12 @@
+import os
 from flask import current_app, render_template
 from flask_mail import Message
-from app.main.utils import DateUtils
 from app import mail
 from app.email import send_email
-from app.models import User
-import os
+
+# from app.models import User
+from db.utils import DateUtils
+from db.models import User
 
 
 def send_daily_summary_email(date, orderlist_fname, ordersheet_fname):

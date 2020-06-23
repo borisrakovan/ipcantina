@@ -7,11 +7,11 @@ from flask_migrate import Migrate
 from flask_bootstrap import Bootstrap
 from flask_mail import Mail
 import logging
-from logging.handlers import SMTPHandler,RotatingFileHandler
+from logging.handlers import SMTPHandler, RotatingFileHandler
 
 
-db = SQLAlchemy()
-migrate = Migrate()
+# db = SQLAlchemy()
+# migrate = Migrate()
 login_manager = LoginManager()
 login_manager.login_view = 'auth.login'
 login_manager.login_message = ('Pre vstup na túto stránku sa prosím prihláste.')
@@ -23,8 +23,8 @@ mail = Mail()
 def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
-    db.init_app(app)
-    migrate.init_app(app, db)
+    # db.init_app(app)
+    # migrate.init_app(app, db)
     login_manager.init_app(app)
     mail.init_app(app)
     bootstrap.init_app(app)
@@ -70,17 +70,12 @@ def create_app(config_class=Config):
         app.logger.setLevel(logging.INFO)
         app.logger.info('IP Cantina startup')
 
-    # if not app.debug: # todo TEST
-    #     run_periodic_jobs(app)
-
     return app
 
 
 # here so we don't have circular imports
 # everything I code has to be imported here!
-from app.main import forms, routes
-from app import models
-# from app.models import User, Meal, Order, Company
+# from app.main import forms, routes
 
 
 

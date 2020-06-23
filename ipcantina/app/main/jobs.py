@@ -1,14 +1,17 @@
 from app.main.email import send_daily_summary_email
 from datetime import date
 from tabulate import tabulate
-from app.models import Meal, Order
-from app.main.utils import DateUtils
 from sqlalchemy import func
 from openpyxl import Workbook
 from openpyxl.styles import Font
 import os
 from flask import current_app
 
+# from app.models import Meal, Order
+# from app.main.utils import DateUtils
+
+from db.models import Meal, Order
+from db.utils import DateUtils
 
 def create_daily_order_sheet(dt):
     meals = Meal.query.filter(Meal.date == dt, Meal.label != 'S').order_by(Meal.label).all()
@@ -71,7 +74,7 @@ def create_order_list_file(dt):
     from time import sleep
     sleep(uniform(0., 5.))
     with open(filename, "w", encoding='utf-8') as f:
-        f.write("%s %s - ONLINE OBJEDNÁVKY\n\n" % (DateUtils.to_string(dt), DateUtils.svk_from_int(dt.weekday())))
+        f.write("%s %s - ONLINE OBJEDNÁVKY\n\n" % (DateUtils.to_string(dt), DateUtils.svk_weekday_from_int(dt.weekday())))
         f.write(table)
         f.write('\n\n')
         f.write("Spolu:\n")
