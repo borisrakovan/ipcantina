@@ -12,6 +12,8 @@ from flask import current_app
 
 from db.models import Meal, Order
 from db.utils import DateUtils
+from db.config import config
+
 
 def create_daily_order_sheet(dt):
     meals = Meal.query.filter(Meal.date == dt, Meal.label != 'S').order_by(Meal.label).all()
@@ -59,7 +61,7 @@ def create_order_list_file(dt):
     counts = {'A': 0, 'B': 0, 'C': 0}
     for order in orders:
         meal = Meal.query.get(order.meal_id)
-        price = '%.2f €' % (meal.price + current_app.config['MEAL_BOX_PRICE'] if order.take_away else meal.price)
+        price = '%.2f €' % (meal.price + config['MEAL_BOX_PRICE'] if order.take_away else meal.price)
         take_away = 'áno' if order.take_away else ''
         name = ' '.join([order.customer.surname, order.customer.first_name])
         data.append([meal.label, name, order.customer.phone, take_away, price])

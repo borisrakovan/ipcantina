@@ -17,33 +17,19 @@ from app.main.email import send_menu_notification_email
 from db.models import Order, UserRole, Meal, User
 from db.database import session
 from db.utils import DateUtils
-
-
-# todo update v strede tyzdna: zatvorenie:ak maju ludia objednane na piatok a zatvori sa
-#  (napr), objednavka im ostane, treba napisat mail.
+from db.config import config
 
 #   fixme  todo v piatok by malo byt este vidiet objednavky aj na dany tyzden
 #    pagination na objednavkove tyzdne if youre bored
 # #  feedback kontaktny formular
-# todo kontrolny blok
-
-# pdf generovanie
-# vyraznejsie menu
+# pdf generovanie ?
 # todo some logs
-# todo jobs run twice: still??
-#  generovanie attachmentu aj s full cenou
-#  hidden field w/ price can be manipulated?
-#  price for box set in stone in js?
+# todo jobs run twice:
 
-# HROZNE VELKE NA MALYCH DISPLEJOCH
 # excel nahradit obycajnym textakom alebo opravit
 # mozno premenit emailing na cronjob, teraz ked vieme akonato
-#  fixme You're possibly having multiple requests writing to the same filepath...
-# brat config settings z hlavnych settings pri databaze?
 # todo s now:
-#  order_deadline_hour vymazat
-#  mealbox price?
-#  vymazat migrations/ aj app.db
+
 
 @bp.before_app_first_request
 def activate_job():
@@ -52,7 +38,7 @@ def activate_job():
         from app.main.jobs import send_daily_summary
         from datetime import datetime, date, time
         today = date.today()
-        at = time(hour=current_app.config['ORDER_DEADLINE_HOUR'])
+        at = time(hour=config['ORDER_DEADLINE_HOUR'])
         # at = time(hour=18, minute=41)
         start = datetime.combine(today, at)
         # start = datetime.combine(today, time(hour=23, minute=27))
@@ -145,7 +131,7 @@ def orders():
         meal = Meal.query.get(meal_id)
         if DateUtils.deadline_passed(meal.date):
             flash("Ospravedlňujeme sa, ale každá objednávka sa dá zrušiť iba do {}-tej hodiny predošlého pracovného dňa."
-                  .format(current_app.config['ORDER_DEADLINE_HOUR']), category='danger')
+                  .format(config['ORDER_DEADLINE_HOUR']), category='danger')
             return redirect(url_for('main.orders'))
 
         Order.query.filter(
