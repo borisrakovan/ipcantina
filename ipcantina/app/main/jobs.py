@@ -56,6 +56,7 @@ headers = ['Objednávka', 'Meno', 'Tel. číslo', 'So sebou', 'Cena']
 
 def create_order_list_file(dt):
     orders, descriptions = Order.get_orders_for_day(dt)
+
     orders = orders.order_by(Order.user_id).all()
     data = []
     counts = {'A': 0, 'B': 0, 'C': 0}
@@ -72,16 +73,17 @@ def create_order_list_file(dt):
     date_str = DateUtils.to_string(dt)
     filename = os.path.join(current_app.config['ATTACHMENTS_DIR_PATH'], "IP_cantina_zoznam_" + date_str + ".txt")
     # filename = '\\'.join([current_app.config['ATTACHMENTS_DIR_PATH'], "IP_cantina_zoznam_" + date_str + ".txt"])
-    from random import uniform
-    from time import sleep
-    sleep(uniform(0., 5.))
+    # from random import uniform
+    # from time import sleep
+    # sleep(uniform(0., 5.))
     with open(filename, "w", encoding='utf-8') as f:
         f.write("%s %s - ONLINE OBJEDNÁVKY\n\n" % (DateUtils.to_string(dt), DateUtils.svk_weekday_from_int(dt.weekday())))
         f.write(table)
         f.write('\n\n')
         f.write("Spolu:\n")
-        for i, k in enumerate(counts.keys()):
-            f.write("%dx %s: %s\n" % (counts[k], k, descriptions[i]))
+        if len(descriptions) > 0:
+            for i, k in enumerate(counts.keys()):
+                f.write("%dx %s: %s\n" % (counts[k], k, descriptions[i]))
 
     return filename
 

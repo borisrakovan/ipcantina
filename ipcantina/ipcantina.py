@@ -23,9 +23,10 @@ from db.database import session
 app = create_app()
 
 
-# @app.cli.command("daily-job")
-# def daily_job():
-
+@app.cli.command("daily-job")
+def daily_job():
+    from app.main.jobs import send_daily_summary
+    send_daily_summary(app)
 
 
 @login_manager.user_loader

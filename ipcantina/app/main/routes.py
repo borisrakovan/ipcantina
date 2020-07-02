@@ -31,23 +31,23 @@ from db.config import config
 # todo s now:
 
 
-@bp.before_app_first_request
-def activate_job():
-    def run_periodic_jobs(application):
-        from apscheduler.schedulers.background import BackgroundScheduler
-        from app.main.jobs import send_daily_summary
-        from datetime import datetime, date, time
-        today = date.today()
-        at = time(hour=config['ORDER_DEADLINE_HOUR'])
-        # at = time(hour=18, minute=41)
-        start = datetime.combine(today, at)
-        # start = datetime.combine(today, time(hour=23, minute=27))
-        scheduler = BackgroundScheduler()
-        scheduler.add_job(func=lambda: send_daily_summary(application), trigger="interval", days=1, start_date=start)
-        scheduler.start()
-        current_app.logger.info("Started scheduler")
-
-    run_periodic_jobs(current_app._get_current_object())
+# @bp.before_app_first_request
+# def activate_job():
+#     def run_periodic_jobs(application):
+#         from apscheduler.schedulers.background import BackgroundScheduler
+#         from app.main.jobs import send_daily_summary
+#         from datetime import datetime, date, time
+#         today = date.today()
+#         at = time(hour=config['ORDER_DEADLINE_HOUR'])
+#         # at = time(hour=18, minute=41)
+#         start = datetime.combine(today, at)
+#         # start = datetime.combine(today, time(hour=23, minute=27))
+#         scheduler = BackgroundScheduler()
+#         scheduler.add_job(func=lambda: send_daily_summary(application), trigger="interval", days=1, start_date=start)
+#         scheduler.start()
+#         current_app.logger.info("Started scheduler")
+#
+#     run_periodic_jobs(current_app._get_current_object())
 
 
 def login_required(role=UserRole.BASIC):
