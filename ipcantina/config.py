@@ -19,7 +19,7 @@ class Config:
     DEFAULT_PRICES_PATH = os.environ.get('DEFAULT_PRICES_PATH')
     ATTACHMENTS_DIR_PATH = os.environ.get('ATTACHMENTS_DIR_PATH')
     MENU_UPLOAD_FOLDER = os.environ.get('MENU_UPLOAD_FOLDER')
-    ORDERLIST_NUM_WEEKS = 5
+    ORDERLIST_NUM_WEEKS = 3
     MENU_JSON_PATH = os.environ.get('MENU_JSON_PATH')
 
     MAIL_SERVER = os.environ.get('MAIL_SERVER')
