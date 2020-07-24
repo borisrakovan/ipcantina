@@ -19,7 +19,7 @@ from db.database import session
 from db.utils import DateUtils
 from db.config import config
 
-#   fixme  todo v piatok by malo byt este vidiet objednavky aj na dany tyzden
+#   fixme todo v piatok by malo byt este vidiet objednavky aj na dany tyzden
 #    pagination na objednavkove tyzdne if youre bored
 # #  feedback kontaktny formular
 # pdf generovanie ?

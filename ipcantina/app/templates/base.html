@@ -6,8 +6,12 @@
 
 {% block styles %}
     {{super()}}
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='cantina.css') }}">
+
 {% endblock %}
 {% block scripts %}
     <script src="https://code.jquery.com/jquery.min.js"></script>
