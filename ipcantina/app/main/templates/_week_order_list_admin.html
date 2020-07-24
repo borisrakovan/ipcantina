@@ -1,0 +1,22 @@
+
+{% if weekly_summary.orders %}
+<ul class="list-group">
+    {% for i in range(5) %}
+    <li class="list-group-item">
+        <span class="yellow"><b>{{ weekly_summary.get_day_string(i) }}</b></span>
+        {% for order in weekly_summary.orders[i] %}
+            <div class="group">
+                <b>{{ order.user.first_name }} {{ order.user.surname }}</b> -
+                {{ order.meal.label }}
+                <div class="order-summary-right">
+                    <span class="item"> {{ order.amount }}ks</span>
+                    <span class="item">{{ "%.2f" % (order.price) }} &euro;</span>
+                </div>
+            </div>
+        {% endfor %}
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+    <p>Pre daný týždeň neexistujú žiadne objednávky.</p>
+{% endif %}

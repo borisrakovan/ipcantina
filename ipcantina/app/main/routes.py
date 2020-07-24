@@ -19,35 +19,10 @@ from db.database import session
 from db.utils import DateUtils
 from db.config import config
 
-#   fixme todo v piatok by malo byt este vidiet objednavky aj na dany tyzden
-#    pagination na objednavkove tyzdne if youre bored
-# #  feedback kontaktny formular
-# pdf generovanie ?
-# todo some logs
-# todo jobs run twice:
 
-# excel nahradit obycajnym textakom alebo opravit
-# mozno premenit emailing na cronjob, teraz ked vieme akonato
-# todo s now:
-
-
-# @bp.before_app_first_request
-# def activate_job():
-#     def run_periodic_jobs(application):
-#         from apscheduler.schedulers.background import BackgroundScheduler
-#         from app.main.jobs import send_daily_summary
-#         from datetime import datetime, date, time
-#         today = date.today()
-#         at = time(hour=config['ORDER_DEADLINE_HOUR'])
-#         # at = time(hour=18, minute=41)
-#         start = datetime.combine(today, at)
-#         # start = datetime.combine(today, time(hour=23, minute=27))
-#         scheduler = BackgroundScheduler()
-#         scheduler.add_job(func=lambda: send_daily_summary(application), trigger="interval", days=1, start_date=start)
-#         scheduler.start()
-#         current_app.logger.info("Started scheduler")
-#
-#     run_periodic_jobs(current_app._get_current_object())
+# TODO
+#  feedback kontaktny formular
+#  pdf generovanie
 
 
 def login_required(role=UserRole.BASIC):
@@ -139,8 +114,11 @@ def orders():
         session.commit()
         return redirect(url_for('main.orders'))
 
-    orders, price = current_user.get_orders_summary()
-    return render_template('orders.html', title='Objednávky', orders=orders, price=price, utils=DateUtils())
+    orders_summary = Order.get_user_orders_summary(current_user, current_app.config['ORDERLIST_NUM_WEEKS'])
+
+    view = request.args.get('view', 1) # todo maybe
+
+    return render_template('orders.html', title='Objednávky', summary=orders_summary, utils=DateUtils())
 
 
 @bp.route('/admins', methods=['GET', 'POST'])
@@ -154,8 +132,9 @@ def admin():
         form.price_A.data = prices['A']
         form.price_B.data = prices['B']
         form.price_C.data = prices['C']
-        orders = Order.get_all_for_current_week()
-        return render_template('admin.html', title='Admin', form=form, users=User.query.all(), orders=orders, utils=DateUtils())
+        orders_summary = Order.get_orders_summary(current_app.config['ORDERLIST_NUM_WEEKS'])
+        return render_template('admin.html', title='Admin', form=form, users=User.query.all(),
+                               summary=orders_summary, utils=DateUtils())
 
     else:
         if 'upload' in request.form:

@@ -185,7 +185,20 @@ input[disabled="disabled"] , .incrementor span {
     min-width: 70%;
 }
 
+/* order pagination */
+.orderlist-header {
+    margin: 20px 0;
+}
 
+.orderlist-header span {
+    display: inline-block;
+    padding: 0 10px;
+    font-size: 1.5em;
+    vertical-align: middle;
+}
+.orderlist-header button {
+    display: inline-block;
+}
 
 @media(max-width: 992px){
     .menu-day {

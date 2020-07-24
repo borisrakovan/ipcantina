@@ -11,14 +11,17 @@
 
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='cantina.css') }}">
-
+    <link rel="stylesheet" href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css') }}">
 {% endblock %}
+
 {% block scripts %}
     <script src="https://code.jquery.com/jquery.min.js"></script>
     <script src="{{url_for('static', filename='script.js')}}"></script>
     <script src="{{url_for('static', filename='cantina.js')}}"></script>
+    <script src="{{ url_for('static', filename='orders.js') }}"></script>
     {{super()}}
 {% endblock %}
+
 {% block navbar %}
     <nav class="navbar navbar-inverse">
         <div class="container">

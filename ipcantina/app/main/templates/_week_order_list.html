@@ -1,0 +1,37 @@
+
+{% if weekly_summary.orders %}
+<ul class="list-group">
+    {% for i in range(5) %}
+    <li class="list-group-item">
+        <span class="yellow"><b>{{ weekly_summary.get_day_string(i) }}</b></span>
+        {% for order in weekly_summary.orders[i] %}
+            <div class="group">
+                <b>{{ order.meal.label }}:</b>
+                {{ order.meal.description }}
+                <div class="order-summary-right">
+                    <span class="item"> {{ order.amount }}ks</span>
+                    <span class="item">{{ "%.2f" % (order.price) }} &euro;</span>
+                    <form action="" method="post" class="cancel-form">
+                        <input type="hidden" name="meal_id" value="{{ order.meal.id }}" >
+                        <input type="hidden" name="take_away" value="{{ order.take_away }}" >
+                        {% if order.cancellable %}
+                            <input type="submit" name="cancel_order" value="zrušiť" class="btn btn-danger btn-xs">
+                        {% else %}
+                            <input type="submit" name="cancel_order" value="zrušiť" class="btn btn-danger btn-xs" disabled="disabled">
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+        {% endfor %}
+    </li>
+    {% endfor %}
+</ul>
+
+<div id="price-summary">
+    <span>Spolu: {{ "%.2f" % weekly_summary.total_price }} &euro;</span><br>
+    <span id="dph">všetky ceny sú uvedené s DPH</span>
+</div>
+
+{% else %}
+    <p>Pre daný týždeň nemáte žiadne objednávky.</p>
+{% endif %}
