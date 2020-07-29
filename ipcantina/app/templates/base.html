@@ -81,17 +81,20 @@
 
     </div>
 
-    {%- block footer %}
-    <div class="footer">
+    {% block footer %}
+    <div class="footer group">
         <div class="container">
-
-        <ul>
-            <li><a href="{{ url_for('general.contact') }}">Kontakt</a></li><li><a href="{{ url_for('general.gdpr') }}">GDPR</a></li>
-        </ul>
-        <span>&copy; 2020 IP development, s.r.o.</span>
+            <div class="nav-left">
+                <a href="https://aktivity.ipcentrum.sk">prejsť na aktivity &rarr;</a>
+            </div>
+            <div class="nav-right">
+                <ul>
+                    <li><a href="{{ url_for('general.contact') }}">Kontakt</a></li><li><a href="{{ url_for('general.gdpr') }}">GDPR</a></li>
+                </ul>
+                <span>&copy; 2020 IP development, s.r.o.</span>
+            </div>
         </div>
-
     </div>
-    {%- endblock footer %}
+    {% endblock footer %}
 {% endblock content %}
 

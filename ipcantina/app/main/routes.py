@@ -23,7 +23,7 @@ from db.config import config
 # TODO
 #  feedback kontaktny formular
 #  pdf generovanie
-
+ # pagination first hide then show on pageload
 
 def login_required(role=UserRole.BASIC):
     def login_wrapper(fn):

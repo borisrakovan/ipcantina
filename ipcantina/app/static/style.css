@@ -66,6 +66,15 @@ h1 {
     margin: 0 6px;
     content: '/';
 }
+
+.nav-left {
+    float: left;
+}
+
+.nav-right {
+    float: right;
+}
+
 /*.footer li a {
     color: #9d9d9d;
 }*/
