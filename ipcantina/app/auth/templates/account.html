@@ -30,6 +30,9 @@
             <a href="{{ url_for('auth.delete_account') }}" class="btn btn-danger">Zrušiť konto</a>
         </div>
     </div>
-
-
+<script>
+    $(document).ready(function() {
+        $('.readonly input').prop('readonly', true);
+    });
+</script>
 {% endblock %}

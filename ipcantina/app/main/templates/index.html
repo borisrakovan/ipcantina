@@ -1,17 +1,21 @@
 {% extends "base.html" %}
 
 {% block app_content %}
-    <p class="welcome">Vitajte v novom objednávacom systéme obedov pre IP Centrum.</p>
-    <div class="panel panel-default">
-        <div class="panel-body menu-desc">
-            <p>
-                {{ instructions|safe }}
-            </p>
-            <p>
-                <a class="" data-toggle="collapse" href="#allergens" role="button" aria-expanded="false" aria-controls="allergens">Zoznam alergénov</a>
-            </p>
-            <div class="collapse" id="allergens">
-                <div class="card card-body">
+    <h1>Objednávanie obedov</h1>
+    <p class="welcome">Vitajte v objednávacom systéme obedov pre IP Centrum.</p>
+    <div class="bg-secondary my-2 p-3 px-4">
+        <!--<div class="bg-gray my-2 p-2 text-white">-->
+        <p>
+            {{ instructions|safe }}
+        </p>
+        <p>
+            <a class="btn btn-sm btn-cyan" data-toggle="collapse" href="#allergens" role="button" aria-expanded="false" aria-controls="collapseExample">
+            Zoznam alergénov
+            </a>
+        </p>
+        <div class="collapse" id="allergens">
+            <div class="card card-body p-0">
+                <p>
                     <b>1.</b> Obilniny obsahujúce lepok ( t. j. pšenica, raž, jačmeň, ovos, špalda, kamut a výrobky z nich),
                     <b>2.</b> Kôrovce a výrobky z nich, <b>3.</b> Vajcia a výrobky z nich, <b>4.</b> Ryby a výrobky z nich,
                     <b>5.</b> Arašidy a výrobky z nich, <b>6.</b> Sójové zrná a výrobky z nich, <b>7.</b> Mlieko a výrobky z neho,
@@ -20,82 +24,93 @@
                     <b>10.</b> Horčica a výrobky z nej, <b>11.</b> Sezamové semená a výrobky z nich, <b>12.</b> Oxid siričitý
                     a siričitany v koncentráciách vyšších ako 10 mg/kg alebo 10mg/l vyjadrené ako SO2, <b>13.</b> Vlčí bôb
                     a výrobky z neho, <b>14.</b> Mäkkýše a výrobky z nich
-                </div>
+                </p>
             </div>
         </div>
     </div>
-    <div class="menu-heading">
-        <h1>Týždenné menu <span class="nowrap">{{ utils.monday_to_friday_str() }}</span><a href="http://www.ipdevelopment.sk/letak_cantina.pdf" target="_blank" class="badge" id="pdf">PDF</a></h1>
-    </div>
 
-    {% if menu is not none %}
-    <div class="group">
-        <div class="col-desc">
-            <ul>
-                <li>online cena</li>
-                <li>množstvo</li>
-                <li>so sebou</li>
-            </ul>
+    <div class="content-section">
+        <h2>
+            Týždenné menu
+            <span class="text-nowrap">
+                {{ utils.monday_to_friday_str() }}
+            </span>
+            <a href="http://www.ipdevelopment.sk/letak_cantina.pdf" target="_blank" class="">
+                PDF
+            </a>
+        </h2>
+
+        {% if menu is not none %}
+        <div class="group">
+            <div class="col-desc">
+                <ul>
+                    <li>online cena</li>
+                    <li>množstvo</li>
+                    <li>so sebou</li>
+                </ul>
+            </div>
         </div>
-    </div>
-    <hr id="first-hr">
-    <form action="" method="post" novalidate>
-        {{ form.hidden_tag() }}
-        <p>
-            {% for day in range(menu|length) %}
-                <h3>{{ utils.svk_weekday_from_int(day) }}</h3>
-                <div class="menu-day">
-                {% if menu[day] is not none %}
-                    {% if menu[day]['soup'] is not none %}
-                        <b style="visibility: hidden;">P:</b>
-                         <span class="portion-size"> &nbsp;{{ menu[day]['soup'].portion }}&nbsp;</span>
-                       {{ menu[day]['soup'].description }}
-                        {% if menu[day]['soup'].allergens %}
-                        <span class="allergens">/{{ menu[day]['soup'].allergens }}/</span><br>
+        <hr id="first-hr">
+        <form action="" method="post" novalidate>
+            {{ form.hidden_tag() }}
+            <p>
+                {% for day in range(menu|length) %}
+                    <h3>{{ utils.svk_weekday_from_int(day) }}</h3>
+                    <div class="menu-day">
+                    {% if menu[day] is not none %}
+                        {% if menu[day]['soup'] is not none %}
+                            <b style="visibility: hidden;">P:</b>
+                             <span class="portion-size"> &nbsp;{{ menu[day]['soup'].portion }}&nbsp;</span>
+                           {{ menu[day]['soup'].description }}
+                            {% if menu[day]['soup'].allergens %}
+                            <span class="allergens">/{{ menu[day]['soup'].allergens }}/</span><br>
+                            {% endif %}
                         {% endif %}
-                    {% endif %}
-                    {% with field = form.fields[day] %}
-                        {{ field.hidden_tag() }}
-                        {% with meals = menu[day]['meals'] %}
-                            {% for i in range(meals|length) %}
-                                <div class="menu-line group">
-                                    <b>{{ meals[i].label }}:</b> &nbsp;<span class="portion-size">{{ meals[i].portion }}&nbsp;</span>
-                                    {{ meals[i].description }}
-                                    {% if meals[i].allergens %}<span class="allergens">/{{ meals[i].allergens }}/</span>{% endif %}
-                                    {{ field.subfields[i].hidden_tag() }}
-                                    <div class="meal-field-group{% if utils.deadline_passed(meals[i].date) %} inactive{% endif %}">
-                                        <span class="price-tag"><em><span>{{ "%.2f" % (meals[i].price)}}</span> &euro;</em></span>
-                                    <!--<div class="meal-field-group">-->
-                                        {{ field.subfields[i].amount(size=1) }}
-                                        <!--{{ field.subfields[i].take_away(size=1, **{'disabled':'disabled'}) }}-->
-                                        {{ field.subfields[i].take_away(size=1, class_='take-away') }}
-                                        <span class="unit-price" style="display: none;">{{ "%.2f" % (meals[i].price)}}</span>
+                        {% with field = form.fields[day] %}
+                            {{ field.hidden_tag() }}
+                            {% with meals = menu[day]['meals'] %}
+                                {% for i in range(meals|length) %}
+                                    <div class="menu-line group">
+                                        <b>{{ meals[i].label }}:</b> &nbsp;<span class="portion-size">{{ meals[i].portion }}&nbsp;</span>
+                                        {{ meals[i].description }}
+                                        {% if meals[i].allergens %}<span class="allergens">/{{ meals[i].allergens }}/</span>{% endif %}
+                                        {{ field.subfields[i].hidden_tag() }}
+                                        <div class="meal-field-group{% if utils.deadline_passed(meals[i].date) %} inactive{% endif %}">
+                                            <span class="price-tag"><em><span>{{ "%.2f" % (meals[i].price)}}</span> &euro;</em></span>
+                                        <!--<div class="meal-field-group">-->
+                                            {{ field.subfields[i].amount(size=1) }}
+                                            <!--{{ field.subfields[i].take_away(size=1, **{'disabled':'disabled'}) }}-->
+                                            {{ field.subfields[i].take_away(size=1, class_='take-away') }}
+                                            <span class="unit-price" style="display: none;">{{ "%.2f" % (meals[i].price)}}</span>
+                                        </div>
                                     </div>
-                                </div>
-                                {% for error in field.subfields[i].amount.errors %}
-                                    <span style="color: red;">{{ error }}</span>
+                                    {% for error in field.subfields[i].amount.errors %}
+                                        <span style="color: red;">{{ error }}</span>
+                                    {% endfor %}
                                 {% endfor %}
-                            {% endfor %}
+                            {% endwith %}
                         {% endwith %}
-                    {% endwith %}
-                {% else %}
-                    {{ form.fields[day].hidden_tag() }}
-                    {% for field in form.fields[day].subfields %}
-                        {{ field.hidden_tag() }}
-                    {% endfor %}
-                    <p><em>Zatvorené</em></p>
-                {% endif %}
-                </div>
-            <hr>
-            {% endfor %}
-        </p>
+                    {% else %}
+                        {{ form.fields[day].hidden_tag() }}
+                        {% for field in form.fields[day].subfields %}
+                            {{ field.hidden_tag() }}
+                        {% endfor %}
+                        <p><em>Zatvorené</em></p>
+                    {% endif %}
+                    </div>
+                <hr>
+                {% endfor %}
+            </p>
 
-        <p id="submit-order" class="group">{{ form.submit() }}</p>
+            <p id="submit-order" class="group">{{ form.submit() }}</p>
 
-    </form>
+        </form>
 
-    {% else %}
-    <p>Menu na daný týždeň bude nahraté čoskoro. Ospravedlňujeme sa za čakanie.</p>
-    {% endif %}
+        {% else %}
+        <p class="lead">Menu na daný týždeň bude nahraté čoskoro. Ospravedlňujeme sa za čakanie.</p>
+        {% endif %}
+    </div>
 
+
+    <script src="{{url_for('static', filename='js/cantina.js')}}"></script>
 {% endblock %}

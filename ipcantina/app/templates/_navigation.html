@@ -1,0 +1,45 @@
+<header class="header header-dark bg-dark header-sticky">
+    <div class="container">
+        <div class="row">
+            <nav class="navbar navbar-expand-lg navbar-dark">
+                <a href="{{ url_for('main.index') }}" class="navbar-brand order-1 order-lg-1"><img
+                        src="{{ url_for('static', filename='assets/logo.svg') }}" alt="iP development"></a>
+                <button class="navbar-toggler order-2 collapsed" type="button" data-toggle="collapse"
+                        data-target=".navbar-collapse" aria-controls="navbarMenu" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse order-2 order-lg-2 collapse" id="navbarMenu" style="">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('main.index') }}">Domov</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('main.orders') }}">Objednávky</a></li>
+                        {% if not current_user.is_anonymous %}
+                            {% if current_user.is_admin() %}
+                            <li class="nav-item"><a class="nav-link" href="{{ url_for('main.admin') }}">Admin</a></li>
+                            {% endif %}
+                        {% endif %}
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#!" id="navbarDropdown-10" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Prejsť na
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown-10">
+                                <li><a class="dropdown-item" href="#">Hlavná stránka</a></li>
+                                <li><a class="dropdown-item" href="#">Aktivity</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav ml-auto">
+                        {% if current_user.is_anonymous %}
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.login') }}">Prihlásiť sa</a></li>
+                        {% else %}
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.account') }}">Účet</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.logout') }}">Odhlásiť sa</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>

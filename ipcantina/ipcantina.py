@@ -1,8 +1,7 @@
 import os
 import sys
 from app import create_app, login_manager
-import click
-# from app.models import User, Order, Meal, Company
+
 
 # sys.path.append('C:\\Users\\brako\\Desktop\\Work\\pergamon\\ip\\ipdb')
 # sys.path.append('/mnt/c/Users/brako/Desktop/Work/pergamon/ip/ipdb')
