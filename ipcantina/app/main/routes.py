@@ -84,11 +84,11 @@ def index():
                     num_orders += 1
                     session.add(order)
         if num_orders == 0:
-            flash("Nebolo vybrané žiadne jedlo.", category='info')
+            flash("Nebolo vybrané žiadne jedlo.", category='danger')
             return redirect(url_for('main.index'))
 
         session.commit()
-        flash("Vaša objednávka bola úspešne vykonaná.", category='success')
+        flash("Vaša objednávka bola úspešne vykonaná.", category='info')
         return redirect(url_for('main.index'))
 
     return render_template('index.html', title='Domov', instructions=load_instructions(),
@@ -112,6 +112,7 @@ def orders():
         Order.query.filter(
             Order.user_id == current_user.id, Order.meal_id == meal_id, Order.take_away == take_away).delete()
         session.commit()
+        flash("Objednávka bola úspešne zrušená.", category="info")
         return redirect(url_for('main.orders'))
 
     orders_summary = Order.get_user_orders_summary(current_user, current_app.config['ORDERLIST_NUM_WEEKS'])
@@ -121,7 +122,7 @@ def orders():
     return render_template('orders.html', title='Objednávky', summary=orders_summary, utils=DateUtils())
 
 
-@bp.route('/admins', methods=['GET', 'POST'])
+@bp.route('/admin', methods=['GET', 'POST'])
 @login_required(role=UserRole.ADMIN)
 def admin():
     form = AdminSettingsForm()
@@ -138,6 +139,7 @@ def admin():
 
     else:
         if 'upload' in request.form:
+            print(request.args, request.files, request.form)
             # check if the post request has the file part
             if 'file' not in request.files:
                 flash("HTTP request neobsahuje žiaden súbor.", category='danger')
@@ -168,7 +170,8 @@ def admin():
                 current_app.logger.info("Going go send menu update email.")
                 send_menu_notification_email()
 
-            flash("Súbor {} bol úspešne spracovaný. Prosím skontrolujte zmeny v menu na stránke.".format(file.filename), category='success')
+            flash("Súbor {} bol úspešne spracovaný. Prosím skontrolujte zmeny v menu na stránke.".format(file.filename),
+                  category='info')
 
             return redirect(url_for('main.admin'))
 
@@ -181,7 +184,7 @@ def admin():
                 price_C = round(form.price_C.data, 2)
                 update_prices(price_A, price_B, price_C)
 
-                flash("Zmeny boli úspešne uložené.", category='success')
+                flash("Zmeny boli úspešne uložené.", category='info')
             return redirect(url_for('main.admin'))
 
 

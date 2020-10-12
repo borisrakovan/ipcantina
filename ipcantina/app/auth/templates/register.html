@@ -3,9 +3,9 @@
 
 {% block app_content %}
     <h1>Registrácia</h1>
-    <div class="row" id="registration-form">
-        <div class="col-md-4">
-            {{ wtf.quick_form(form) }}
+    <div class="row">
+        <div class="col-md-8 col-lg-4">
+            {{ wtf.quick_form(form, button_map={'submit': 'teal'}) }}
         </div>
     </div>
 

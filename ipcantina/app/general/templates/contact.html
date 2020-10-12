@@ -1,16 +1,19 @@
 {% extends "base.html" %}
 
 {% block app_content %}
-
-<h1>Kontakt</h1>
-<div id="contact-info">
-    <p>
-    IP development, s.r.o.<br>
-    Elektrárenská 4<br>
-    831 04 Bratislava<br>
-    mob.: <a href="tel:0905610 ">0905 610 021</a><br>
-    e-mail: <a href="mailto:p.skoda@ipdevelopment.sk">p.skoda@ipdevelopment.sk</a>
-    </p>
+<h1 class="font-weight-light mb-2">Kontakt</h1>
+<div class="row gutter-4">
+    <div class="col-md-5 col-lg-4">
+        <span class="eyebrow">Adresa</span>
+        <p class="lead my-1 text-dark">IP development, s.r.o.<br>Elektrárenská 12901/4 <br>831 04 Bratislava</p>
+    </div>
+    <div class="col-md-5 col-lg-4">
+        <span class="eyebrow">Kontakt</span>
+        <p class="lead my-1 text-dark">
+            mob.: +421 905 610 021<br>
+            e-mail: p.skoda@ipdevelopment.sk
+        </p>
+    </div>
 </div>
-
 {% endblock %}
+

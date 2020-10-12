@@ -1,6 +1,6 @@
 $(document).ready(function() {
-
     $('.inactive input').attr('disabled', 'disabled');
+    $('.inactive input').siblings('.plus, .minus').css("opacity", 0.6)
 
     $('.minus').click(function () {
         var $input = $(this).parent().find('input');
@@ -29,10 +29,11 @@ $(document).ready(function() {
     });
 
     $('.incrementor input').change(function () {
-        var $price = $(this).parent().siblings('.price-tag').first().find('span');
+        var $wrapper = $(this).parent().parent()
+        var $price = $wrapper.siblings('.price-tag').first().find('span');
 
-        var unit = parseFloat($(this).parent().siblings('.unit-price').first().text());
-        var takeAway = $(this).parent().siblings('.take-away').first();
+        var unit = parseFloat($wrapper.siblings('.unit-price').first().text());
+        var takeAway = $wrapper.siblings('.take-away').first();
 
         var surcharge = 0.0;
         if (takeAway.is(':checked')) {
@@ -44,7 +45,7 @@ $(document).ready(function() {
     });
 
     $('.take-away').change(function() {
-        $input = $(this).siblings('.incrementor').first().children('input').first();
+        $input = $(this).siblings('div').first().children('.incrementor').first().children('input').first();
 
         $input.change();
 

@@ -2,96 +2,107 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 
 {% block app_content %}
-<h1>
-    Administrátorský panel
-</h1>
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h2 class="panel-title">Nahrať nové menu</h2>
-    </div>
-    <div class="panel-body">
-        <form method=post enctype=multipart/form-data >
-            <input type=file name=file class="file-input">
-            <input type=submit name='upload' value='Nahrať' class="btn btn-primary">
+    <h1>Administrátorský panel</h1>
+
+    <div class="content-section">
+        <h3>Nahrať nové menu</h3>
+        <form method="post" enctype="multipart/form-data">
+            <div class="custom-file">
+                <input type="file" name="file" class="custom-file-input" id="file-input" required>
+                <label class="custom-file-label" for="file-input">Vyberte súbor</label>
+            </div>
+            <input type=submit name='upload' value='Nahrať' id="submit" class="btn btn-cyan">
         </form>
+
     </div>
-</div>
-<hr>
 
-<div class="order-list">
-    <h3>Všetky objednávky</h3>
-    {% include '_order_list_header.html' %}
-    {% for weekly_summary in summary %}
-        <div class="week-order-list {% if loop.index == 1 %}active{% endif %}" id="{{ loop.index }}">
-            <span class="week-date-string" style="display: none">{{ weekly_summary.get_dates_string() }}</span>
-            {% include '_week_order_list_admin.html' %}
+    <div class="content-section">
+        <h3>Všetky objednávky</h3>
+        {% include '_order_list_header.html' %}
+        {% for weekly_summary in summary %}
+            <div class="week-order-list" style="display: none;" id="{{ loop.index }}">
+                <span class="week-date-string" style="display: none">{{ weekly_summary.get_dates_string() }}</span>
+                {% include '_week_order_list_admin.html' %}
+            </div>
+        {% endfor %}
+    </div>
+
+    <section class="content-section">
+        <h3>Nastavenia</h3>
+        <form action="" method="post" class="form" role="form">
+            {{ form.hidden_tag() }}
+
+            <div class="form-group mb-1">
+                {{ form.instructions.label }}<br>
+                {{ form.instructions(cols=30, rows=4, **{'class':'form-control'}) }}
+                <p class="text-muted">Zadávanie textu podporuje HTML formát</p>
+                {% for error in form.instructions.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+            <div class="form-group mb-1">
+                {{ form.price_A.label }}:
+                {{ form.price_A(size=6) }}
+                {% for error in form.price_A.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+
+            <div class="form-group mb-1">
+                {{ form.price_B.label }}:
+                {{ form.price_B(size=6) }}
+                {% for error in form.price_B.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+
+            <div class="form-group mb-1">
+                {{ form.price_C.label }}:
+                {{ form.price_C(size=6) }}
+                {% for error in form.price_C.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+
+            <p class="text-muted">
+                <span class="text-danger">Upozornenie:</span> zmeny v cenách naberú účinnosť až v nasledujúcom týždni.<br>
+                Zadané ceny sú ceny ešte pred online zľavou. Táto zľava bude automaticky odpočítaná pri online objednávkach.
+            </p>
+            <p>{{ form.submit(**{'class': "btn btn-cyan"}) }}</p>
+        </form>
+    </section>
+
+    <section class="content-section">
+        <h3>Zoznam užívateľov ({{ users|length }})</h3>
+        <div class="table-responsive">
+            <table class="table">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Meno</th>
+                        <th>Spoločnosť</th>
+                        <th>Email</th>
+                        <th>Tel. číslo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td><b>{{ user.first_name }} {{ user.surname }}</b></td>
+                        <td>{{ user.company.title }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.phone }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
-    {% endfor %}
-</div>
-
-<hr>
-<h3>Nastavenia</h3>
-<div class="row" id="admin-settings-form">
-    <form action="" method="post" class="form" role="form">
-        {{ form.hidden_tag() }}
-
-        <div class="form-group">
-            {{ form.instructions.label }}<br>
-            {{ form.instructions(cols=30, rows=4, **{'class':'form-control'}) }}
-            <p class="help-block">Zadávanie textu podporuje HTML formát</p>
-            {% for error in form.instructions.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </div>
-        <div class="form-group">
-            {{ form.price_A.label }}:
-            {{ form.price_A(size=6) }}
-            {% for error in form.price_A.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </div>
-
-        <div class="form-group">
-            {{ form.price_B.label }}:
-            {{ form.price_B(size=6) }}
-            {% for error in form.price_B.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </div>
-
-        <div class="form-group">
-            {{ form.price_C.label }}:
-            {{ form.price_C(size=6) }}
-            {% for error in form.price_C.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </div>
-
-        <p class="help-block">
-            Upozornenie: zmeny v cenách naberú účinnosť až v nasledujúcom týždni.<br>
-            Zadané ceny sú ceny ešte pred online zľavou. Táto zľava bude automaticky odpočítaná pri online objednávkach.
-        </p>
-        <p>{{ form.submit(**{'class': "btn btn-default"}) }}</p>
-    </form>
-</div>
-<hr>
-<h3>Zoznam užívateľov</h3>
-<table id="user-table">
-    <tr>
-        <th>Meno</th>
-        <th>Spoločnosť</th>
-        <th>Email</th>
-        <th>Tel. číslo</th>
-    </tr>
-    {% for user in users %}
-    <tr>
-        <td><b>{{ user.first_name }} {{ user.surname }}</b></td>
-        <td>{{ user.company.title }}</td>
-        <td>{{ user.email }}</td>
-        <td>{{ user.phone }}</td>
-    </tr>
-
-    {% endfor %}
-
-</table>
+    </section>
+    <!--Sets file name to custom file input widget-->
+    <script>
+        $('.custom-file-input').on('change', function() {
+           let fileName = $(this).val().split('\\').pop();
+           $(this).next('.custom-file-label').addClass("selected").html(fileName);
+        });
+    </script>
+    <script src="{{ url_for('static', filename='js/orders.js') }}"></script>
 {% endblock %}

@@ -1,7 +1,7 @@
 $(document).ready(function() {
-    var activeId = getActiveId();
+    var activeId = 1;
 
-    $('.week-order-list').not('#' + activeId).hide();
+    $('#' + activeId).addClass('active').show();
 
     handleHeader(activeId);
 
@@ -33,7 +33,7 @@ function handleHeader(activeId) {
         $('.prev-button').addClass('disabled');
     }
     var dateString = $('#' + activeId + ' .week-date-string').text();
-    $('.orderlist-header .week-date-string').text(dateString);
+    $('.order-list-header .week-date-string').text(dateString);
 
 }
 

@@ -9,17 +9,19 @@
     <p>
         Ak sa rozhodnete pokračovať, prosím zadajte svoje heslo na overenie identity.
     </p>
-    <div class="col-md-4" style="padding:0;">
-        <form action="" method="post" novalidate class="delete-account">
-            {{ form.hidden_tag() }}
-            <div class="form-group required">
-                {{ form.password.label() }}
-                {{ form.password(class_="form-control", size=32) }}
-            </div>
+    <div class="row">
+        <div class="col-md-8 col-lg-4" >
+            <form action="" method="post" novalidate>
+                {{ form.hidden_tag() }}
+                <div class="form-group required">
+                    {{ form.password.label() }}
+                    {{ form.password(class_="form-control", size=32) }}
+                </div>
 
-            {{ form.submit(class_="btn btn-danger btn-m") }}
-            <a href="{{ url_for('auth.account') }}" class="btn btn-primary" role="button">Späť</a>
-        </form>
+                {{ form.submit(class_="btn btn-danger") }}
+                <a href="{{ url_for('auth.account') }}" class="btn btn-cyan ml-1" id="submit" role="button">Späť</a>
+            </form>
 
+        </div>
     </div>
 {% endblock %}

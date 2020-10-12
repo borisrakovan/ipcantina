@@ -2,12 +2,21 @@
 
 {% block app_content %}
     <h1>Objednávanie obedov</h1>
-    <p class="welcome">Vitajte v objednávacom systéme obedov pre IP Centrum.</p>
+    <p class="lead">Vitajte v objednávacom systéme obedov pre IP Centrum.</p>
     <div class="bg-secondary my-2 p-3 px-4">
         <!--<div class="bg-gray my-2 p-2 text-white">-->
         <p>
             {{ instructions|safe }}
         </p>
+
+        <h3>Cenník</h3>
+        <h5>
+            menu A, B: <span class="text-danger">4,00 € </span>/<span class="text-success"> 3,70  €</span>
+        </h5>
+        <h5>
+            menu C: <span class="text-danger">3,80 € </span>/<span class="text-success"> 3,50  €</span>
+        </h5>
+        <p><em>Ceny uvedené zelenou farbou platia pri online objednávke.</em></p>
         <p>
             <a class="btn btn-sm btn-cyan" data-toggle="collapse" href="#allergens" role="button" aria-expanded="false" aria-controls="collapseExample">
             Zoznam alergénov
@@ -30,82 +39,20 @@
     </div>
 
     <div class="content-section">
-        <h2>
-            Týždenné menu
-            <span class="text-nowrap">
-                {{ utils.monday_to_friday_str() }}
-            </span>
-            <a href="http://www.ipdevelopment.sk/letak_cantina.pdf" target="_blank" class="">
-                PDF
-            </a>
-        </h2>
+        <div class="mb-2 d-flex flex-column flex-lg-row align-items-center justify-content-center justify-content-lg-start">
+                <h2 class="mb-0">
+                    Týždenné menu
+                    <span class="text-nowrap d-md-inline d-block mt-1 mt-md-0">
+                        {{ utils.monday_to_friday_str() }}
+                    </span>
+                </h2>
+                <a href="http://www.ipdevelopment.sk/letak_cantina.pdf" target="_blank" class="btn btn-sm btn-teal mx-2 my-1 my-lg-0">
+                    PDF
+                </a>
+        </div>
 
         {% if menu is not none %}
-        <div class="group">
-            <div class="col-desc">
-                <ul>
-                    <li>online cena</li>
-                    <li>množstvo</li>
-                    <li>so sebou</li>
-                </ul>
-            </div>
-        </div>
-        <hr id="first-hr">
-        <form action="" method="post" novalidate>
-            {{ form.hidden_tag() }}
-            <p>
-                {% for day in range(menu|length) %}
-                    <h3>{{ utils.svk_weekday_from_int(day) }}</h3>
-                    <div class="menu-day">
-                    {% if menu[day] is not none %}
-                        {% if menu[day]['soup'] is not none %}
-                            <b style="visibility: hidden;">P:</b>
-                             <span class="portion-size"> &nbsp;{{ menu[day]['soup'].portion }}&nbsp;</span>
-                           {{ menu[day]['soup'].description }}
-                            {% if menu[day]['soup'].allergens %}
-                            <span class="allergens">/{{ menu[day]['soup'].allergens }}/</span><br>
-                            {% endif %}
-                        {% endif %}
-                        {% with field = form.fields[day] %}
-                            {{ field.hidden_tag() }}
-                            {% with meals = menu[day]['meals'] %}
-                                {% for i in range(meals|length) %}
-                                    <div class="menu-line group">
-                                        <b>{{ meals[i].label }}:</b> &nbsp;<span class="portion-size">{{ meals[i].portion }}&nbsp;</span>
-                                        {{ meals[i].description }}
-                                        {% if meals[i].allergens %}<span class="allergens">/{{ meals[i].allergens }}/</span>{% endif %}
-                                        {{ field.subfields[i].hidden_tag() }}
-                                        <div class="meal-field-group{% if utils.deadline_passed(meals[i].date) %} inactive{% endif %}">
-                                            <span class="price-tag"><em><span>{{ "%.2f" % (meals[i].price)}}</span> &euro;</em></span>
-                                        <!--<div class="meal-field-group">-->
-                                            {{ field.subfields[i].amount(size=1) }}
-                                            <!--{{ field.subfields[i].take_away(size=1, **{'disabled':'disabled'}) }}-->
-                                            {{ field.subfields[i].take_away(size=1, class_='take-away') }}
-                                            <span class="unit-price" style="display: none;">{{ "%.2f" % (meals[i].price)}}</span>
-                                        </div>
-                                    </div>
-                                    {% for error in field.subfields[i].amount.errors %}
-                                        <span style="color: red;">{{ error }}</span>
-                                    {% endfor %}
-                                {% endfor %}
-                            {% endwith %}
-                        {% endwith %}
-                    {% else %}
-                        {{ form.fields[day].hidden_tag() }}
-                        {% for field in form.fields[day].subfields %}
-                            {{ field.hidden_tag() }}
-                        {% endfor %}
-                        <p><em>Zatvorené</em></p>
-                    {% endif %}
-                    </div>
-                <hr>
-                {% endfor %}
-            </p>
-
-            <p id="submit-order" class="group">{{ form.submit() }}</p>
-
-        </form>
-
+            {% include '_menu_form.html' %}
         {% else %}
         <p class="lead">Menu na daný týždeň bude nahraté čoskoro. Ospravedlňujeme sa za čakanie.</p>
         {% endif %}

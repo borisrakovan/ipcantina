@@ -1,22 +1,27 @@
 
 {% if weekly_summary.orders %}
-<ul class="list-group">
+<div class="list-group">
     {% for i in range(5) %}
-    <li class="list-group-item">
-        <span class="yellow"><b>{{ weekly_summary.get_day_string(i) }}</b></span>
-        {% for order in weekly_summary.orders[i] %}
-            <div class="group">
-                <b>{{ order.user.first_name }} {{ order.user.surname }}</b> -
-                {{ order.meal.label }}
-                <div class="order-summary-right">
-                    <span class="item"> {{ order.amount }}ks</span>
-                    <span class="item">{{ "%.2f" % (order.price) }} &euro;</span>
+        {% if weekly_summary.orders[i] %}
+        <span class="section-title mt-1">{{ weekly_summary.get_day_string(i) }}</span>
+            {% for order in weekly_summary.orders[i] %}
+            <a class="list-group-item list-group-item-action bg-light">
+                <div class="row text-center">
+                    <div class="col-12 col-lg-10 align-center justify-content-lg-start">
+                        <b>{{ order.user.first_name }} {{ order.user.surname }}</b>
+                        &nbsp;-
+                        {{ order.meal.label }}
+                    </div>
+                    <div class="col-12 col-lg-2 align-center">
+                        <span class="mx-1">{{ order.amount }}ks</span>
+                        <span class="mx-1">{{ "%.2f" % (order.price) }} &euro;</span>
+                    </div>
                 </div>
-            </div>
-        {% endfor %}
-    </li>
+            </a>
+            {% endfor %}
+        {% endif %}
     {% endfor %}
-</ul>
+</div>
 {% else %}
     <p>Pre daný týždeň neexistujú žiadne objednávky.</p>
 {% endif %}

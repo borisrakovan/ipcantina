@@ -4,30 +4,31 @@
 {% block app_content %}
     <h1>Údaje</h1>
     <div class="row">
-        <div class="col-md-4">
-            {{ wtf.quick_form(form, extra_classes="readonly") }}
+        <div class="col-md-8 col-lg-4">
+            {{ wtf.quick_form(form, button_map={'submit': 'teal'}, extra_classes="readonly mb-2") }}
+             <a href="{{ url_for('auth.edit_profile') }}" class="">Upraviť údaje</a><br>
         </div>
     </div>
-     <a href="{{ url_for('auth.edit_profile') }}" class="">Upraviť údaje</a><br>
+    <hr>
+    <div class="content-section my-3">
 
-    <!--<h1>Notifikácie</h1>-->
+        <h1>Emailové upozornenia</h1>
+        <form action="" method="post" class="form" role="form">
+            {{ email_form.hidden_tag() }}
+            <div class="checkbox">
+                <label>
+                    {{ email_form.email_subscription() }}&nbsp;
+                    {{ email_form.email_subscription.label }}
+                </label>
+            </div>
+            {{ email_form.submit(**{"class_":"btn btn-cyan"} ) }}
+        </form>
+    </div>
     <hr>
-    <h1>Emailové upozornenia</h1>
-    <form action="" method="post" class="form" role="form">
-        {{ email_form.hidden_tag() }}
-        <div class="checkbox">
-            <label>
-                {{ email_form.email_subscription() }}
-                {{ email_form.email_subscription.label }}
-            </label>
-        </div>
-        {{ email_form.submit(**{"class_":"btn btn-primary"} ) }}
-    </form>
-    <hr>
-    <div class="account-action">
-        <div class="inline">
-            <a href="{{ url_for('auth.change_password') }}" class="btn btn-primary">Zmeniť heslo</a>
-            <a href="{{ url_for('auth.delete_account') }}" class="btn btn-danger">Zrušiť konto</a>
+    <div class="row">
+        <div class="col-md-8 col-lg-4">
+            <a href="{{ url_for('auth.change_password') }}" class="text-center btn btn-cyan">Zmeniť heslo</a>
+            <a href="{{ url_for('auth.delete_account') }}" class="text-center btn btn-danger ml-1">Zrušiť konto</a>
         </div>
     </div>
 <script>

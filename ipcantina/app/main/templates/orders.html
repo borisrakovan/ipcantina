@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 
 {% block app_content %}
-    <h1>Vaše objednávky</h1>
+    <h1 class="mb-2">Vaše objednávky</h1>
     {% include '_order_list_header.html' %}
 
     {% for weekly_summary in summary %}
-        <div class="week-order-list {% if loop.index == 1 %}active{% endif %}" id="{{ loop.index }}">
+        <div class="week-order-list" style="display: none;" id="{{ loop.index }}">
             <span class="week-date-string" style="display: none">{{ weekly_summary.get_dates_string() }}</span>
             {% include '_week_order_list.html' %}
         </div>
     {% endfor %}
-<script src="{{ url_for('static', filename='js/orders.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/orders.js') }}"></script>
 {% endblock %}
