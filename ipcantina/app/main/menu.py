@@ -59,12 +59,17 @@ class MenuUtils:
         day = 0
         default_prices = MenuUtils.get_default_prices()
         for row in range(sheet.nrows):
+            closed = False
             for col in range(sheet.ncols):
                 if str(sheet.cell_value(row, col)).lower().strip() in closed_tags:
                     menu[day]['open'] = False
+                    print("closed")
+                    closed = True
                     day += 1
-                    continue
-
+                    break
+            if closed: continue
+            print("got here")
+            print(sheet.nrows)
             if sheet.cell_value(row, 0).strip() == 'A':
                 menu[day]['open'] = True
                 soup = sheet.cell_value(row-1, 2).strip()
@@ -103,7 +108,6 @@ class MenuUtils:
                                                "description": desc, "allergens": allergens, "price": price})
                 row += 3
                 day += 1
-
         if day < 5:
             raise RuntimeError("Chýbajúce menu pre aspoň jeden deň v týždni.")
 

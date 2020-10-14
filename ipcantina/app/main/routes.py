@@ -138,7 +138,6 @@ def admin():
 
     else:
         if 'upload' in request.form:
-            print(request.args, request.files, request.form)
             # check if the post request has the file part
             if 'file' not in request.files:
                 flash("HTTP request neobsahuje žiaden súbor.", category='danger')

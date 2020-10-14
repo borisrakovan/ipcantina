@@ -41,7 +41,7 @@
 .text-sm {
     font-size: 0.8em;
 }
-
+/*
 .incrementor {
 	color: black;
 }
@@ -75,6 +75,7 @@
     margin: 0 4px;
 }
 
+*/
 input[disabled="disabled"] {
     opacity: 0.6;
 }
@@ -87,7 +88,7 @@ input[disabled="disabled"] {
     justify-content: space-between;
     flex: 0;
     width: 100%;
-    font-size: 1rem;
+    font-size: 1.05rem;
     font-family: "Titillium Web", sans-serif;
     font-weight: 600;
     text-transform: uppercase;
@@ -114,6 +115,10 @@ input[type="checkbox"][readonly] {
   opacity: 0.6;
 }
 
+.breadcrumb-item + .breadcrumb-item::before {
+    content: "/";
+}
+
 /* lg */
 @media (max-width: 1200px) {
     .menu-section-title::before {
@@ -125,13 +130,24 @@ input[type="checkbox"][readonly] {
     .menu-section-title.current::before {
         border-top: 1px solid #20c997;
     }
+
+    .menu-section-title {
+        top: 10px;
+    }
+
     .menu-row {
-        padding: 15px 0;
+        padding: 20px 0;
         border: 1px solid #dddddd;
+        border-top: none;
     }
     .menu-row>div:first-child {
         border-bottom: 1px solid #dddddd;
         padding-bottom: 15px;
+    }
+    .soup {
+        border: 1px solid #dddddd;
+        border-top: none;
+        padding: 20px 0;
     }
 }
 .text-black {

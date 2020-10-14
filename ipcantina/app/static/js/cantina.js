@@ -1,8 +1,9 @@
 $(document).ready(function() {
     $('.inactive input').attr('disabled', 'disabled');
-    $('.inactive input').siblings('.plus, .minus').css("opacity", 0.6)
+    $('.inactive input').parent().css("opacity", 0.6)
+    $('.inactive input').siblings('.counter-minus, .counter-plus').css("pointer-events", 'none')
 
-    $('.minus').click(function () {
+    $('.counter-minus').click(function () {
         var $input = $(this).parent().find('input');
         if ($input.attr('disabled') == 'disabled') {
             return;
@@ -16,7 +17,7 @@ $(document).ready(function() {
 
         return false;
     });
-    $('.plus').click(function () {
+    $('.counter-plus').click(function () {
         var $input = $(this).parent().find('input');
         if ($input.attr('disabled') == 'disabled') {
             return;
@@ -28,13 +29,12 @@ $(document).ready(function() {
         return false;
     });
 
-    $('.incrementor input').change(function () {
-        var $wrapper = $(this).parent().parent()
-        var $price = $wrapper.siblings('.price-tag').first().find('span');
+    $('.counter input').change(function () {
+        var $wrapper = $(this).parent().parent();
+        var $price = $wrapper.siblings('.price-tag').find('.price').first();
 
         var unit = parseFloat($wrapper.siblings('.unit-price').first().text());
-        var takeAway = $wrapper.siblings('.take-away').first();
-
+        var takeAway = $wrapper.siblings('.take-away').first().find('input').first();;
         var surcharge = 0.0;
         if (takeAway.is(':checked')) {
             surcharge = 0.3;
@@ -44,15 +44,13 @@ $(document).ready(function() {
         $price.text(newPrice.toFixed(2));
     });
 
-    $('.take-away').change(function() {
-        $input = $(this).siblings('div').first().children('.incrementor').first().children('input').first();
-
+    $('.take-away input').change(function() {
+        $input = $(this).parent().parent().siblings('.incrementor').first().find('input').first();
         $input.change();
-
     });
 
-    // temporary: implicitly checked
-    $('.take-away').prop('readonly', true);
+//     temporary: implicitly checked
+    $('.take-away input').prop('readonly', true);
     $('.incrementor input').each(function() {
         $(this).change();
     });

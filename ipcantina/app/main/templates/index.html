@@ -52,39 +52,39 @@
                             <h2 class="mb-0">
                                 <button class="btn btn-link" type="button" data-toggle="collapse"
                                         data-target="#collapse-3-1" aria-expanded="true" aria-controls="collapse-3-1">
-                                    Inštrukcie
+                                    Inštrukcie - obmedzená prevádzka
                                 </button>
                             </h2>
                         </div>
                         <div id="collapse-3-1" class="collapse show" aria-labelledby="heading-3-1"
                              data-parent="#accordion-3">
                             <div class="card-body">
-                                <p>
-                                    {{ instructions|safe }}
-                                </p>
-                                <!--<ul class="list-group list-group-minimal">-->
-                                <!--<li class="list-group-item d-flex align-items-center">-->
-                                <!--<i class="icon-Add fs-22 text-primary"></i>-->
-                                <!--<span>pri online objednávke jedla je cena o 30 centov nižšia</span>-->
-                                <!--</li>-->
-                                <!--<li class="list-group-item d-flex align-items-center">-->
-                                <!--<i class="icon-Add fs-22 text-primary"></i>-->
-                                <!--<span>objednávky je možné uskutočniť alebo zrušiť do 15-tej hodiny predošlého pracovného dňa</span>-->
-                                <!--</li>-->
-                                <!--<li class="list-group-item d-flex align-items-center">-->
-                                <!--<i class="icon-Add fs-22 text-primary"></i>-->
-                                <!--<span>objednávka jedla (pokiaľ nebude zrušená do 15:00) je záväzná</span>-->
-                                <!--</li>-->
-                                <!--<li class="list-group-item d-flex align-items-center">-->
-                                <!--<i class="icon-Add fs-22 text-primary"></i>-->
-                                <!--<span>menu na ďalší týždeň bude zverejnené vždy vo štvrtok aktuálneho týždňa po 15-tej hodine</span>-->
-                                <!--</li>-->
-                                <!--<li class="list-group-item d-flex align-items-center">-->
-                                <!--<i class="icon-Add fs-22 text-primary"></i>-->
-                                <!--<span>pri voľbe "so sebou" bude jedlo automaticky zabalené. Cena balenia je 0,30 €</span>-->
-                                <!--</li>-->
-                                <!--</ul>-->
-                                <!--<br>-->
+                                <!--<p>-->
+                                <!--{{ instructions|safe }}-->
+                                <!--</p>-->
+                                <ul class="list-group list-group-minimal">
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="icon-plus fs-22 text-primary"></i>
+                                        <span>cena za zabalené jedlo v menu boxoch (aj s polievkou) počas obmedzenej prevádzky bude jednotná: <b>4,50 € </b></span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="icon-plus fs-22 text-primary"></i>
+                                        <span>objednávky je možné uskutočniť alebo zrušiť <strong>do 15-tej</strong> hodiny predošlého pracovného dňa</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="icon-plus fs-22 text-primary"></i>
+                                        <span>objednávka jedla (pokiaľ nebude zrušená do 15:00) je záväzná</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="icon-plus fs-22 text-primary"></i>
+                                        <span>menu na ďalší týždeň bude zverejnené vždy vo štvrtok aktuálneho týždňa po 15-tej hodine</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <i class="icon-plus fs-22 text-primary"></i>
+                                        <span>objednané jedlo bude vydávané cez pult umiestnený vo vchode do cantíny od <b>11:00-12:00</b></span>
+                                    </li>
+                                </ul>
+                                <br>
                                 <h6 class="">Cenník</h6>
                                 <ul class="mb-0">
                                     <li class="d-flex align-items-center">
@@ -93,16 +93,16 @@
                                         </span>
                                     </li>
                                     <!--<li class="d-flex align-items-center">-->
-                                        <!--<span class="ml-1 pricelist-item"><b>menu A, B:</b>-->
-                                            <!--<span class="text-danger">4,00 € </span>/-->
-                                            <!--<span class="text-success"> 3,70  €</span>-->
-                                        <!--</span>-->
+                                    <!--<span class="ml-1 pricelist-item"><b>menu A, B:</b>-->
+                                    <!--<span class="text-danger">4,00 € </span>/-->
+                                    <!--<span class="text-success"> 3,70  €</span>-->
+                                    <!--</span>-->
                                     <!--</li>-->
                                     <!--<li class="d-flex align-items-center">-->
-                                        <!--<span class="ml-1 pricelist-item"><b>menu C:</b>-->
-                                            <!--<span class="text-danger">3,80 € </span>/<span-->
-                                                    <!--class="text-success"> 3,50  €</span>-->
-                                        <!--</span>-->
+                                    <!--<span class="ml-1 pricelist-item"><b>menu C:</b>-->
+                                    <!--<span class="text-danger">3,80 € </span>/<span-->
+                                    <!--class="text-success"> 3,50  €</span>-->
+                                    <!--</span>-->
                                     <!--</li>-->
                                 </ul>
                                 <!--<span class="small ml-1"><em>Ceny uvedené zelenou farbou platia pri online objednávke.</em></span>-->
@@ -158,73 +158,30 @@
     </div>
 </section>
 <section class="pt-0">
-    <div class="container">
-        <div class="row mb-1 d-none d-lg-flex justify-content-center">
-            <div class="col-lg-8">
-                <div class="row pr-6">
-                    <div class="col-lg-6"><span>Pondelok</span></div>
-                    <div class="col-lg-2 text-center"><span class="eyebrow">online cena</span></div>
-                    <div class="col-lg-2 text-center"><span class="eyebrow">množstvo</span></div>
-                    <div class="col-lg-2 text-center"><span class="eyebrow">so sebou</span></div>
-                </div>
-            </div>
-        </div>
-        <div class="row gutter-2 gutter-lg-4 justify-content-center">
-            <div class="col-lg-8 cart-item-list">
-                <div class="m-1 d-none d-block d-md-none">
-                    <h2>Pondelok</h2>
-                </div>
-                <!-- jedno jedlo  -->
-                <div class="menu-item">
-                    <div class="row align-items-center">
-                        <div class="col-12 col-lg-6">
-                            <div class="media media-product">
-                                <div class="media-body">
-                                    <h5 class="media-title mt-1"><b>A:</b>120g Vyp.kurací rezeň s mozzarelou so
-                                        zemiakovou kašou</h5>
-                                    <span class="small">/1,3,7/</span>
-                                </div>
-                            </div>
+    {% if menu is not none %}
+        <div class="container">
+            <div class="row gutter-0 justify-content-end d-none d-lg-flex px-2">
+                <div class="col-4">
+                    <div class="row gutter-0 text-center">
+
+                        <div class="col-4">
+                            <span class="eyebrow">online cena</span>
                         </div>
-                        <div class="col-4 col-lg-2 text-center">
-                            <span class="menu-item-price">3.70 €</span>
+                        <div class="col-4">
+                            <span class="eyebrow">množstvo</span>
                         </div>
-                        <div class="col-4 col-lg-2 text-center">
-                            <div class="counter">
-                                <span class="counter-minus icon-minus" field="qty-1"></span>
-                                <input type="text" name="qty-1" class="counter-value" value="1" min="1" max="10">
-                                <span class="counter-plus icon-plus" field="qty-1"></span>
-                            </div>
-                        </div>
-                        <div class="col-4 col-lg-2 text-center">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="customCheck2">
-                                <label class="custom-control-label" for="customCheck2"><p
-                                        class="d-none d-block d-md-none">So sebou</p></label>
-                            </div>
+                        <div class="col-4">
+                            <span class="eyebrow">so sebou</span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
-<section class="pt-0">
-    <div class="container">
-
-        <!--<div class="col-lg-2 text-center"><span class="eyebrow">online cena</span></div>-->
-        <!--<div class="col-lg-2 text-center"><span class="eyebrow">množstvo</span></div>-->
-        <!--<div class="col-lg-2 text-center"><span class="eyebrow">so sebou</span></div>-->
-        <ul class="d-none d-lg-flex pr-2 pr-lg-0 justify-content-center justify-content-lg-end">
-            <li class="mr-1 eyebrow">online cena</li>
-            <li class="mr-1 eyebrow">množstvo</li>
-            <li class="eyebrow">so sebou</li>
-        </ul>
-    </div>
-    {% if menu is not none %}
     {% include '_menu_form.html' %}
     {% else %}
-    <p class="lead">Menu na daný týždeň bude nahraté čoskoro. Ospravedlňujeme sa za čakanie.</p>
+        <div class="container text-center">
+            <p class="lead">Menu na daný týždeň bude nahraté čoskoro. Ospravedlňujeme sa za čakanie.</p>
+        </div>
     {% endif %}
 </section>
 
