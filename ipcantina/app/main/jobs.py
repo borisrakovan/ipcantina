@@ -17,6 +17,7 @@ from db.config import config
 
 def create_daily_order_sheet(dt):
     meals = Meal.query.filter(Meal.date == dt, Meal.label != 'S').order_by(Meal.label).all()
+    soup = Meal.query.filter(Meal.date == dt, Meal.label == 'S').first()
     summary = []
     for meal in meals:
         amount = Order.query.with_entities(func.count()).filter(Order.meal_id == meal.id).scalar()
@@ -32,6 +33,7 @@ def create_daily_order_sheet(dt):
     ws['D1'] = "voľný predaj"; ws['D1'].font = bold
     ws['E1'] = "spolu"; ws['E1'].font = bold
 
+    ws.cell(row=2, column=2, value=soup.description)
     for i, item in enumerate(summary):
         row = 3+i
         ws.cell(row=row, column=1, value=item[0].label)
