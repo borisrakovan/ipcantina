@@ -13,11 +13,6 @@ closed_tags = ['sviatok', 'zatvorené', 'zatvorene', 'prázdniny', 'prazdniny', 
 class MenuUtils:
 
     @staticmethod
-    def get_default_prices():
-        with open(current_app.config['DEFAULT_PRICES_PATH'], 'r', encoding='utf-8') as f:
-            return json.load(f)
-
-    @staticmethod
     def load_from_db():
         monday = DateUtils.affected_week_monday()
         menu = [None]*5

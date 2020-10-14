@@ -63,26 +63,12 @@
                                 <!--{{ instructions|safe }}-->
                                 <!--</p>-->
                                 <ul class="list-group list-group-minimal">
-                                    <li class="list-group-item d-flex align-items-center">
-                                        <i class="icon-plus fs-22 text-primary"></i>
-                                        <span>cena za zabalené jedlo v menu boxoch (aj s polievkou) počas obmedzenej prevádzky bude jednotná: <b>4,50 € </b></span>
-                                    </li>
-                                    <li class="list-group-item d-flex align-items-center">
-                                        <i class="icon-plus fs-22 text-primary"></i>
-                                        <span>objednávky je možné uskutočniť alebo zrušiť <strong>do 15-tej</strong> hodiny predošlého pracovného dňa</span>
-                                    </li>
-                                    <li class="list-group-item d-flex align-items-center">
-                                        <i class="icon-plus fs-22 text-primary"></i>
-                                        <span>objednávka jedla (pokiaľ nebude zrušená do 15:00) je záväzná</span>
-                                    </li>
-                                    <li class="list-group-item d-flex align-items-center">
-                                        <i class="icon-plus fs-22 text-primary"></i>
-                                        <span>menu na ďalší týždeň bude zverejnené vždy vo štvrtok aktuálneho týždňa po 15-tej hodine</span>
-                                    </li>
-                                    <li class="list-group-item d-flex align-items-center">
-                                        <i class="icon-plus fs-22 text-primary"></i>
-                                        <span>objednané jedlo bude vydávané cez pult umiestnený vo vchode do cantíny od <b>11:00-12:00</b></span>
-                                    </li>
+                                    {% for instruction in instructions %}
+                                        <li class="list-group-item d-flex align-items-center">
+                                            <i class="icon-plus fs-22 text-primary"></i>
+                                            <span>{{ instruction|safe }}</span>
+                                        </li>
+                                    {% endfor %}
                                 </ul>
                                 <br>
                                 <h6 class="">Cenník</h6>

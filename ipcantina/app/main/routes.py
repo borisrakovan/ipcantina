@@ -7,6 +7,7 @@ import os
 from app.main import bp
 from flask import current_app
 from app.main.menu import MenuUtils
+from app.main.persist import load_instructions, load_prices, save_instructions, save_prices
 from app.main.utils import allowed_file
 from werkzeug.utils import secure_filename
 from functools import wraps
@@ -20,11 +21,6 @@ from db.utils import DateUtils
 from db.config import config
 
 
-# TODO
-#  feedback kontaktny formular
-#  pdf generovanie
- # pagination first hide then show on pageload
-
 def login_required(role=UserRole.BASIC):
     def login_wrapper(fn):
         @wraps(fn)
@@ -35,28 +31,10 @@ def login_required(role=UserRole.BASIC):
             if urole != role and role != UserRole.BASIC:
                 return login_manager.unauthorized()
             return fn(*args, **kwargs)
+
         return decorated_view
+
     return login_wrapper
-
-
-def load_instructions():
-    path = current_app.config['INSTRUCTIONS_TEXT_PATH']
-    with open(path, 'r', encoding='utf-8') as f:
-        instructions = ' '.join(f.readlines())
-        return instructions.strip()
-
-
-def save_instructions(text):
-    path = current_app.config['INSTRUCTIONS_TEXT_PATH']
-    with open(path, 'w', encoding='utf-8') as f:
-        f.write(text)
-
-
-def update_prices(a, b, c):
-    path = current_app.config['DEFAULT_PRICES_PATH']
-    prices = {'A': a, 'B': b, 'C': c}
-    with open(path, 'w', encoding='utf-8') as f:
-        json.dump(prices, f, indent=4)
 
 
 @bp.route('/', methods=['GET', 'POST'])
@@ -71,7 +49,7 @@ def index():
             return redirect(url_for('auth.login', next=request.url))
         num_orders = 0
         for i, field in enumerate(form.fields):  # day
-            for j, dish in enumerate(field.subfields): # label
+            for j, dish in enumerate(field.subfields):  # label
                 amount = dish.amount.data
                 if not amount:
                     continue
@@ -104,8 +82,9 @@ def orders():
         # unique id for each week's meals
         meal = Meal.query.get(meal_id)
         if DateUtils.deadline_passed(meal.date):
-            flash("Ospravedlňujeme sa, ale každá objednávka sa dá zrušiť iba do {}-tej hodiny predošlého pracovného dňa."
-                  .format(config['ORDER_DEADLINE_HOUR']), category='danger')
+            flash(
+                "Ospravedlňujeme sa, ale každá objednávka sa dá zrušiť iba do {}-tej hodiny predošlého pracovného dňa."
+                .format(config['ORDER_DEADLINE_HOUR']), category='danger')
             return redirect(url_for('main.orders'))
 
         Order.query.filter(
@@ -116,7 +95,7 @@ def orders():
 
     orders_summary = Order.get_user_orders_summary(current_user, current_app.config['ORDERLIST_NUM_WEEKS'])
 
-    view = request.args.get('view', 1) # todo maybe
+    view = request.args.get('view', 1)  # todo maybe
 
     return render_template('orders.html', title='Objednávky', summary=orders_summary, utils=DateUtils())
 
@@ -127,8 +106,8 @@ def admin():
     form = AdminSettingsForm()
 
     if request.method == 'GET':
-        form.instructions.data = load_instructions()
-        prices = MenuUtils.get_default_prices()
+        form.instructions.data = load_instructions(raw=True)
+        prices = load_prices()
         form.price_A.data = prices['A']
         form.price_B.data = prices['B']
         form.price_C.data = prices['C']
@@ -180,7 +159,7 @@ def admin():
                 price_A = round(form.price_A.data, 2)
                 price_B = round(form.price_B.data, 2)
                 price_C = round(form.price_C.data, 2)
-                update_prices(price_A, price_B, price_C)
+                save_prices(price_A, price_B, price_C)
 
                 flash("Zmeny boli úspešne uložené.", category='info')
             return redirect(url_for('main.admin'))
@@ -204,8 +183,9 @@ def update_meal_db():
                 old_soup.description = daily_menu['soup']['description']
                 old_soup.allergens = daily_menu['soup']['allergens']
             else:
-                soup = Meal(date=date, weekday=date.weekday(), label='S',portion=daily_menu['soup']['portion'],
-                            description=daily_menu['soup']['description'], allergens=daily_menu['soup']['allergens'], price=0.)
+                soup = Meal(date=date, weekday=date.weekday(), label='S', portion=daily_menu['soup']['portion'],
+                            description=daily_menu['soup']['description'], allergens=daily_menu['soup']['allergens'],
+                            price=0.)
                 # soup = Meal(week=week, day=i, label='S', description=daily_menu['soup'])
                 session.add(soup)
 
@@ -234,4 +214,3 @@ def unsubscribe(token):
     user.email_subscription = False
     session.commit()
     return render_template('unsubscribe.html', title='Odber')
-
