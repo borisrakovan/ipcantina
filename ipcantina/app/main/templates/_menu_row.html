@@ -1,25 +1,33 @@
 
-<div class="row mb-2 mb-md-1">
-    <div class="col-12 col-lg-9 d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
-        <b>
+<div class="row mb-2 mb-md-1 menu-row gutter-0">
+    <div class="col-12 col-lg-9 d-flex flex-row align-items-center px-2 pl-lg-0 justify-content-lg-start">
+        <b class="text-black">
             {{ meals[i].label }}:
         </b> &nbsp;<span class="portion-size">{{ meals[i].portion }}&nbsp;</span>
 
         {{ meals[i].description }}
-        {% if meals[i].allergens %}<span class="allergens">/{{ meals[i].allergens }}/</span>{% endif %}
+        {% if meals[i].allergens %}<span class="small">&nbsp;/{{ meals[i].allergens }}/</span>{% endif %}
         {% for error in field.subfields[i].amount.errors %}
             <span style="color: red;">&nbsp;&nbsp;{{ error }}</span>
         {% endfor %}
         {{ field.subfields[i].hidden_tag() }}
     </div>
-    <div class="mt-1 pr-5 pr-lg-0 mt-lg-0 col-12 col-lg-3 d-flex flex-row  align-items-center justify-content-center justify-content-lg-end
+    <div class="row mt-1 pr-lg-0 mt-lg-0 col-12 col-lg-3 d-flex align-items-center justify-content-lg-end
+     justify-content-around
      {% if utils.deadline_passed(meals[i].date) %} inactive{% endif %}">
-        <span class="price-tag"><em><span>{{ "%.2f" % (meals[i].price)}}</span> &euro;</em></span>
+        <div class="col-4"><span class="price-tag"><span>{{ "%.2f" % (meals[i].price)}}</span> &euro;</span></div>
+        <div class="col-4"> <div class="mx-2">{{ field.subfields[i].amount(size=1) }}</div></div>
+        <div class="col-4">
+            <div class="d-flex justify-content-center align-items-center">
+                {{ field.subfields[i].take_away(size=1, class_='take-away') }}
+                <div class="d-block d-lg-none mx-1">{{ field.subfields[i].take_away.label }}</div>
+            </div>
 
-        <div class="mx-2">{{ field.subfields[i].amount(size=1) }}</div>
-        <!--{{ field.subfields[i].take_away(size=1, **{'disabled':'disabled'}) }}-->
+        </div>
 
-        {{ field.subfields[i].take_away(size=1, class_='take-away') }}
+
+
+
         <span class="unit-price d-none">{{ "%.2f" % (meals[i].price)}}</span>
     </div>
 </div>

@@ -14,7 +14,10 @@ class IncrementorWidget(TextInput):
             kwargs["value"] = field._value()
         if "required" not in kwargs and "required" in getattr(field, "flags", []):
             kwargs["required"] = True
-        return Markup('<div class="incrementor"><span class="minus">-</span><input %s><span class="plus">+</span></div>' % self.html_params(name=field.name, **kwargs))
+        return Markup(
+            # '<div class="incrementor"><span class="minus">-</span><input %s><span class="plus">+</span></div>' % self.html_params(name=field.name, **kwargs)
+            '<div class="counter"><span class="counter-minus icon-minus"></span><input type="text" %s class="counter-value"><span class="counter-plus icon-plus"></span></div>' % self.html_params(name=field.name, **kwargs)
+        )
 
 
 class SubmitBtnWidget(SubmitInput):

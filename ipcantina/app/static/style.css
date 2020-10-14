@@ -120,5 +120,26 @@ input[disabled="disabled"] {
     .menu-section-title.current::before {
         border-top: 1px solid #20c997;
     }
+    .menu-row {
+        padding: 15px 0;
+        border: 1px solid #dddddd;
+    }
+    .menu-row>div:first-child {
+        border-bottom: 1px solid #dddddd;
+        padding-bottom: 15px;
+    }
+}
+.text-black {
+    color: #000;
+}
+.pricelist-item {
+    font-size: 0.875rem;
+}
+.pricelist-item b {
+    color: #000;
+}
+
+.counter-value {
+    color: #000;
 }
 

@@ -1,63 +1,227 @@
-{% extends "base.html" %}
+{% extends "base_home.html" %}
 
 {% block app_content %}
-    <h1>Objednávanie obedov</h1>
-    <p class="lead">Vitajte v objednávacom systéme obedov pre IP Centrum.</p>
-    <div class="bg-secondary my-2 p-3 px-4">
-        <!--<div class="bg-gray my-2 p-2 text-white">-->
-        <p>
-            {{ instructions|safe }}
-        </p>
-
-        <h3>Cenník</h3>
-        <h5>
-            menu A, B: <span class="text-danger">4,00 € </span>/<span class="text-success"> 3,70  €</span>
-        </h5>
-        <h5>
-            menu C: <span class="text-danger">3,80 € </span>/<span class="text-success"> 3,50  €</span>
-        </h5>
-        <p><em>Ceny uvedené zelenou farbou platia pri online objednávke.</em></p>
-        <p>
-            <a class="btn btn-sm btn-cyan" data-toggle="collapse" href="#allergens" role="button" aria-expanded="false" aria-controls="collapseExample">
-            Zoznam alergénov
-            </a>
-        </p>
-        <div class="collapse" id="allergens">
-            <div class="card card-body p-0">
-                <p>
-                    <b>1.</b> Obilniny obsahujúce lepok ( t. j. pšenica, raž, jačmeň, ovos, špalda, kamut a výrobky z nich),
-                    <b>2.</b> Kôrovce a výrobky z nich, <b>3.</b> Vajcia a výrobky z nich, <b>4.</b> Ryby a výrobky z nich,
-                    <b>5.</b> Arašidy a výrobky z nich, <b>6.</b> Sójové zrná a výrobky z nich, <b>7.</b> Mlieko a výrobky z neho,
-                    <b>8.</b> Orechy, ktorými sú mandle, lieskové orechy, vlašské orechy, kešu, peknanové orechy, para orechy,
-                    pistácie, makadamové orechy a queenslandské orechy a výrobky z nich, <b>9.</b> Zeler a výrobky z neho,
-                    <b>10.</b> Horčica a výrobky z nej, <b>11.</b> Sezamové semená a výrobky z nich, <b>12.</b> Oxid siričitý
-                    a siričitany v koncentráciách vyšších ako 10 mg/kg alebo 10mg/l vyjadrené ako SO2, <b>13.</b> Vlčí bôb
-                    a výrobky z neho, <b>14.</b> Mäkkýše a výrobky z nich
-                </p>
+<section class="hero pb-5" id="domov">
+    <span class="image image-overlay"
+          style="background-image: url({{ url_for('static', filename='assets/cantina.jpg') }})"></span>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10 col-lg-8 text-white">
+                <span class="eyebrow decorated mb-1">denné menu | rezervácia</span>
+                <h1 class="mb-2">Kantína</h1>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">Domov</a></li>
+                        <li class="breadcrumb-item">Kantína</li>
+                    </ol>
+                </nav>
             </div>
         </div>
     </div>
+</section>
+<section class="bg-light pt-4">
+    <div class="container">
+        <div class="row" style="height: 64px;">
+            <div class="col">
+                {% with messages = get_flashed_messages(with_categories=True) %}
+                {% if messages %}
+                {% for category, message in messages %}
 
-    <div class="content-section">
-        <div class="mb-2 d-flex flex-column flex-lg-row align-items-center justify-content-center justify-content-lg-start">
-                <h2 class="mb-0">
-                    Týždenné menu
-                    <span class="text-nowrap d-md-inline d-block mt-1 mt-md-0">
-                        {{ utils.monday_to_friday_str() }}
-                    </span>
-                </h2>
-                <a href="http://www.ipdevelopment.sk/letak_cantina.pdf" target="_blank" class="btn btn-sm btn-teal mx-2 my-1 my-lg-0">
-                    PDF
-                </a>
+                {% if category == "message" %}{% set category = "info" %} {% endif %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                {% endfor %}
+                {% endif %}
+                {% endwith %}
+            </div>
         </div>
-
-        {% if menu is not none %}
-            {% include '_menu_form.html' %}
-        {% else %}
-        <p class="lead">Menu na daný týždeň bude nahraté čoskoro. Ospravedlňujeme sa za čakanie.</p>
-        {% endif %}
+        <div class="row gutter-2 gutter-md-4">
+            <div class="col-md-4 col-lg-3">
+                <h2 class="h3 mb-4 mb-mb-0">Informácie</h2>
+            </div>
+            <div class="col-md-8 col-lg-9">
+                <div class="accordion accordion-minimal" id="accordion-3">
+                    <div class="card">
+                        <div class="card-header" id="heading-3-1">
+                            <h2 class="mb-0">
+                                <button class="btn btn-link" type="button" data-toggle="collapse"
+                                        data-target="#collapse-3-1" aria-expanded="true" aria-controls="collapse-3-1">
+                                    Inštrukcie
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapse-3-1" class="collapse show" aria-labelledby="heading-3-1"
+                             data-parent="#accordion-3">
+                            <div class="card-body">
+                                <p>
+                                    {{ instructions|safe }}
+                                </p>
+                                <!--<ul class="list-group list-group-minimal">-->
+                                <!--<li class="list-group-item d-flex align-items-center">-->
+                                <!--<i class="icon-Add fs-22 text-primary"></i>-->
+                                <!--<span>pri online objednávke jedla je cena o 30 centov nižšia</span>-->
+                                <!--</li>-->
+                                <!--<li class="list-group-item d-flex align-items-center">-->
+                                <!--<i class="icon-Add fs-22 text-primary"></i>-->
+                                <!--<span>objednávky je možné uskutočniť alebo zrušiť do 15-tej hodiny predošlého pracovného dňa</span>-->
+                                <!--</li>-->
+                                <!--<li class="list-group-item d-flex align-items-center">-->
+                                <!--<i class="icon-Add fs-22 text-primary"></i>-->
+                                <!--<span>objednávka jedla (pokiaľ nebude zrušená do 15:00) je záväzná</span>-->
+                                <!--</li>-->
+                                <!--<li class="list-group-item d-flex align-items-center">-->
+                                <!--<i class="icon-Add fs-22 text-primary"></i>-->
+                                <!--<span>menu na ďalší týždeň bude zverejnené vždy vo štvrtok aktuálneho týždňa po 15-tej hodine</span>-->
+                                <!--</li>-->
+                                <!--<li class="list-group-item d-flex align-items-center">-->
+                                <!--<i class="icon-Add fs-22 text-primary"></i>-->
+                                <!--<span>pri voľbe "so sebou" bude jedlo automaticky zabalené. Cena balenia je 0,30 €</span>-->
+                                <!--</li>-->
+                                <!--</ul>-->
+                                <!--<br>-->
+                                <h6 class="">Cenník</h6>
+                                <ul class="mb-0">
+                                    <li class="d-flex align-items-center">
+                                        <span class="ml-1 pricelist-item"><b>menu A, B:</b>
+                                            <span class="text-danger">4,00 € </span>/
+                                            <span class="text-success"> 3,70  €</span>
+                                        </span>
+                                    </li>
+                                    <li class="d-flex align-items-center">
+                                        <span class="ml-1 pricelist-item"><b>menu C:</b>
+                                            <span class="text-danger">3,80 € </span>/<span
+                                                    class="text-success"> 3,50  €</span>
+                                        </span>
+                                    </li>
+                                </ul>
+                                <span class="small ml-1"><em>Ceny uvedené zelenou farbou platia pri online objednávke.</em></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header" id="heading-3-2">
+                            <h2 class="mb-0">
+                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                                        data-target="#collapse-3-2" aria-expanded="false" aria-controls="collapse-3-2">
+                                    Zoznam alergénov
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapse-3-2" class="collapse" aria-labelledby="heading-3-2"
+                             data-parent="#accordion-3">
+                            <div class="card-body">
+                                <b>1.</b> Obilniny obsahujúce lepok ( t. j. pšenica, raž, jačmeň, ovos, špalda, kamut a
+                                výrobky z nich),<br>
+                                <b>2.</b> Kôrovce a výrobky z nich,<br>
+                                <b>3.</b> Vajcia a výrobky z nich, <br>
+                                <b>4.</b> Ryby a výrobky z nich,<br>
+                                <b>5.</b> Arašidy a výrobky z nich, <br>
+                                <b>6.</b> Sójové zrná a výrobky z nich, <br>
+                                <b>7.</b> Mlieko a výrobky z neho,<br>
+                                <b>8.</b> Orechy, ktorými sú mandle, lieskové orechy, vlašské orechy, kešu, peknanové
+                                orechy, para orechy, pistácie, makadamové orechy a queenslandské orechy a výrobky z
+                                nich,<br>
+                                <b>9.</b> Zeler a výrobky z neho,<br>
+                                <b>10.</b> Horčica a výrobky z nej, <br>
+                                <b>11.</b> Sezamové semená a výrobky z nich, <br>
+                                <b>12.</b> Oxid siričitý a siričitany v koncentráciách vyšších ako 10 mg/kg alebo 10mg/l
+                                vyjadrené ako SO2, <br>
+                                <b>13.</b> Vlčí bôb a výrobky z neho, <br>
+                                <b>14.</b> Mäkkýše a výrobky z nich <br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+</section>
+<section class="p-2">
+    <div class="container">
+        <div class="text-center m-2">
+            <h1>Týždenné menu <span class="text-nowrap d-md-inline d-block mt-1 mt-md-0">{{ utils.monday_to_friday_str() }}</span>
+            </h1>
+            <a href="http://www.ipdevelopment.sk/letak_cantina.pdf" target="_blank"
+               class="btn btn-sm btn-secondary mt-1">STIAHNUŤ AKO PDF</a>
+        </div>
+    </div>
+</section>
+<section class="pt-0">
+    <div class="container">
+        <div class="row mb-1 d-none d-lg-flex justify-content-center">
+            <div class="col-lg-8">
+                <div class="row pr-6">
+                    <div class="col-lg-6"><span>Pondelok</span></div>
+                    <div class="col-lg-2 text-center"><span class="eyebrow">online cena</span></div>
+                    <div class="col-lg-2 text-center"><span class="eyebrow">množstvo</span></div>
+                    <div class="col-lg-2 text-center"><span class="eyebrow">so sebou</span></div>
+                </div>
+            </div>
+        </div>
+        <div class="row gutter-2 gutter-lg-4 justify-content-center">
+            <div class="col-lg-8 cart-item-list">
+                <div class="m-1 d-none d-block d-md-none">
+                    <h2>Pondelok</h2>
+                </div>
+                <!-- jedno jedlo  -->
+                <div class="menu-item">
+                    <div class="row align-items-center">
+                        <div class="col-12 col-lg-6">
+                            <div class="media media-product">
+                                <div class="media-body">
+                                    <h5 class="media-title mt-1"><b>A:</b>120g Vyp.kurací rezeň s mozzarelou so
+                                        zemiakovou kašou</h5>
+                                    <span class="small">/1,3,7/</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4 col-lg-2 text-center">
+                            <span class="menu-item-price">3.70 €</span>
+                        </div>
+                        <div class="col-4 col-lg-2 text-center">
+                            <div class="counter">
+                                <span class="counter-minus icon-minus" field="qty-1"></span>
+                                <input type="text" name="qty-1" class="counter-value" value="1" min="1" max="10">
+                                <span class="counter-plus icon-plus" field="qty-1"></span>
+                            </div>
+                        </div>
+                        <div class="col-4 col-lg-2 text-center">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="customCheck2">
+                                <label class="custom-control-label" for="customCheck2"><p
+                                        class="d-none d-block d-md-none">So sebou</p></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="pt-0">
+    <div class="container">
+
+        <!--<div class="col-lg-2 text-center"><span class="eyebrow">online cena</span></div>-->
+        <!--<div class="col-lg-2 text-center"><span class="eyebrow">množstvo</span></div>-->
+        <!--<div class="col-lg-2 text-center"><span class="eyebrow">so sebou</span></div>-->
+        <ul class="d-none d-lg-flex pr-2 pr-lg-0 justify-content-center justify-content-lg-end">
+            <li class="mr-1 eyebrow">online cena</li>
+            <li class="mr-1 eyebrow">množstvo</li>
+            <li class="eyebrow">so sebou</li>
+        </ul>
+    </div>
+    {% if menu is not none %}
+    {% include '_menu_form.html' %}
+    {% else %}
+    <p class="lead">Menu na daný týždeň bude nahraté čoskoro. Ospravedlňujeme sa za čakanie.</p>
+    {% endif %}
+</section>
 
 
-    <script src="{{url_for('static', filename='js/cantina.js')}}"></script>
+<script src="{{url_for('static', filename='js/cantina.js')}}"></script>
 {% endblock %}

@@ -1,45 +1,50 @@
-<ul class="d-flex pr-2 pr-lg-0 justify-content-center justify-content-lg-end text-sm">
-    <li class="mr-1">online cena</li>
-    <li class="mr-1">množstvo</li>
-    <li>so sebou</li>
-</ul>
-<form class="" action="" method="post" novalidate>
-    {{ form.hidden_tag() }}
-        {% for day in range(menu|length) %}
-            <h3 class="menu-section-title">{{ utils.svk_weekday_from_int(day) }}</h3>
-            <div class="menu-form-section text-center px-0 px-lg-2 mb-4">
-            {% if menu[day] is not none %}
-                {% if menu[day]['soup'] is not none %}
-                <div class="mb-1 d-flex justify-content-center justify-content-lg-start">
-                    <b class="invisible">P:</b>
-                    <span class="portion-size"> &nbsp;{{ menu[day]['soup'].portion }}&nbsp;</span>
-                    <span class="">
-                    {{ menu[day]['soup'].description }}
-                    </span>
-                    {% if menu[day]['soup'].allergens %}
-                    <span class="allergens">/{{ menu[day]['soup'].allergens }}/</span><br>
-                    {% endif %}
-                </div>
-                {% endif %}
-                {% with field = form.fields[day] %}
-                    {{ field.hidden_tag() }}
-                    {% with meals = menu[day]['meals'] %}
-                        {% for i in range(meals|length) %}
-                            {% include '_menu_row.html' %}
-                        {% endfor %}
-                    {% endwith %}
-                {% endwith %}
-            {% else %}
-                {{ form.fields[day].hidden_tag() }}
-                {% for field in form.fields[day].subfields %}
-                    {{ field.hidden_tag() }}
-                {% endfor %}
-                <p><em>Zatvorené</em></p>
-            {% endif %}
-            </div>
-        <!--<hr>-->
-        {% endfor %}
-    <hr>
-    <p class="text-center text-lg-left">{{ form.submit(class_='btn-teal') }}</p>
-</form>
+<div class="container">
+    <div class="row">
+        <div class="col">
 
+    <form class="" action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+            {% for day in range(menu|length) %}
+                    <h3 class="menu-section-title text-black">{{ utils.svk_weekday_from_int(day) }}</h3>
+                    <div class="menu-form-section text-center px-0 px-lg-2 mb-4">
+                    {% if menu[day] is not none %}
+                        {% if menu[day]['soup'] is not none %}
+                        <div class="mb-1 d-flex justify-content-center justify-content-lg-start">
+                            <b class="invisible">P:</b>
+                            <span class=""> &nbsp;{{ menu[day]['soup'].portion }}&nbsp;</span>
+                            <span class="">
+                            {{ menu[day]['soup'].description }}
+                            </span>
+                            {% if menu[day]['soup'].allergens %}
+                            <span class="small">&nbsp;/{{ menu[day]['soup'].allergens }}/</span><br>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                        {% with field = form.fields[day] %}
+                            {{ field.hidden_tag() }}
+                            {% with meals = menu[day]['meals'] %}
+                                {% for i in range(meals|length) %}
+                                    {% include '_menu_row.html' %}
+                                {% endfor %}
+                            {% endwith %}
+                        {% endwith %}
+                    {% else %}
+                        {{ form.fields[day].hidden_tag() }}
+                        {% for field in form.fields[day].subfields %}
+                            {{ field.hidden_tag() }}
+                        {% endfor %}
+                        <p><em>Zatvorené</em></p>
+                    {% endif %}
+                    </div>
+            {% endfor %}
+        <hr>
+        <div class="row justify-content-center justify-content-lg-end">
+            <div class="col-md-6 col-lg-4">
+                {{ form.submit(class_='btn btn-lg btn-primary btn-block mt-1') }}
+            </div>
+        </div>
+    </form>
+        </div>
+    </div>
+
+</div>
