@@ -51,4 +51,10 @@ $(document).ready(function() {
 
     });
 
+    // temporary: implicitly checked
+    $('.take-away').prop('readonly', true);
+    $('.incrementor input').each(function() {
+        $(this).change();
+    });
+
 });

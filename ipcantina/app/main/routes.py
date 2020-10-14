@@ -54,7 +54,7 @@ def save_instructions(text):
 
 def update_prices(a, b, c):
     path = current_app.config['DEFAULT_PRICES_PATH']
-    prices = {'A' : a, 'B': b, 'C': c}
+    prices = {'A': a, 'B': b, 'C': c}
     with open(path, 'w', encoding='utf-8') as f:
         json.dump(prices, f, indent=4)
 
@@ -75,7 +75,6 @@ def index():
                 amount = dish.amount.data
                 if not amount:
                     continue
-
                 meal = menu[i]['meals'][j]
                 if DateUtils.deadline_passed(meal.date):
                     break

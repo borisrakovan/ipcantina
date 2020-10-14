@@ -1,6 +1,7 @@
 {% extends "base_home.html" %}
 
 {% block app_content %}
+
 <section class="hero pb-5" id="domov">
     <span class="image image-overlay"
           style="background-image: url({{ url_for('static', filename='assets/cantina.jpg') }})"></span>
@@ -87,19 +88,24 @@
                                 <h6 class="">Cenník</h6>
                                 <ul class="mb-0">
                                     <li class="d-flex align-items-center">
-                                        <span class="ml-1 pricelist-item"><b>menu A, B:</b>
-                                            <span class="text-danger">4,00 € </span>/
-                                            <span class="text-success"> 3,70  €</span>
+                                        <span class="ml-1 pricelist-item">menu A, B, C:
+                                            <span class=""><b>4,50 €</b> <span class=""><em>(v cene je automaticky zahrnuté balenie)</em></span> </span>
                                         </span>
                                     </li>
-                                    <li class="d-flex align-items-center">
-                                        <span class="ml-1 pricelist-item"><b>menu C:</b>
-                                            <span class="text-danger">3,80 € </span>/<span
-                                                    class="text-success"> 3,50  €</span>
-                                        </span>
-                                    </li>
+                                    <!--<li class="d-flex align-items-center">-->
+                                        <!--<span class="ml-1 pricelist-item"><b>menu A, B:</b>-->
+                                            <!--<span class="text-danger">4,00 € </span>/-->
+                                            <!--<span class="text-success"> 3,70  €</span>-->
+                                        <!--</span>-->
+                                    <!--</li>-->
+                                    <!--<li class="d-flex align-items-center">-->
+                                        <!--<span class="ml-1 pricelist-item"><b>menu C:</b>-->
+                                            <!--<span class="text-danger">3,80 € </span>/<span-->
+                                                    <!--class="text-success"> 3,50  €</span>-->
+                                        <!--</span>-->
+                                    <!--</li>-->
                                 </ul>
-                                <span class="small ml-1"><em>Ceny uvedené zelenou farbou platia pri online objednávke.</em></span>
+                                <!--<span class="small ml-1"><em>Ceny uvedené zelenou farbou platia pri online objednávke.</em></span>-->
                             </div>
                         </div>
                     </div>
