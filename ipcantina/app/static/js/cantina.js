@@ -50,9 +50,9 @@ $(document).ready(function() {
         $input.change();
 
     });
-    
+
     // temporary: implicitly checked
-    $('.take-away').attr('disabled', 'disabled');
+    $('.take-away').prop('readonly', true);
     $('.incrementor input').each(function() {
         $(this).change();
     });

@@ -75,7 +75,6 @@ def index():
                 amount = dish.amount.data
                 if not amount:
                     continue
-
                 meal = menu[i]['meals'][j]
                 if DateUtils.deadline_passed(meal.date):
                     break
