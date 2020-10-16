@@ -6,6 +6,7 @@ from flask import current_app
 from db.models import Meal
 from db.utils import DateUtils
 
+from app.main.persist import load_prices
 
 closed_tags = ['sviatok', 'zatvorené', 'zatvorene', 'prázdniny', 'prazdniny', 'closed', 'dovolenka']
 
@@ -52,7 +53,7 @@ class MenuUtils:
         menu = [dict() for _ in range(5)]
 
         day = 0
-        default_prices = MenuUtils.get_default_prices()
+        default_prices = load_prices()
         for row in range(sheet.nrows):
             closed = False
             for col in range(sheet.ncols):

@@ -1,24 +1,8 @@
 <!doctype html>
 <html lang="sk">
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Custom CSS -->
-    <link rel="shortcut icon" href="{{ url_for('static', filename='assets/favicon.ico') }}" type="image/x-icon">
-    <link rel="icon" href="{{ url_for('static', filename='assets/favicon.ico') }}" type="image/x-icon">
-    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap4/bootstrap.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+{% include '_head.html' %}
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css') }}">
-
-    <!-- Custom JavaScript -->
-    <script src="https://code.jquery.com/jquery.min.js"></script>
-    <script src="{{ url_for('static', filename='bootstrap4/bootstrap.min.js') }}"></script>
-
-    <title>{% if title %}{{ title }} - IP Cantina{% else %}IP Cantina{% endif %}</title>
-</head>
 <body>
 {% include '_navigation.html' %}
 <div class="container content-wrapper mb-8">

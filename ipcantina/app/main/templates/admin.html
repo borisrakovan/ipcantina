@@ -35,7 +35,7 @@
             <div class="form-group mb-1">
                 {{ form.instructions.label }}<br>
                 <p class="text-muted">Jednotlivé inštrukcie je potrebné oddeliť znakom <b>#</b>.
-                    Zadávanie textu podporuje <b>HTML</b> formát</p>
+                    Zadávanie textu podporuje <b>HTML</b> formát.</p>
                 {{ form.instructions(cols=30, rows=4, **{'class':'form-control'}) }}
                 {% for error in form.instructions.errors %}
                 <span style="color: red;">[{{ error }}]</span>
