@@ -147,7 +147,8 @@ def admin():
             else:
                 current_app.logger.info("Going go send menu update email.")
                 send_menu_notification_email()
-
+            settings["closed"] = False
+            save_settings(settings)
             flash("Súbor {} bol úspešne spracovaný. Prosím skontrolujte zmeny v menu na stránke.".format(file.filename),
                   category='info')
 
