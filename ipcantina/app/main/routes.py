@@ -21,6 +21,7 @@ from db.utils import DateUtils
 from db.config import config
 
 
+
 def login_required(role=UserRole.BASIC):
     def login_wrapper(fn):
         @wraps(fn)
