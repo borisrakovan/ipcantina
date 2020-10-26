@@ -53,7 +53,7 @@ class MenuUtils:
         menu = [dict() for _ in range(5)]
 
         day = 0
-        default_prices = load_settings()["instructions"]
+        settings = load_settings()
         for row in range(sheet.nrows):
             closed = False
             for col in range(sheet.ncols):
@@ -64,8 +64,6 @@ class MenuUtils:
                     day += 1
                     break
             if closed: continue
-            print("got here")
-            print(sheet.nrows)
             if sheet.cell_value(row, 0).strip() == 'A':
                 menu[day]['open'] = True
                 soup = sheet.cell_value(row-1, 2).strip()
@@ -98,7 +96,7 @@ class MenuUtils:
                         price = float(price) - 0.3 # ONLINE DISCOUNT
                         # price = float()
                     except Exception:
-                        price = default_prices[label] - 0.3
+                        price = settings["price_" + label] - 0.3
 
                     menu[day]['meals'].append({"label": label, "portion": portion,
                                                "description": desc, "allergens": allergens, "price": price})
