@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import BooleanField, SubmitField,\
-    IntegerField, FieldList, FormField, TextAreaField, FloatField
+    IntegerField, FieldList, FormField, TextAreaField, FloatField, SelectField
 from wtforms.validators import DataRequired, Optional, Length
 from wtforms.widgets.core import TextInput, SubmitInput
 from markupsafe import Markup
@@ -51,4 +51,5 @@ class AdminSettingsForm(FlaskForm):
     price_B = FloatField('Cena B', validators=[DataRequired()])
     price_C = FloatField('Cena C', validators=[DataRequired()],
                          description="Upozornenie: zmeny v cenách naberú účinnosť až v nasledujúcom týždni.")
+    closed = BooleanField("Zatvorené", default=False)
     submit = SubmitField('Uložiť zmeny')

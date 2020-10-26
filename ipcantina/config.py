@@ -15,12 +15,11 @@ class Config:
     # SERVER_NAME = "cantina.ipcentrum.sk"
     ALLOWED_EXTENSIONS = ['xls', 'xlsx']
 
-    INSTRUCTIONS_TEXT_PATH = os.environ.get('INSTRUCTIONS_TEXT_PATH')
-    DEFAULT_PRICES_PATH = os.environ.get('DEFAULT_PRICES_PATH')
     ATTACHMENTS_DIR_PATH = os.environ.get('ATTACHMENTS_DIR_PATH')
     MENU_UPLOAD_FOLDER = os.environ.get('MENU_UPLOAD_FOLDER')
     ORDERLIST_NUM_WEEKS = 3
     MENU_JSON_PATH = os.environ.get('MENU_JSON_PATH')
+    APP_SETTINGS_PATH = os.environ.get('APP_SETTINGS_PATH')
 
     MAIL_SERVER = os.environ.get('MAIL_SERVER')
     MAIL_PORT = int(os.environ.get('MAIL_PORT'))

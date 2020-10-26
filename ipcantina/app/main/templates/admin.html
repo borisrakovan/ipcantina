@@ -69,6 +69,12 @@
                 <span class="text-danger">Upozornenie:</span> zmeny v cenách naberú účinnosť až v nasledujúcom týždni.<br>
                 Zadané ceny sú ceny ešte pred online zľavou. Táto zľava bude automaticky odpočítaná pri online objednávkach.
             </p>
+            <div class="checkbox">
+                <label>
+                    {{ form.closed() }}&nbsp;
+                    {{ form.closed.label }}
+                </label>
+            </div>
             <p>{{ form.submit(**{'class': "btn btn-cyan"}) }}</p>
         </form>
     </section>

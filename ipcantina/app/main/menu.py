@@ -6,7 +6,7 @@ from flask import current_app
 from db.models import Meal
 from db.utils import DateUtils
 
-from app.main.persist import load_prices
+from app.main.persist import load_settings
 
 closed_tags = ['sviatok', 'zatvorené', 'zatvorene', 'prázdniny', 'prazdniny', 'closed', 'dovolenka']
 
@@ -53,7 +53,7 @@ class MenuUtils:
         menu = [dict() for _ in range(5)]
 
         day = 0
-        default_prices = load_prices()
+        default_prices = load_settings()["instructions"]
         for row in range(sheet.nrows):
             closed = False
             for col in range(sheet.ncols):
@@ -94,7 +94,7 @@ class MenuUtils:
                     if not desc:
                         raise RuntimeError("Chýbajúce hlavné jedlo.")
                     try:
-                        price = str(sheet.cell_value(i, 4)).replace('€','').replace(',', '.').strip()
+                        price = str(sheet.cell_value(i, 4)).replace('€', '').replace(',', '.').strip()
                         price = float(price) - 0.3 # ONLINE DISCOUNT
                         # price = float()
                     except Exception:

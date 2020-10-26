@@ -60,7 +60,7 @@
                              data-parent="#accordion-3">
                             <div class="card-body">
                                 <ul class="list-group list-group-minimal">
-                                    {% for instruction in instructions %}
+                                    {% for instruction in settings["instructions"] %}
                                         <li class="list-group-item d-flex align-items-center">
                                             <i class="icon-plus fs-22 text-primary"></i>
                                             <span>{{ instruction|safe }}</span>
@@ -163,7 +163,11 @@
     {% include '_menu_form.html' %}
     {% else %}
         <div class="container text-center">
+            {% if settings["closed"] %}
+            <p class="lead">Cantina je v týždni {{ utils.monday_to_friday_str() }} <b>zatvorená</b>.</p>
+            {% else %}
             <p class="lead">Menu na daný týždeň bude nahraté čoskoro. Ospravedlňujeme sa za čakanie.</p>
+            {% endif %}
         </div>
     {% endif %}
 </section>

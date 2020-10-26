@@ -7,7 +7,7 @@ import os
 from app.main import bp
 from flask import current_app
 from app.main.menu import MenuUtils
-from app.main.persist import load_instructions, load_prices, save_instructions, save_prices
+from app.main.persist import save_settings, load_settings
 from app.main.utils import allowed_file
 from werkzeug.utils import secure_filename
 from functools import wraps
@@ -19,7 +19,6 @@ from db.models import Order, UserRole, Meal, User
 from db.database import session
 from db.utils import DateUtils
 from db.config import config
-
 
 
 def login_required(role=UserRole.BASIC):
@@ -69,7 +68,8 @@ def index():
         flash("Vaša objednávka bola úspešne vykonaná.", category='info')
         return redirect(url_for('main.index'))
 
-    return render_template('index.html', title='Domov', instructions=load_instructions(),
+    settings = load_settings()
+    return render_template('index.html', title='Domov', settings=settings,
                            menu=menu, form=form, utils=DateUtils())
 
 
@@ -105,13 +105,13 @@ def orders():
 @login_required(role=UserRole.ADMIN)
 def admin():
     form = AdminSettingsForm()
-
+    settings = load_settings(raw_instructions=True)
     if request.method == 'GET':
-        form.instructions.data = load_instructions(raw=True)
-        prices = load_prices()
-        form.price_A.data = prices['A']
-        form.price_B.data = prices['B']
-        form.price_C.data = prices['C']
+        form.instructions.data = settings["instructions"]
+        form.closed.data = settings["closed"]
+        form.price_A.data = settings['price_A']
+        form.price_B.data = settings['price_B']
+        form.price_C.data = settings['price_C']
         orders_summary = Order.get_orders_summary(current_app.config['ORDERLIST_NUM_WEEKS'])
         return render_template('admin.html', title='Admin', form=form, users=User.query.all(),
                                summary=orders_summary, utils=DateUtils())
@@ -155,12 +155,12 @@ def admin():
 
         else:
             if form.validate_on_submit():
-                text = form.instructions.data
-                save_instructions(text)
-                price_A = round(form.price_A.data, 2)
-                price_B = round(form.price_B.data, 2)
-                price_C = round(form.price_C.data, 2)
-                save_prices(price_A, price_B, price_C)
+                settings["instructions"] = form.instructions.data
+                settings["closed"] = form.closed.data
+                settings["price_A"] = round(form.price_A.data, 2)
+                settings["price_B"] = round(form.price_B.data, 2)
+                settings["price_C"] = round(form.price_C.data, 2)
+                save_settings(settings)
 
                 flash("Zmeny boli úspešne uložené.", category='info')
             return redirect(url_for('main.admin'))
